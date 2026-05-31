@@ -77,7 +77,7 @@
       <p><strong>Great for weddings, birthdays, corporate events, markets, showers, and private gatherings.</strong></p>
     </div>
 
-    <form class="form" id="quoteForm" name="quote-request" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <form class="form" id="quoteForm" name="quote-request" method="POST" data-netlify="true" action="/thank-you.html" netlify-honeypot="bot-field">
       <input type="hidden" name="form-name" value="quote-request">
       <p style="display:none">
         <label>Don’t fill this out if you’re human: <input name="bot-field"></label>
@@ -160,4 +160,4 @@ document.getElementById('eventSearch').addEventListener('input',renderEvents);do
 document.getElementById('downloadSchedule').addEventListener('click',()=>{let ics='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Off The Blvd Coffee//Events//EN\n';events.forEach((e,i)=>{let d=e.date.replaceAll('-','');ics+=`BEGIN:VEVENT\nUID:offtheblvd-${i}@offtheblvdcoffee.com\nDTSTAMP:${d}T120000Z\nDTSTART;VALUE=DATE:${d}\nSUMMARY:${e.title} - Off The Blvd Coffee\nLOCATION:${e.area}\nDESCRIPTION:${e.type} - ${e.details}\nEND:VEVENT\n`});ics+='END:VCALENDAR';let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='off-the-blvd-coffee-events.ics';a.click();});
 document.getElementById('hamb').addEventListener('click',()=>document.getElementById('links').classList.toggle('open'));document.getElementById('year').textContent=new Date().getFullYear();
 </script>
-</body></html>
+</body></html>  
