@@ -1,0 +1,13 @@
+- [x] Edit `index.html`:
+  - [x] Improve hamburger accessibility (`aria-controls`, `aria-expanded` sync)
+  - [x] Replace `innerHTML` event rendering with DOM-safe node creation
+  - [x] Escape `.ics` calendar output fields before writing SUMMARY/LOCATION/DESCRIPTION
+  - [ ] Add/adjust external link `rel` attributes if needed
+  - [x] Add basic SEO meta tags (OG/Twitter/canonical/robots)
+- [x] Create Netlify `_headers` file with CSP + security headers tailored for inline style/script
+- [ ] (Optional) Minimal head improvements in `thank-you.html` only if required
+- [ ] Verify behavior:
+  - [ ] Events search/filter renders correctly
+  - [ ] Mobile nav still toggles
+  - [ ] “Download Calendar File” produces a valid downloadable `.ics`
+  - [ ] Netlify form submission still posts to `thank-you.html` and honeypot continues working

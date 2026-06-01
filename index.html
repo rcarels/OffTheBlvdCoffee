@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Off The Blvd Coffee | Mobile Coffee Cart</title>
   <meta name="description" content="Off The Blvd Coffee brings handcrafted coffee and good energy to pop-up events, private parties, weddings, corporate gatherings, and markets across the Inland Empire and Greater Los Angeles Area." />
+
+  <link rel="canonical" href="https://offtheblvdcoffee.com/" />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="Off The Blvd Coffee | Mobile Coffee Cart" />
+  <meta property="og:description" content="Handcrafted coffee and good energy for pop-up events, private parties, weddings, corporate gatherings, and markets across the Inland Empire & Greater Los Angeles Area." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://offtheblvdcoffee.com/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
@@ -40,8 +49,8 @@
 <header class="header">
   <div class="wrap nav">
     <a class="logo" href="#home" aria-label="Off The Blvd Coffee home"><img src="assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee logo"></a>
-    <button class="hamb" id="hamb" aria-label="Open menu">☰</button>
-    <nav class="links" id="links"><a class="active" href="#home">Home</a><a href="#events">Events</a><a href="#about">About</a><a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#contact">Get in Touch</a></nav>
+    <button class="hamb" id="hamb" aria-label="Open menu" aria-controls="links" aria-expanded="false">☰</button>
+    <nav class="links" id="links" aria-label="Primary"><a class="active" href="#home">Home</a><a href="#events">Events</a><a href="#about">About</a><a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#contact">Get in Touch</a></nav>
     <a class="btn quote-top" href="#quote">Get a Quote →</a>
   </div>
 </header>
@@ -76,7 +85,7 @@
       </ul>
       <p><strong>Great for weddings, birthdays, corporate events, markets, showers, and private gatherings.</strong></p>
     </div>
-
+  
     <form class="form" id="quoteForm" name="quote-request" method="POST" data-netlify="true" action="/thank-you.html" netlify-honeypot="bot-field">
       <input type="hidden" name="form-name" value="quote-request">
       <p style="display:none">
@@ -113,7 +122,7 @@
             <option>Market / Pop-Up</option>
             <option>Other</option>
           </select>
-        </div>
+        </div> 
 
         <div>
           <label>Guest Count</label>
@@ -155,9 +164,96 @@ const events=[
 ];
 const fmt=new Intl.DateTimeFormat('en-US',{month:'long',day:'numeric',year:'numeric'});
 function svgIcon(){return '<svg class="icon" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/></svg>'}
-function renderEvents(){const q=document.getElementById('eventSearch').value.toLowerCase();const f=document.getElementById('eventFilter').value;const grid=document.getElementById('eventsGrid');grid.innerHTML='';let shown=0;events.filter(e=>(f==='all'||e.type===f)&&JSON.stringify(e).toLowerCase().includes(q)).forEach(e=>{shown++;let card=document.createElement('article');card.className='event-card';card.innerHTML=svgIcon()+`<div><div class="meta">${fmt.format(new Date(e.date+'T12:00:00'))} · ${e.time}</div><h3>${e.title}</h3><p>${e.area}</p><span class="badge ${e.type.includes('Private')?'private':''}">${e.type}</span></div>`;grid.appendChild(card)});document.getElementById('emptyEvents').style.display=shown?'none':'block'}
-document.getElementById('eventSearch').addEventListener('input',renderEvents);document.getElementById('eventFilter').addEventListener('change',renderEvents);renderEvents();
-document.getElementById('downloadSchedule').addEventListener('click',()=>{let ics='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Off The Blvd Coffee//Events//EN\n';events.forEach((e,i)=>{let d=e.date.replaceAll('-','');ics+=`BEGIN:VEVENT\nUID:offtheblvd-${i}@offtheblvdcoffee.com\nDTSTAMP:${d}T120000Z\nDTSTART;VALUE=DATE:${d}\nSUMMARY:${e.title} - Off The Blvd Coffee\nLOCATION:${e.area}\nDESCRIPTION:${e.type} - ${e.details}\nEND:VEVENT\n`});ics+='END:VCALENDAR';let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='off-the-blvd-coffee-events.ics';a.click();});
-document.getElementById('hamb').addEventListener('click',()=>document.getElementById('links').classList.toggle('open'));document.getElementById('year').textContent=new Date().getFullYear();
+function renderEvents(){
+  const q=document.getElementById('eventSearch').value.toLowerCase();
+  const f=document.getElementById('eventFilter').value;
+  const grid=document.getElementById('eventsGrid');
+  grid.innerHTML='';
+  let shown=0;
+
+  function makeSvgNode(){
+    const wrapper=document.createElement('div');
+    wrapper.innerHTML=svgIcon();
+    return wrapper.firstElementChild;
+  }
+
+  events
+    .filter(e=>(f==='all'||e.type===f)&&JSON.stringify(e).toLowerCase().includes(q))
+    .forEach(e=>{
+      shown++;
+      const card=document.createElement('article');
+      card.className='event-card';
+
+      const svg=makeSvgNode();
+      card.appendChild(svg);
+
+      const content=document.createElement('div');
+
+      const meta=document.createElement('div');
+      meta.className='meta';
+      meta.textContent=`${fmt.format(new Date(e.date+'T12:00:00'))} · ${e.time}`;
+
+      const h3=document.createElement('h3');
+      h3.textContent=e.title;
+
+      const p=document.createElement('p');
+      p.textContent=e.area;
+
+      const badge=document.createElement('span');
+      badge.className=`badge ${e.type.includes('Private')?'private':''}`;
+      badge.textContent=e.type;
+
+      content.appendChild(meta);
+      content.appendChild(h3);
+      content.appendChild(p);
+      content.appendChild(badge);
+
+      card.appendChild(content);
+      grid.appendChild(card);
+    });
+
+  document.getElementById('emptyEvents').style.display=shown?'none':'block';
+}
+
+document.getElementById('eventSearch').addEventListener('input',renderEvents);
+document.getElementById('eventFilter').addEventListener('change',renderEvents);
+renderEvents();
+
+document.getElementById('downloadSchedule').addEventListener('click',()=>{
+  function icsEscape(val){
+    return String(val ?? '')
+      .replace(/\\/g,'\\\\')
+      .replace(/\n/g,'\\n')
+      .replace(/,/g,'\\,');
+  }
+
+  let ics='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Off The Blvd Coffee//Events//EN\n';
+  events.forEach((e,i)=>{
+    let d=e.date.replaceAll('-','');
+    ics+=[
+      'BEGIN:VEVENT',
+      `UID:offtheblvd-${i}@offtheblvdcoffee.com`,
+      `DTSTAMP:${d}T120000Z`,
+      `DTSTART;VALUE=DATE:${d}`,
+      `SUMMARY:${icsEscape(e.title)} - Off The Blvd Coffee`,
+      `LOCATION:${icsEscape(e.area)}`,
+      `DESCRIPTION:${icsEscape(e.type)} - ${icsEscape(e.details)}`,
+      'END:VEVENT'
+    ].join('\n')+'\n';
+  });
+  ics+='END:VCALENDAR';
+
+  let a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
+  a.download='off-the-blvd-coffee-events.ics';
+  a.click();
+});
+
+document.getElementById('hamb').addEventListener('click',()=>{
+  const links=document.getElementById('links');
+  const isOpen=links.classList.toggle('open');
+  document.getElementById('hamb').setAttribute('aria-expanded',String(isOpen));
+});
+document.getElementById('year').textContent=new Date().getFullYear();
 </script>
 </body></html>  
