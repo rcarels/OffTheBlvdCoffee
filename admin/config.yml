@@ -40,6 +40,7 @@ collections:
               - name: details
                 label: Details
                 widget: text
+                required: false
 
   - name: about
     label: About
@@ -57,9 +58,11 @@ collections:
           - name: storyParagraph
             label: Story paragraph
             widget: text
+            required: false
           - name: serviceAreaText
             label: Service area text
             widget: string
+            required: false
 
   - name: menu
     label: Menu
@@ -85,6 +88,7 @@ collections:
                   - name: description
                     label: Description
                     widget: text
+                    required: false
                   - name: price
                     label: Price
                     widget: string
@@ -109,3 +113,4 @@ collections:
               - name: caption
                 label: Caption
                 widget: string
+                required: false
