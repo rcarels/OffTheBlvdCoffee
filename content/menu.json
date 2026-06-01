@@ -3,28 +3,66 @@
     {
       "category": "Espresso",
       "items": [
-        { "name": "Latte", "description": "Hot or iced", "price": "$ TBD" },
-        { "name": "Cappuccino", "price": "$ TBD" },
-        { "name": "Americano", "price": "$ TBD" },
-        { "name": "Cortado", "price": "$ TBD" }
+        {
+          "name": "Latte",
+          "description": "Hot or iced",
+          "price": "$ 6.00"
+        },
+        {
+          "name": "Cappuccino",
+          "price": "$ TBD"
+        },
+        {
+          "name": "Americano",
+          "price": "$ TBD"
+        },
+        {
+          "name": "Cortado",
+          "price": "$ TBD"
+        }
       ]
     },
     {
       "category": "Specialty",
       "items": [
-        { "name": "Blvd Latte", "description": "Signature house flavor", "price": "$ TBD" },
-        { "name": "Iced Specialty Latte", "price": "$ TBD" },
-        { "name": "Seasonal Drink", "price": "$ TBD" },
-        { "name": "Cold Brew", "price": "$ TBD" }
+        {
+          "name": "Blvd Latte",
+          "description": "Signature house flavor",
+          "price": "$ TBD"
+        },
+        {
+          "name": "Iced Specialty Latte",
+          "price": "$ TBD"
+        },
+        {
+          "name": "Seasonal Drink",
+          "price": "$ TBD"
+        },
+        {
+          "name": "Cold Brew",
+          "price": "$ TBD"
+        }
       ]
     },
     {
       "category": "Non-Coffee",
       "items": [
-        { "name": "Matcha Latte", "price": "$ TBD" },
-        { "name": "Chai Latte", "price": "$ TBD" },
-        { "name": "Hot Chocolate", "price": "$ TBD" },
-        { "name": "Custom Event Menu", "price": "Quote" }
+        {
+          "name": "Matcha Latte",
+          "price": "$ TBD"
+        },
+        {
+          "name": "Chai Latte",
+          "price": "$ TBD"
+        },
+        {
+          "name": "Hot Chocolate",
+          "price": "$ TBD"
+        },
+        {
+          "name": "Custom Event Menu",
+          "price": "Quote"
+        }
       ]
     }
   ]
