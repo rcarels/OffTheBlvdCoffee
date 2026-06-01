@@ -9,5 +9,5 @@
 - [ ] Verify behavior:
   - [ ] Events search/filter renders correctly
   - [ ] Mobile nav still toggles
-  - [ ] “Download Calendar File” produces a valid downloadable `.ics`
+  - [x] “Download Calendar File” feature removed; no remaining `downloadSchedule` references
   - [ ] Netlify form submission still posts to `thank-you.html` and honeypot continues working

@@ -65,7 +65,7 @@
 </section>
 <section id="events" class="wrap events-panel panel">
   <div class="section-head"><div><div class="eyebrow">Upcoming Events</div><h2 class="title">Catch Us Around<br>The Inland Empire &<br>The Greater Los Angeles Area</h2><p class="section-copy">You can find us at local markets, community events and private gatherings.</p></div><div class="event-controls"><input id="eventSearch" placeholder="Search events"><select id="eventFilter"><option value="all">All event types</option><option value="Public Event">Public events</option><option value="Private Booking">Private bookings</option></select></div></div>
-  <div class="events-grid" id="eventsGrid"></div><div class="empty" id="emptyEvents">No events match your search yet.</div><div class="center"><button class="btn outline" id="downloadSchedule">Download Calendar File</button></div>
+  <div class="events-grid" id="eventsGrid"></div><div class="empty" id="emptyEvents">No events match your search yet.</div><div class="center"><a class="btn outline" href="#quote">Request Availability →</a></div>
 </section>
 <section class="feature-strip"><div class="feature"><div class="round">☕</div><div><strong>Handcrafted Coffee</strong><p>High quality ingredients and drinks made with care.</p></div></div><div class="feature"><div class="round">📍</div><div><strong>Pop-Up Events</strong><p>Markets, community events, and private celebrations.</p></div></div><div class="feature"><div class="round">🚚</div><div><strong>Mobile Coffee Cart</strong><p>We bring the vibes and the coffee to you.</p></div></div><div class="feature"><div class="round">♡</div><div><strong>Good Coffee. Good Energy.</strong><p>Every event deserves great coffee and good vibes.</p></div></div></section>
 <section id="about" class="wrap"><div class="about"><div><div class="eyebrow">About</div><h2 class="title">Coffee made for pop-ups, parties, markets & memorable mornings.</h2><p class="section-copy">Off The Blvd Coffee is a mobile specialty coffee experience serving handcrafted drinks with a warm, community-centered feel. We serve The Inland Empire and The Greater Los Angeles Area.</p><p class="section-copy"><b>Placeholder:</b> Add your personal story here, including how you started making coffee, what makes your drinks special, and what guests can expect when they visit your cart.</p><a class="btn" href="#quote">Book the Cart →</a></div><div class="photo-card"><img src="assets/iced-coffee-hero.png" alt="Iced specialty coffee from Off The Blvd Coffee"></div></div></section>
@@ -219,35 +219,6 @@ document.getElementById('eventSearch').addEventListener('input',renderEvents);
 document.getElementById('eventFilter').addEventListener('change',renderEvents);
 renderEvents();
 
-document.getElementById('downloadSchedule').addEventListener('click',()=>{
-  function icsEscape(val){
-    return String(val ?? '')
-      .replace(/\\/g,'\\\\')
-      .replace(/\n/g,'\\n')
-      .replace(/,/g,'\\,');
-  }
-
-  let ics='BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Off The Blvd Coffee//Events//EN\n';
-  events.forEach((e,i)=>{
-    let d=e.date.replaceAll('-','');
-    ics+=[
-      'BEGIN:VEVENT',
-      `UID:offtheblvd-${i}@offtheblvdcoffee.com`,
-      `DTSTAMP:${d}T120000Z`,
-      `DTSTART;VALUE=DATE:${d}`,
-      `SUMMARY:${icsEscape(e.title)} - Off The Blvd Coffee`,
-      `LOCATION:${icsEscape(e.area)}`,
-      `DESCRIPTION:${icsEscape(e.type)} - ${icsEscape(e.details)}`,
-      'END:VEVENT'
-    ].join('\n')+'\n';
-  });
-  ics+='END:VCALENDAR';
-
-  let a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
-  a.download='off-the-blvd-coffee-events.ics';
-  a.click();
-});
 
 document.getElementById('hamb').addEventListener('click',()=>{
   const links=document.getElementById('links');
