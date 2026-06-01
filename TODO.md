@@ -8,6 +8,9 @@
 - [ ] (Optional) Minimal head improvements in `thank-you.html` only if required
 - [ ] Verify behavior:
   - [ ] Events search/filter renders correctly
+  - [ ] Menu renders from `content/menu.json`
+  - [ ] About renders from `content/about.json`
+  - [ ] Gallery renders from `content/gallery.json`
   - [ ] Mobile nav still toggles
   - [x] “Download Calendar File” feature removed; no remaining `downloadSchedule` references
   - [ ] Netlify form submission still posts to `thank-you.html` and honeypot continues working
