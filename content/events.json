@@ -1,0 +1,36 @@
+{
+  "events": [
+    {
+      "title": "Local Farmers Market",
+      "date": "2025-05-24",
+      "time": "9AM - 2PM",
+      "area": "The Inland Empire",
+      "type": "Public Event",
+      "details": "Exact location placeholder"
+    },
+    {
+      "title": "Community Market",
+      "date": "2025-06-07",
+      "time": "8AM - 12PM",
+      "area": "The Greater Los Angeles Area",
+      "type": "Public Event",
+      "details": "Exact location placeholder"
+    },
+    {
+      "title": "Private Event",
+      "date": "2025-06-14",
+      "time": "10AM - 2PM",
+      "area": "The Greater Los Angeles Area",
+      "type": "Private Booking",
+      "details": "Private booking"
+    },
+    {
+      "title": "Add Your Next Event",
+      "date": "2025-06-28",
+      "time": "TBD",
+      "area": "The Inland Empire",
+      "type": "Public Event",
+      "details": "Placeholder event"
+    }
+  ]
+}
