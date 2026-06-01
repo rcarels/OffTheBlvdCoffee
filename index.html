@@ -86,7 +86,7 @@
       <p><strong>Great for weddings, birthdays, corporate events, markets, showers, and private gatherings.</strong></p>
     </div>
   
-    <form class="form" id="quoteForm" name="quote-request" method="POST" data-netlify="true" action="/thank-you.html" netlify-honeypot="bot-field">
+    <form class="form" id="quoteForm" name="quote-request" method="POST">
       <input type="hidden" name="form-name" value="quote-request">
       <p style="display:none">
         <label>Don’t fill this out if you’re human: <input name="bot-field"></label>
@@ -459,5 +459,47 @@ document.getElementById('hamb').addEventListener('click',()=>{
   document.getElementById('hamb').setAttribute('aria-expanded',String(isOpen));
 });
 document.getElementById('year').textContent=new Date().getFullYear();
+
+// Cloudflare Pages Functions quote submission (replaces Netlify Forms)
+(function(){
+  const form = document.getElementById('quoteForm');
+  if(!form) return;
+
+  const successEl = document.getElementById('quoteSuccess');
+  let lockedUntil = 0;
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    const now = Date.now();
+    if(now < lockedUntil) return;
+
+    lockedUntil = now + 8000; // basic client-side spam throttle
+
+    const formData = new FormData(form);
+    const actionUrl = '/api/quote';
+
+    try{
+      const res = await fetch(actionUrl, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if(!res.ok){
+        throw new Error('Request failed: ' + res.status);
+      }
+
+      // keep the same success page experience
+      window.location.href = '/thank-you.html';
+    }catch(err){
+      if(successEl){
+        successEl.style.display='block';
+        successEl.textContent='Sorry—something went wrong submitting your request. Please try again.';
+      }
+      lockedUntil = Date.now(); // unlock quickly to allow retry
+    }
+  });
+})();
 </script>
 </body></html>  

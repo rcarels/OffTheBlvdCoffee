@@ -13,4 +13,4 @@
   - [ ] Gallery renders from `content/gallery.json`
   - [ ] Mobile nav still toggles
   - [x] “Download Calendar File” feature removed; no remaining `downloadSchedule` references
-  - [ ] Netlify form submission still posts to `thank-you.html` and honeypot continues working
+  - [x] Quote form submits to `/api/quote` and redirects to `thank-you.html` (Cloudflare), with honeypot blocking bot posts
