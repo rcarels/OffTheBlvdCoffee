@@ -64,20 +64,61 @@
   }
 
   quotesDiv.innerHTML = result.quotes.map(q => `
-    <div style="border:1px solid #ccc;padding:12px;margin:12px 0;">
-      <strong>${q.name}</strong><br>
-      Email: ${q.email}<br>
-      Phone: ${q.phone || ""}<br>
-      Event Date: ${q.event_date || ""}<br>
-      Type: ${q.event_type || ""}<br>
-      Guests: ${q.guests || ""}<br>
-      Location: ${q.location || ""}<br>
-      Details: ${q.details || ""}<br>
-      Status: ${q.status || "New"}<br>
-      Created: ${q.created_at || ""}
+  <div style="
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+    margin:16px 0;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+  ">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h3 style="margin:0;">${q.name}</h3>
+      <span style="
+        background:#eee;
+        padding:6px 12px;
+        border-radius:999px;
+        font-size:12px;
+      ">
+        ${q.status || "New"}
+      </span>
     </div>
-  `).join("");
+
+    <p><strong>Email:</strong> ${q.email}</p>
+    <p><strong>Phone:</strong> ${q.phone || ""}</p>
+    <p><strong>Date:</strong> ${q.event_date || ""}</p>
+    <p><strong>Event Type:</strong> ${q.event_type || ""}</p>
+    <p><strong>Guests:</strong> ${q.guests || ""}</p>
+    <p><strong>Location:</strong> ${q.location || ""}</p>
+    <p><strong>Details:</strong><br>${q.details || ""}</p>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+      <button onclick="updateStatus(${q.id}, 'Contacted')">Contacted</button>
+      <button onclick="updateStatus(${q.id}, 'Booked')">Booked</button>
+      <button onclick="updateStatus(${q.id}, 'Completed')">Completed</button>
+      <button onclick="updateStatus(${q.id}, 'Archived')">Archived</button>
+    </div>
+  </div>
+`).join("");
 });
+async function updateStatus(id, status) {
+  const formData = new FormData();
+  formData.append("id", id);
+  formData.append("status", status);
+
+  const response = await fetch("/api/admin-update-quote", {
+    method: "POST",
+    body: formData
+  });
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    alert(result.error || "Failed to update status");
+    return;
+  }
+
+  document.getElementById("loadQuotes").click();
+}
   </script>
 </body>
 </html>
