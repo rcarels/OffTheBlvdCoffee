@@ -42,8 +42,8 @@ async function handlePost(request, env) {
     }
 
     const subject = `Off The Blvd Coffee - Quote Request (${safe(name)})`;
-    const to = "hello@offtheblvdcoffee.com";
-    const from = "hello@offtheblvdcoffee.com";
+    const to = "quotes@offtheblvdcoffee.com";
+    const from = "quotes@offtheblvdcoffee.com";
 
     const body = [
       "New quote request submitted from Off The Blvd Coffee website:",
