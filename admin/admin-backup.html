@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Off The Blvd Coffee Admin</title>
+</head>
+<body>
+  <h1>Off The Blvd Coffee Admin</h1>
+
+  <section id="login">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="password" name="password" placeholder="Admin password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginMessage"></p>
+  </section>
+
+  <section id="dashboard" hidden>
+    <h2>Dashboard</h2>
+    <p>Login successful.</p>
+    <h3>Next: Quote Requests</h3>
+    <button id="loadQuotes">Load Quote Requests</button>
+<div id="quotes"></div>
+  </section>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const loginMessage = document.getElementById("loginMessage");
+    const login = document.getElementById("login");
+    const dashboard = document.getElementById("dashboard");
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(loginForm);
+
+      const response = await fetch("/api/admin-login", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!result.ok) {
+        loginMessage.textContent = result.error || "Login failed.";
+        return;
+      }
+
+      login.hidden = true;
+      dashboard.hidden = false;
+    });
+    document.getElementById("loadQuotes").addEventListener("click", async () => {
+  const quotesDiv = document.getElementById("quotes");
+  quotesDiv.textContent = "Loading...";
+
+  const response = await fetch("/api/admin-quotes");
+  const result = await response.json();
+
+  if (!result.ok) {
+    quotesDiv.textContent = result.error || "Could not load quotes.";
+    return;
+  }
+
+  quotesDiv.innerHTML = result.quotes.map(q => `
+  <div style="
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+    margin:16px 0;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+  ">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h3 style="margin:0;">${q.name}</h3>
+      <span style="
+        background:#eee;
+        padding:6px 12px;
+        border-radius:999px;
+        font-size:12px;
+      ">
+        ${q.status || "New"}
+      </span>
+    </div>
+
+    <p><strong>Email:</strong> ${q.email}</p>
+    <p><strong>Phone:</strong> ${q.phone || ""}</p>
+    <p><strong>Date:</strong> ${q.event_date || ""}</p>
+    <p><strong>Event Type:</strong> ${q.event_type || ""}</p>
+    <p><strong>Guests:</strong> ${q.guests || ""}</p>
+    <p><strong>Location:</strong> ${q.location || ""}</p>
+    <p><strong>Details:</strong><br>${q.details || ""}</p>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+      <button onclick="updateStatus(${q.id}, 'Contacted')">Contacted</button>
+      <button onclick="updateStatus(${q.id}, 'Booked')">Booked</button>
+      <button onclick="updateStatus(${q.id}, 'Completed')">Completed</button>
+      <button onclick="updateStatus(${q.id}, 'Archived')">Archived</button>
+    </div>
+  </div>
+`).join("");
+});
+async function updateStatus(id, status) {
+  const formData = new FormData();
+  formData.append("id", id);
+  formData.append("status", status);
+
+  const response = await fetch("/api/admin-update-quote", {
+    method: "POST",
+    body: formData
+  });
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    alert(result.error || "Failed to update status");
+    return;
+  }
+
+  document.getElementById("loadQuotes").click();
+}
+  </script>
+</body>
+</html>

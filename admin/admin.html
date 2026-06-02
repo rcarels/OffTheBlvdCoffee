@@ -4,25 +4,462 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Off The Blvd Coffee Admin</title>
-</head>
-<body>
-  <h1>Off The Blvd Coffee Admin</h1>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --cream:#f4e7df;
+      --soft:#fff8f3;
+      --ink:#25140e;
+      --muted:#74635d;
+      --red:#c8103c;
+      --red2:#9c092c;
+      --line:#e2cfc5;
+      --tan:#ead8cc;
+      --shadow:0 18px 50px rgba(65,36,23,.13);
+    }
 
-  <section id="login">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input type="password" name="password" placeholder="Admin password" required>
-      <button type="submit">Login</button>
-    </form>
-    <p id="loginMessage"></p>
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      background:var(--soft);
+      color:var(--ink);
+      font-family:Inter,system-ui,sans-serif;
+    }
+
+    .login-screen{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:28px;
+      background:
+        radial-gradient(circle at top left, rgba(200,16,60,.08), transparent 34%),
+        var(--cream);
+    }
+
+    .login-card{
+      width:min(460px,100%);
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:38px;
+      text-align:center;
+    }
+
+    .login-card img{
+      width:145px;
+      margin:0 auto 18px;
+    }
+
+    h1,h2,h3{
+      font-family:"Playfair Display",serif;
+      line-height:1.05;
+    }
+
+    .login-card h1{
+      font-size:38px;
+      margin:0 0 10px;
+    }
+
+    .muted{
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    input,select,textarea{
+      width:100%;
+      border:1.5px solid var(--line);
+      border-radius:15px;
+      background:#fff;
+      padding:15px 16px;
+      font:inherit;
+      outline:none;
+    }
+
+    input:focus,select:focus,textarea:focus{
+      border-color:var(--red);
+      box-shadow:0 0 0 4px rgba(200,16,60,.08);
+    }
+
+    .btn{
+      border:0;
+      border-radius:999px;
+      background:var(--red);
+      color:#fff;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      padding:14px 22px;
+      cursor:pointer;
+      box-shadow:0 10px 26px rgba(200,16,60,.18);
+    }
+
+    .btn:hover{background:var(--red2)}
+
+    .btn.secondary{
+      background:#fff;
+      color:var(--red);
+      border:1.5px solid var(--red);
+      box-shadow:none;
+    }
+
+    .btn.small{
+      padding:10px 14px;
+      font-size:12px;
+    }
+
+    .login-card form{
+      display:grid;
+      gap:14px;
+      margin-top:24px;
+    }
+
+    .error{
+      color:var(--red);
+      font-weight:800;
+      min-height:22px;
+    }
+
+    .admin-shell{
+      display:none;
+      min-height:100vh;
+      grid-template-columns:280px 1fr;
+    }
+
+    .sidebar{
+      background:linear-gradient(180deg,#fff,var(--cream));
+      border-right:1px solid var(--line);
+      padding:26px 22px;
+      position:sticky;
+      top:0;
+      height:100vh;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:34px;
+    }
+
+    .brand img{
+      width:82px;
+    }
+
+    .brand strong{
+      display:block;
+      font-family:"Playfair Display",serif;
+      font-size:23px;
+      line-height:1;
+    }
+
+    .brand span{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:5px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .nav{
+      display:grid;
+      gap:10px;
+    }
+
+    .nav button{
+      border:1px solid transparent;
+      background:transparent;
+      text-align:left;
+      padding:13px 14px;
+      border-radius:14px;
+      color:var(--ink);
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .nav button.active,
+    .nav button:hover{
+      background:#fff;
+      border-color:var(--line);
+      color:var(--red);
+      box-shadow:0 8px 24px rgba(65,36,23,.08);
+    }
+
+    .main{
+      padding:34px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:28px;
+    }
+
+    .topbar h1{
+      font-size:clamp(34px,4vw,56px);
+      margin:0;
+    }
+
+    .panel{
+      background:rgba(255,248,243,.94);
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:24px;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+      margin-bottom:22px;
+    }
+
+    .stat{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:20px;
+    }
+
+    .stat span{
+      color:var(--muted);
+      font-weight:900;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .stat strong{
+      display:block;
+      font-family:"Playfair Display",serif;
+      font-size:38px;
+      margin-top:8px;
+      color:var(--red);
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .section-head h2{
+      font-size:34px;
+      margin:0;
+    }
+
+    .quotes-grid{
+      display:grid;
+      gap:16px;
+    }
+
+    .quote-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      box-shadow:0 8px 24px rgba(65,36,23,.08);
+    }
+
+    .quote-card-top{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:start;
+      margin-bottom:14px;
+    }
+
+    .quote-card h3{
+      margin:0;
+      font-size:28px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      padding:7px 12px;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.07em;
+      text-transform:uppercase;
+      background:#f4ced6;
+      color:var(--red);
+      white-space:nowrap;
+    }
+
+    .quote-details{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px 22px;
+      margin:14px 0;
+    }
+
+    .quote-details p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .quote-details strong{
+      color:var(--ink);
+    }
+
+    .full{
+      grid-column:1 / -1;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
+      padding-top:16px;
+      border-top:1px solid var(--line);
+    }
+
+    .placeholder-panel{
+      background:#fff;
+      border:1px dashed #d6bfb2;
+      border-radius:22px;
+      padding:34px;
+      color:var(--muted);
+      text-align:center;
+    }
+
+    .hidden{display:none!important}
+
+    @media(max-width:900px){
+      .admin-shell{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:relative;
+        height:auto;
+      }
+
+      .stats{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .quote-details{
+        grid-template-columns:1fr;
+      }
+
+      .main{
+        padding:22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="login-screen" id="login">
+    <div class="login-card">
+      <img src="/assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee">
+      <h1>Admin Login</h1>
+      <p class="muted">Manage quote requests and site content for Off The Blvd Coffee.</p>
+
+      <form id="loginForm">
+        <input type="password" name="password" placeholder="Admin password" required>
+        <button class="btn" type="submit">Login</button>
+      </form>
+
+      <p class="error" id="loginMessage"></p>
+    </div>
   </section>
 
-  <section id="dashboard" hidden>
-    <h2>Dashboard</h2>
-    <p>Login successful.</p>
-    <h3>Next: Quote Requests</h3>
-    <button id="loadQuotes">Load Quote Requests</button>
-<div id="quotes"></div>
+  <section class="admin-shell" id="dashboard">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="/assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee">
+        <div>
+          <strong>Off The Blvd</strong>
+          <span>Admin</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="active" data-section="quotes">Quote Requests</button>
+        <button data-section="events">Events</button>
+        <button data-section="menu">Menu</button>
+        <button data-section="gallery">Gallery</button>
+        <button data-section="about">About</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <p class="muted" style="margin:0 0 6px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;">Dashboard</p>
+          <h1>Welcome Back</h1>
+        </div>
+        <button class="btn secondary small" id="refreshQuotes">Refresh</button>
+      </div>
+
+      <section id="section-quotes">
+        <div class="stats">
+          <div class="stat"><span>New</span><strong id="statNew">0</strong></div>
+          <div class="stat"><span>Contacted</span><strong id="statContacted">0</strong></div>
+          <div class="stat"><span>Booked</span><strong id="statBooked">0</strong></div>
+          <div class="stat"><span>Archived</span><strong id="statArchived">0</strong></div>
+        </div>
+
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Quote Requests</h2>
+              <p class="muted">Review new event inquiries and manage lead status.</p>
+            </div>
+            <button class="btn small" id="loadQuotes">Load Quotes</button>
+          </div>
+
+          <div class="quotes-grid" id="quotes">
+            <div class="placeholder-panel">Log in and load quote requests to begin.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="section-events" class="hidden">
+        <div class="panel placeholder-panel">
+          <h2>Events</h2>
+          <p>Event editing will be added next.</p>
+        </div>
+      </section>
+
+      <section id="section-menu" class="hidden">
+        <div class="panel placeholder-panel">
+          <h2>Menu</h2>
+          <p>Menu editing will be added after events.</p>
+        </div>
+      </section>
+
+      <section id="section-gallery" class="hidden">
+        <div class="panel placeholder-panel">
+          <h2>Gallery</h2>
+          <p>Gallery editing will be added later.</p>
+        </div>
+      </section>
+
+      <section id="section-about" class="hidden">
+        <div class="panel placeholder-panel">
+          <h2>About</h2>
+          <p>About section editing will be added later.</p>
+        </div>
+      </section>
+    </main>
   </section>
 
   <script>
@@ -30,15 +467,14 @@
     const loginMessage = document.getElementById("loginMessage");
     const login = document.getElementById("login");
     const dashboard = document.getElementById("dashboard");
+    const quotesDiv = document.getElementById("quotes");
 
     loginForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      const formData = new FormData(loginForm);
-
       const response = await fetch("/api/admin-login", {
         method: "POST",
-        body: formData,
+        body: new FormData(loginForm),
       });
 
       const result = await response.json();
@@ -48,77 +484,111 @@
         return;
       }
 
-      login.hidden = true;
-      dashboard.hidden = false;
+      login.style.display = "none";
+      dashboard.style.display = "grid";
+      loadQuotes();
     });
-    document.getElementById("loadQuotes").addEventListener("click", async () => {
-  const quotesDiv = document.getElementById("quotes");
-  quotesDiv.textContent = "Loading...";
 
-  const response = await fetch("/api/admin-quotes");
-  const result = await response.json();
+    document.querySelectorAll(".nav button").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
 
-  if (!result.ok) {
-    quotesDiv.textContent = result.error || "Could not load quotes.";
-    return;
-  }
+        const selected = button.dataset.section;
+        ["quotes","events","menu","gallery","about"].forEach(name => {
+          document.getElementById(`section-${name}`).classList.toggle("hidden", name !== selected);
+        });
+      });
+    });
 
-  quotesDiv.innerHTML = result.quotes.map(q => `
-  <div style="
-    background:#fff;
-    border-radius:12px;
-    padding:20px;
-    margin:16px 0;
-    box-shadow:0 2px 8px rgba(0,0,0,.1);
-  ">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <h3 style="margin:0;">${q.name}</h3>
-      <span style="
-        background:#eee;
-        padding:6px 12px;
-        border-radius:999px;
-        font-size:12px;
-      ">
-        ${q.status || "New"}
-      </span>
-    </div>
+    document.getElementById("loadQuotes").addEventListener("click", loadQuotes);
+    document.getElementById("refreshQuotes").addEventListener("click", loadQuotes);
 
-    <p><strong>Email:</strong> ${q.email}</p>
-    <p><strong>Phone:</strong> ${q.phone || ""}</p>
-    <p><strong>Date:</strong> ${q.event_date || ""}</p>
-    <p><strong>Event Type:</strong> ${q.event_type || ""}</p>
-    <p><strong>Guests:</strong> ${q.guests || ""}</p>
-    <p><strong>Location:</strong> ${q.location || ""}</p>
-    <p><strong>Details:</strong><br>${q.details || ""}</p>
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
 
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-      <button onclick="updateStatus(${q.id}, 'Contacted')">Contacted</button>
-      <button onclick="updateStatus(${q.id}, 'Booked')">Booked</button>
-      <button onclick="updateStatus(${q.id}, 'Completed')">Completed</button>
-      <button onclick="updateStatus(${q.id}, 'Archived')">Archived</button>
-    </div>
-  </div>
-`).join("");
-});
-async function updateStatus(id, status) {
-  const formData = new FormData();
-  formData.append("id", id);
-  formData.append("status", status);
+    function updateStats(quotes) {
+      const count = (status) => quotes.filter(q => (q.status || "New") === status).length;
+      document.getElementById("statNew").textContent = count("New");
+      document.getElementById("statContacted").textContent = count("Contacted");
+      document.getElementById("statBooked").textContent = count("Booked");
+      document.getElementById("statArchived").textContent = count("Archived");
+    }
 
-  const response = await fetch("/api/admin-update-quote", {
-    method: "POST",
-    body: formData
-  });
+    async function loadQuotes() {
+      quotesDiv.innerHTML = '<div class="placeholder-panel">Loading quote requests...</div>';
 
-  const result = await response.json();
+      const response = await fetch("/api/admin-quotes");
+      const result = await response.json();
 
-  if (!result.ok) {
-    alert(result.error || "Failed to update status");
-    return;
-  }
+      if (!result.ok) {
+        quotesDiv.innerHTML = `<div class="placeholder-panel">${escapeHtml(result.error || "Could not load quotes.")}</div>`;
+        return;
+      }
 
-  document.getElementById("loadQuotes").click();
-}
+      updateStats(result.quotes || []);
+
+      if (!result.quotes || result.quotes.length === 0) {
+        quotesDiv.innerHTML = '<div class="placeholder-panel">No quote requests yet.</div>';
+        return;
+      }
+
+      quotesDiv.innerHTML = result.quotes.map(q => `
+        <article class="quote-card">
+          <div class="quote-card-top">
+            <div>
+              <h3>${escapeHtml(q.name)}</h3>
+              <p class="muted" style="margin:6px 0 0;">Submitted ${escapeHtml(q.created_at)}</p>
+            </div>
+            <span class="badge">${escapeHtml(q.status || "New")}</span>
+          </div>
+
+          <div class="quote-details">
+            <p><strong>Email:</strong> ${escapeHtml(q.email)}</p>
+            <p><strong>Phone:</strong> ${escapeHtml(q.phone)}</p>
+            <p><strong>Date:</strong> ${escapeHtml(q.event_date)}</p>
+            <p><strong>Event Type:</strong> ${escapeHtml(q.event_type)}</p>
+            <p><strong>Guests:</strong> ${escapeHtml(q.guests)}</p>
+            <p><strong>Location:</strong> ${escapeHtml(q.location)}</p>
+            <p class="full"><strong>Details:</strong><br>${escapeHtml(q.details)}</p>
+          </div>
+
+          <div class="actions">
+            <button class="btn secondary small" onclick="updateStatus(${q.id}, 'New')">New</button>
+            <button class="btn secondary small" onclick="updateStatus(${q.id}, 'Contacted')">Contacted</button>
+            <button class="btn secondary small" onclick="updateStatus(${q.id}, 'Booked')">Booked</button>
+            <button class="btn secondary small" onclick="updateStatus(${q.id}, 'Completed')">Completed</button>
+            <button class="btn secondary small" onclick="updateStatus(${q.id}, 'Archived')">Archived</button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    async function updateStatus(id, status) {
+      const formData = new FormData();
+      formData.append("id", id);
+      formData.append("status", status);
+
+      const response = await fetch("/api/admin-update-quote", {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (!result.ok) {
+        alert(result.error || "Failed to update status");
+        return;
+      }
+
+      loadQuotes();
+    }
   </script>
 </body>
 </html>
