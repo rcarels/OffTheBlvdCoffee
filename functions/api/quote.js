@@ -74,9 +74,16 @@ msg.addMessage({
 const message = new EmailMessage(from, to, msg.asRaw());
 
     if (!env || !env.SEND_EMAIL) {
-      console.error("SEND_EMAIL binding missing", { hasEnv: !!env, hasSendEmail: !!env?.SEND_EMAIL });
-      return Response.json({ ok: false, error: "SEND_EMAIL binding missing" }, { status: 500 });
-    }
+  console.error("SEND_EMAIL binding missing", { hasEnv: !!env, hasSendEmail: !!env?.SEND_EMAIL });
+
+  return Response.json(
+    {
+      ok: true,
+      warning: "Quote request received, but SEND_EMAIL binding is missing. Email was not sent."
+    },
+    { status: 200 }
+  );
+}
 
     try {
       await env.SEND_EMAIL.send(message);
