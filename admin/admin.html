@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Off The Blvd Coffee Admin</title>
+</head>
+<body>
+  <h1>Off The Blvd Coffee Admin</h1>
+
+  <section id="login">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="password" name="password" placeholder="Admin password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginMessage"></p>
+  </section>
+
+  <section id="dashboard" hidden>
+    <h2>Dashboard</h2>
+    <p>Login successful.</p>
+    <h3>Next: Quote Requests</h3>
+    <div id="quotes"></div>
+  </section>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const loginMessage = document.getElementById("loginMessage");
+    const login = document.getElementById("login");
+    const dashboard = document.getElementById("dashboard");
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(loginForm);
+
+      const response = await fetch("/api/admin-login", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!result.ok) {
+        loginMessage.textContent = result.error || "Login failed.";
+        return;
+      }
+
+      login.hidden = true;
+      dashboard.hidden = false;
+    });
+  </script>
+</body>
+</html>
