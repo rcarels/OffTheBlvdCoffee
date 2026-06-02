@@ -21,7 +21,8 @@
     <h2>Dashboard</h2>
     <p>Login successful.</p>
     <h3>Next: Quote Requests</h3>
-    <div id="quotes"></div>
+    <button id="loadQuotes">Load Quote Requests</button>
+<div id="quotes"></div>
   </section>
 
   <script>
@@ -50,6 +51,33 @@
       login.hidden = true;
       dashboard.hidden = false;
     });
+    document.getElementById("loadQuotes").addEventListener("click", async () => {
+  const quotesDiv = document.getElementById("quotes");
+  quotesDiv.textContent = "Loading...";
+
+  const response = await fetch("/api/admin-quotes");
+  const result = await response.json();
+
+  if (!result.ok) {
+    quotesDiv.textContent = result.error || "Could not load quotes.";
+    return;
+  }
+
+  quotesDiv.innerHTML = result.quotes.map(q => `
+    <div style="border:1px solid #ccc;padding:12px;margin:12px 0;">
+      <strong>${q.name}</strong><br>
+      Email: ${q.email}<br>
+      Phone: ${q.phone || ""}<br>
+      Event Date: ${q.event_date || ""}<br>
+      Type: ${q.event_type || ""}<br>
+      Guests: ${q.guests || ""}<br>
+      Location: ${q.location || ""}<br>
+      Details: ${q.details || ""}<br>
+      Status: ${q.status || "New"}<br>
+      Created: ${q.created_at || ""}
+    </div>
+  `).join("");
+});
   </script>
 </body>
 </html>
