@@ -1,4 +1,5 @@
 import { EmailMessage } from "cloudflare:email";
+import { createMimeMessage } from "mimetext";
 
 function getFirst(value) {
   if (Array.isArray(value)) return value[0];
@@ -60,9 +61,17 @@ async function handlePost(request, env) {
       `Subject: ${subject}`,
     ].join("\n");
 
-    
+    const msg = createMimeMessage();
 
-    const message = new EmailMessage(from, to, body);
+msg.setSender({ name: "Off The Blvd Coffee", addr: from });
+msg.setRecipient(to);
+msg.setSubject(subject);
+msg.addMessage({
+  contentType: "text/plain",
+  data: body,
+});
+
+const message = new EmailMessage(from, to, msg.asRaw());
 
     if (!env || !env.SEND_EMAIL) {
       console.error("SEND_EMAIL binding missing", { hasEnv: !!env, hasSendEmail: !!env?.SEND_EMAIL });
