@@ -458,4 +458,186 @@ async function adminDeleteEvent(id) {
   }
 
   await adminLoadEvents();
+  const loadMenuButtonEl = document.getElementById("loadMenu");
+const menuFormEl = document.getElementById("menuForm");
+const menuListEl = document.getElementById("menuList");
+
+let editingMenuItemId = null;
+let currentMenuItems = [];
+
+if (loadMenuButtonEl) {
+  loadMenuButtonEl.addEventListener("click", adminLoadMenu);
+}
+
+if (menuFormEl) {
+  menuFormEl.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(menuFormEl);
+    let method = "POST";
+
+    if (editingMenuItemId) {
+      method = "PUT";
+      formData.append("id", editingMenuItemId);
+
+      if (!formData.get("is_active")) {
+        formData.append("is_active", "1");
+      }
+    }
+
+    const response = await fetch("/api/admin-menu", {
+      method,
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      alert(result.error || "Could not save menu item.");
+      return;
+    }
+
+    editingMenuItemId = null;
+    menuFormEl.reset();
+
+    const activeInput = menuFormEl.querySelector('[name="is_active"]');
+    if (activeInput) activeInput.remove();
+
+    const submitButton = menuFormEl.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.textContent = "Add Menu Item";
+
+    await adminLoadMenu();
+  });
+}
+
+async function adminLoadMenu() {
+  if (!menuListEl) return;
+
+  menuListEl.innerHTML = '<div class="placeholder-panel">Loading menu items...</div>';
+
+  const response = await fetch("/api/admin-menu");
+  const result = await response.json();
+
+  if (!result.ok) {
+    menuListEl.innerHTML = `<div class="placeholder-panel">${escapeHtml(result.error || "Could not load menu.")}</div>`;
+    return;
+  }
+
+  currentMenuItems = result.menu_items || [];
+
+  if (currentMenuItems.length === 0) {
+    menuListEl.innerHTML = '<div class="placeholder-panel">No menu items yet.</div>';
+    return;
+  }
+
+  menuListEl.innerHTML = currentMenuItems.map(item => `
+    <article class="quote-card">
+      <div class="quote-card-top">
+        <div>
+          <h3>${escapeHtml(item.item_name)}</h3>
+          <p class="muted">${escapeHtml(item.category)} ${item.price ? "• " + escapeHtml(item.price) : ""}</p>
+        </div>
+        <span class="badge">${item.is_active ? "Active" : "Hidden"}</span>
+      </div>
+
+      <div class="quote-details">
+        <p><strong>Category:</strong> ${escapeHtml(item.category)}</p>
+        <p><strong>Price:</strong> ${escapeHtml(item.price)}</p>
+        <p><strong>Sort Order:</strong> ${escapeHtml(item.sort_order)}</p>
+        <p><strong>Created:</strong> ${escapeHtml(item.created_at)}</p>
+        <p class="full"><strong>Description:</strong><br>${escapeHtml(item.description)}</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn small" onclick="adminStartEditMenuItem(${item.id})">Edit</button>
+        <button class="btn secondary small" onclick="adminToggleMenuItem(${item.id})">
+          ${item.is_active ? "Hide" : "Show"}
+        </button>
+        <button class="btn secondary small" onclick="adminDeleteMenuItem(${item.id})">Delete</button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function adminGetMenuItemById(id) {
+  return currentMenuItems.find(item => Number(item.id) === Number(id));
+}
+
+function adminStartEditMenuItem(id) {
+  const item = adminGetMenuItemById(id);
+  if (!item || !menuFormEl) return;
+
+  editingMenuItemId = item.id;
+
+  menuFormEl.category.value = item.category || "";
+  menuFormEl.item_name.value = item.item_name || "";
+  menuFormEl.description.value = item.description || "";
+  menuFormEl.price.value = item.price || "";
+  menuFormEl.sort_order.value = item.sort_order || 0;
+
+  let activeInput = menuFormEl.querySelector('[name="is_active"]');
+
+  if (!activeInput) {
+    activeInput = document.createElement("input");
+    activeInput.type = "hidden";
+    activeInput.name = "is_active";
+    menuFormEl.appendChild(activeInput);
+  }
+
+  activeInput.value = item.is_active ? "1" : "0";
+
+  const submitButton = menuFormEl.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.textContent = "Update Menu Item";
+
+  menuFormEl.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function adminToggleMenuItem(id) {
+  const item = adminGetMenuItemById(id);
+  if (!item) return;
+
+  const formData = new FormData();
+  formData.append("id", item.id);
+  formData.append("category", item.category || "");
+  formData.append("item_name", item.item_name || "");
+  formData.append("description", item.description || "");
+  formData.append("price", item.price || "");
+  formData.append("sort_order", item.sort_order || 0);
+  formData.append("is_active", item.is_active ? "0" : "1");
+
+  const response = await fetch("/api/admin-menu", {
+    method: "PUT",
+    body: formData,
+  });
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    alert(result.error || "Could not update menu item.");
+    return;
+  }
+
+  await adminLoadMenu();
+}
+
+async function adminDeleteMenuItem(id) {
+  if (!confirm("Delete this menu item? This cannot be undone.")) return;
+
+  const formData = new FormData();
+  formData.append("id", id);
+
+  const response = await fetch("/api/admin-menu", {
+    method: "DELETE",
+    body: formData,
+  });
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    alert(result.error || "Could not delete menu item.");
+    return;
+  }
+
+  await adminLoadMenu();
+}
 }

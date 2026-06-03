@@ -85,28 +85,69 @@
       </section>
 
       <section id="section-events" class="hidden">
-  <div class="panel">
-    <div class="section-head">
-      <div>
-        <h2>Events</h2>
-        <p class="muted">Add and manage public event listings.</p>
-      </div>
-      <button class="btn small" id="loadEvents">Load Events</button>
-    </div>
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Events</h2>
+              <p class="muted">Add and manage public event listings.</p>
+            </div>
+            <button class="btn small" id="loadEvents">Load Events</button>
+          </div>
 
-    <form id="eventForm" class="note-form">
-      <input type="text" name="title" placeholder="Event title" required>
-      <input type="date" name="event_date">
-      <input type="text" name="location" placeholder="Location">
-      <textarea name="description" rows="4" placeholder="Event description"></textarea>
-      <button class="btn small" type="submit">Add Event</button>
-    </form>
+          <form id="eventForm" class="note-form">
+            <input type="text" name="title" placeholder="Event title" required>
+            <input type="date" name="event_date">
+            <input type="text" name="location" placeholder="Location">
+            <textarea name="description" rows="4" placeholder="Event description"></textarea>
+            <button class="btn small" type="submit">Add Event</button>
+          </form>
 
-    <div class="quotes-grid" id="eventsList">
-      <div class="placeholder-panel">Load events to begin.</div>
-    </div>
-  </div>
-</section>
+          <div class="quotes-grid" id="eventsList">
+            <div class="placeholder-panel">Load events to begin.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="section-menu" class="hidden">
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Menu</h2>
+              <p class="muted">Add and manage public menu items.</p>
+            </div>
+            <button class="btn small" id="loadMenu">Load Menu</button>
+          </div>
+
+          <form id="menuForm" class="note-form">
+            <input type="text" name="category" placeholder="Category, e.g. Coffee, Cold Drinks, Catering" required>
+            <input type="text" name="item_name" placeholder="Item name" required>
+            <textarea name="description" rows="3" placeholder="Description"></textarea>
+            <input type="text" name="price" placeholder="Price, e.g. $5 or Starting at $150">
+            <input type="number" name="sort_order" placeholder="Sort order" value="0">
+            <button class="btn small" type="submit">Add Menu Item</button>
+          </form>
+
+          <div class="quotes-grid" id="menuList">
+            <div class="placeholder-panel">Load menu items to begin.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="section-gallery" class="hidden">
+        <div class="panel placeholder-panel">
+          <h2>Gallery</h2>
+          <p>Gallery editing will be added later.</p>
+        </div>
+      </section>
+
+      <section id="section-about" class="hidden">
+        <div class="panel placeholder-panel">
+          <h2>About</h2>
+          <p>About section editing will be added later.</p>
+        </div>
+      </section>
+    </main>
+  </section>
 
   <div id="notesModal" class="modal hidden">
     <div class="modal-card">
@@ -125,6 +166,6 @@
     </div>
   </div>
 
-  <script src="/admin/admin.js?v=3"></script>
+  <script src="/admin/admin.js?v=4"></script>
 </body>
 </html>
