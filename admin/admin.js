@@ -271,6 +271,8 @@ document.getElementById("noteForm")?.addEventListener("submit", async (event) =>
   await loadNotes(activeQuoteId);
 });
 
+let editingEventId = null;
+
 async function loadEvents() {
   if (!eventsList) return;
 
@@ -300,9 +302,7 @@ async function loadEvents() {
         <div class="quote-card-top">
           <div>
             <h3>${escapeHtml(event.title)}</h3>
-            <p class="muted">${escapeHtml(
-              event.event_date || "No date listed"
-            )}</p>
+            <p class="muted">${escapeHtml(event.event_date || "No date listed")}</p>
           </div>
 
           <span class="badge">${event.is_active ? "Active" : "Hidden"}</span>
@@ -317,8 +317,97 @@ async function loadEvents() {
             ${escapeHtml(event.description)}
           </p>
         </div>
+
+        <div class="actions">
+          <button class="btn small" onclick="startEditEvent(${event.id}, '${escapeHtml(event.title)}', '${escapeHtml(event.event_date)}', '${escapeHtml(event.location)}', '${escapeHtml(event.description)}', ${event.is_active ? 1 : 0})">
+            Edit
+          </button>
+
+          <button class="btn secondary small" onclick="toggleEvent(${event.id}, '${escapeHtml(event.title)}', '${escapeHtml(event.event_date)}', '${escapeHtml(event.location)}', '${escapeHtml(event.description)}', ${event.is_active ? 0 : 1})">
+            ${event.is_active ? "Hide" : "Show"}
+          </button>
+
+          <button class="btn secondary small" onclick="deleteEvent(${event.id})">
+            Delete
+          </button>
+        </div>
       </article>
     `
     )
     .join("");
+}
+
+function startEditEvent(id, title, eventDate, location, description, isActive) {
+  editingEventId = id;
+
+  eventForm.title.value = title || "";
+  eventForm.event_date.value = eventDate || "";
+  eventForm.location.value = location || "";
+  eventForm.description.value = description || "";
+
+  let activeInput = eventForm.querySelector('[name="is_active"]');
+
+  if (!activeInput) {
+    activeInput = document.createElement("input");
+    activeInput.type = "hidden";
+    activeInput.name = "is_active";
+    eventForm.appendChild(activeInput);
+  }
+
+  activeInput.value = isActive ? "1" : "0";
+
+  const button = eventForm.querySelector('button[type="submit"]');
+  if (button) {
+    button.textContent = "Update Event";
+  }
+
+  eventForm.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function toggleEvent(id, title, eventDate, location, description, isActive) {
+  const formData = new FormData();
+
+  formData.append("id", id);
+  formData.append("title", title || "");
+  formData.append("event_date", eventDate || "");
+  formData.append("location", location || "");
+  formData.append("description", description || "");
+  formData.append("is_active", isActive ? "1" : "0");
+
+  const response = await fetch("/api/admin-events", {
+    method: "PUT",
+    body: formData,
+  });
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    alert(result.error || "Could not update event.");
+    return;
+  }
+
+  await loadEvents();
+}
+
+async function deleteEvent(id) {
+  if (!confirm("Delete this event? This cannot be undone.")) {
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("id", id);
+
+  const response = await fetch("/api/admin-events", {
+    method: "DELETE",
+    body: formData,
+  });
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    alert(result.error || "Could not delete event.");
+    return;
+  }
+
+  await loadEvents();
 }
