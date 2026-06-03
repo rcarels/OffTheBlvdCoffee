@@ -2,8 +2,8 @@ const loginFormEl = document.getElementById("loginForm");
 const loginMessageEl = document.getElementById("loginMessage");
 const loginEl = document.getElementById("login");
 const dashboardEl = document.getElementById("dashboard");
-const quotesDivEl = document.getElementById("quotes");
 
+const quotesDivEl = document.getElementById("quotes");
 const loadQuotesButtonEl = document.getElementById("loadQuotes");
 const refreshQuotesButtonEl = document.getElementById("refreshQuotes");
 
@@ -11,12 +11,18 @@ const loadEventsButtonEl = document.getElementById("loadEvents");
 const eventFormEl = document.getElementById("eventForm");
 const eventsListEl = document.getElementById("eventsList");
 
+const loadMenuButtonEl = document.getElementById("loadMenu");
+const menuFormEl = document.getElementById("menuForm");
+const menuListEl = document.getElementById("menuList");
+
 const noteFormEl = document.getElementById("noteForm");
 const notesListEl = document.getElementById("notesList");
 
 let activeQuoteId = null;
 let editingEventId = null;
+let editingMenuItemId = null;
 let currentEvents = [];
+let currentMenuItems = [];
 
 function escapeHtml(value) {
   return String(value || "")
@@ -26,6 +32,8 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+/* Login */
 
 if (loginFormEl) {
   loginFormEl.addEventListener("submit", async (event) => {
@@ -50,6 +58,8 @@ if (loginFormEl) {
   });
 }
 
+/* Navigation */
+
 document.querySelectorAll(".nav button").forEach((button) => {
   button.addEventListener("click", () => {
     document.querySelectorAll(".nav button").forEach((b) => {
@@ -62,6 +72,7 @@ document.querySelectorAll(".nav button").forEach((button) => {
 
     ["quotes", "events", "menu", "gallery", "about"].forEach((name) => {
       const section = document.getElementById(`section-${name}`);
+
       if (section) {
         section.classList.toggle("hidden", name !== selected);
       }
@@ -69,61 +80,14 @@ document.querySelectorAll(".nav button").forEach((button) => {
   });
 });
 
+/* Quotes */
+
 if (loadQuotesButtonEl) {
   loadQuotesButtonEl.addEventListener("click", adminLoadQuotes);
 }
 
 if (refreshQuotesButtonEl) {
   refreshQuotesButtonEl.addEventListener("click", adminLoadQuotes);
-}
-
-if (loadEventsButtonEl) {
-  loadEventsButtonEl.addEventListener("click", adminLoadEvents);
-}
-
-if (eventFormEl) {
-  eventFormEl.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(eventFormEl);
-    let method = "POST";
-
-    if (editingEventId) {
-      method = "PUT";
-      formData.append("id", editingEventId);
-
-      if (!formData.get("is_active")) {
-        formData.append("is_active", "1");
-      }
-    }
-
-    const response = await fetch("/api/admin-events", {
-      method,
-      body: formData,
-    });
-
-    const result = await response.json();
-
-    if (!result.ok) {
-      alert(result.error || "Could not save event.");
-      return;
-    }
-
-    editingEventId = null;
-    eventFormEl.reset();
-
-    const activeInput = eventFormEl.querySelector('[name="is_active"]');
-    if (activeInput) {
-      activeInput.remove();
-    }
-
-    const submitButton = eventFormEl.querySelector('button[type="submit"]');
-    if (submitButton) {
-      submitButton.textContent = "Add Event";
-    }
-
-    await adminLoadEvents();
-  });
 }
 
 function updateStats(quotes) {
@@ -188,9 +152,7 @@ async function adminLoadQuotes() {
         </div>
 
         <div class="actions">
-          <button class="btn small" onclick="adminOpenNotes(${q.id}, '${escapeHtml(
-        q.name
-      )}')">
+          <button class="btn small" onclick="adminOpenNotes(${q.id}, '${escapeHtml(q.name)}')">
             Notes
           </button>
 
@@ -239,6 +201,8 @@ async function adminUpdateStatus(id, status) {
 
   adminLoadQuotes();
 }
+
+/* Notes */
 
 async function adminOpenNotes(id, name) {
   activeQuoteId = id;
@@ -308,6 +272,53 @@ if (noteFormEl) {
     noteFormEl.reset();
     document.getElementById("noteQuoteId").value = activeQuoteId;
     await adminLoadNotes(activeQuoteId);
+  });
+}
+
+/* Events */
+
+if (loadEventsButtonEl) {
+  loadEventsButtonEl.addEventListener("click", adminLoadEvents);
+}
+
+if (eventFormEl) {
+  eventFormEl.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(eventFormEl);
+    let method = "POST";
+
+    if (editingEventId) {
+      method = "PUT";
+      formData.append("id", editingEventId);
+
+      if (!formData.get("is_active")) {
+        formData.append("is_active", "1");
+      }
+    }
+
+    const response = await fetch("/api/admin-events", {
+      method,
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      alert(result.error || "Could not save event.");
+      return;
+    }
+
+    editingEventId = null;
+    eventFormEl.reset();
+
+    const activeInput = eventFormEl.querySelector('[name="is_active"]');
+    if (activeInput) activeInput.remove();
+
+    const submitButton = eventFormEl.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.textContent = "Add Event";
+
+    await adminLoadEvents();
   });
 }
 
@@ -404,9 +415,7 @@ function adminStartEditEvent(id) {
   activeInput.value = event.is_active ? "1" : "0";
 
   const submitButton = eventFormEl.querySelector('button[type="submit"]');
-  if (submitButton) {
-    submitButton.textContent = "Update Event";
-  }
+  if (submitButton) submitButton.textContent = "Update Event";
 
   eventFormEl.scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -416,7 +425,6 @@ async function adminToggleEvent(id) {
   if (!event) return;
 
   const formData = new FormData();
-
   formData.append("id", event.id);
   formData.append("title", event.title || "");
   formData.append("event_date", event.event_date || "");
@@ -458,12 +466,9 @@ async function adminDeleteEvent(id) {
   }
 
   await adminLoadEvents();
-  const loadMenuButtonEl = document.getElementById("loadMenu");
-const menuFormEl = document.getElementById("menuForm");
-const menuListEl = document.getElementById("menuList");
+}
 
-let editingMenuItemId = null;
-let currentMenuItems = [];
+/* Menu */
 
 if (loadMenuButtonEl) {
   loadMenuButtonEl.addEventListener("click", adminLoadMenu);
@@ -513,54 +518,76 @@ if (menuFormEl) {
 async function adminLoadMenu() {
   if (!menuListEl) return;
 
-  menuListEl.innerHTML = '<div class="placeholder-panel">Loading menu items...</div>';
+  menuListEl.innerHTML =
+    '<div class="placeholder-panel">Loading menu items...</div>';
 
   const response = await fetch("/api/admin-menu");
   const result = await response.json();
 
   if (!result.ok) {
-    menuListEl.innerHTML = `<div class="placeholder-panel">${escapeHtml(result.error || "Could not load menu.")}</div>`;
+    menuListEl.innerHTML = `<div class="placeholder-panel">${escapeHtml(
+      result.error || "Could not load menu."
+    )}</div>`;
     return;
   }
 
   currentMenuItems = result.menu_items || [];
 
   if (currentMenuItems.length === 0) {
-    menuListEl.innerHTML = '<div class="placeholder-panel">No menu items yet.</div>';
+    menuListEl.innerHTML =
+      '<div class="placeholder-panel">No menu items yet.</div>';
     return;
   }
 
-  menuListEl.innerHTML = currentMenuItems.map(item => `
-    <article class="quote-card">
-      <div class="quote-card-top">
-        <div>
-          <h3>${escapeHtml(item.item_name)}</h3>
-          <p class="muted">${escapeHtml(item.category)} ${item.price ? "• " + escapeHtml(item.price) : ""}</p>
+  menuListEl.innerHTML = currentMenuItems
+    .map(
+      (item) => `
+      <article class="quote-card">
+        <div class="quote-card-top">
+          <div>
+            <h3>${escapeHtml(item.item_name)}</h3>
+            <p class="muted">
+              ${escapeHtml(item.category)}
+              ${item.price ? "• " + escapeHtml(item.price) : ""}
+            </p>
+          </div>
+
+          <span class="badge">${item.is_active ? "Active" : "Hidden"}</span>
         </div>
-        <span class="badge">${item.is_active ? "Active" : "Hidden"}</span>
-      </div>
 
-      <div class="quote-details">
-        <p><strong>Category:</strong> ${escapeHtml(item.category)}</p>
-        <p><strong>Price:</strong> ${escapeHtml(item.price)}</p>
-        <p><strong>Sort Order:</strong> ${escapeHtml(item.sort_order)}</p>
-        <p><strong>Created:</strong> ${escapeHtml(item.created_at)}</p>
-        <p class="full"><strong>Description:</strong><br>${escapeHtml(item.description)}</p>
-      </div>
+        <div class="quote-details">
+          <p><strong>Category:</strong> ${escapeHtml(item.category)}</p>
+          <p><strong>Price:</strong> ${escapeHtml(item.price)}</p>
+          <p><strong>Sort Order:</strong> ${escapeHtml(item.sort_order)}</p>
+          <p><strong>Created:</strong> ${escapeHtml(item.created_at)}</p>
 
-      <div class="actions">
-        <button class="btn small" onclick="adminStartEditMenuItem(${item.id})">Edit</button>
-        <button class="btn secondary small" onclick="adminToggleMenuItem(${item.id})">
-          ${item.is_active ? "Hide" : "Show"}
-        </button>
-        <button class="btn secondary small" onclick="adminDeleteMenuItem(${item.id})">Delete</button>
-      </div>
-    </article>
-  `).join("");
+          <p class="full">
+            <strong>Description:</strong><br>
+            ${escapeHtml(item.description)}
+          </p>
+        </div>
+
+        <div class="actions">
+          <button class="btn small" onclick="adminStartEditMenuItem(${item.id})">
+            Edit
+          </button>
+
+          <button class="btn secondary small" onclick="adminToggleMenuItem(${item.id})">
+            ${item.is_active ? "Hide" : "Show"}
+          </button>
+
+          <button class="btn secondary small" onclick="adminDeleteMenuItem(${item.id})">
+            Delete
+          </button>
+        </div>
+      </article>
+    `
+    )
+    .join("");
 }
 
 function adminGetMenuItemById(id) {
-  return currentMenuItems.find(item => Number(item.id) === Number(id));
+  return currentMenuItems.find((item) => Number(item.id) === Number(id));
 }
 
 function adminStartEditMenuItem(id) {
@@ -639,5 +666,4 @@ async function adminDeleteMenuItem(id) {
   }
 
   await adminLoadMenu();
-}
 }
