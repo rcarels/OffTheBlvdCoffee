@@ -47,10 +47,12 @@ document.querySelectorAll(".nav button").forEach(button => {
     const selected = button.dataset.section;
 
     ["quotes","events","menu","gallery","about"].forEach(name => {
-      document
-        .getElementById(`section-${name}`)
-        .classList.toggle("hidden", name !== selected);
-    });
+  const section = document.getElementById(`section-${name}`);
+
+  if (section) {
+    section.classList.toggle("hidden", name !== selected);
+  }
+});
   });
 });
 
