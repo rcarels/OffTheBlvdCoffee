@@ -274,4 +274,68 @@ document
       activeQuoteId;
 
     await loadNotes(activeQuoteId);
+
+    const loadEventsButton = document.getElementById("loadEvents");
+const eventForm = document.getElementById("eventForm");
+const eventsList = document.getElementById("eventsList");
+
+if (loadEventsButton) {
+  loadEventsButton.addEventListener("click", loadEvents);
+}
+
+if (eventForm) {
+  eventForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const response = await fetch("/api/admin-events", {
+      method: "POST",
+      body: new FormData(eventForm),
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      alert(result.error || "Could not add event.");
+      return;
+    }
+
+    eventForm.reset();
+    await loadEvents();
+  });
+}
+
+async function loadEvents() {
+  eventsList.innerHTML = '<div class="placeholder-panel">Loading events...</div>';
+
+  const response = await fetch("/api/admin-events");
+  const result = await response.json();
+
+  if (!result.ok) {
+    eventsList.innerHTML = `<div class="placeholder-panel">${escapeHtml(result.error || "Could not load events.")}</div>`;
+    return;
+  }
+
+  if (!result.events || result.events.length === 0) {
+    eventsList.innerHTML = '<div class="placeholder-panel">No events yet.</div>';
+    return;
+  }
+
+  eventsList.innerHTML = result.events.map(event => `
+    <article class="quote-card">
+      <div class="quote-card-top">
+        <div>
+          <h3>${escapeHtml(event.title)}</h3>
+          <p class="muted">${escapeHtml(event.event_date || "No date listed")}</p>
+        </div>
+        <span class="badge">${event.is_active ? "Active" : "Hidden"}</span>
+      </div>
+
+      <div class="quote-details">
+        <p><strong>Location:</strong> ${escapeHtml(event.location)}</p>
+        <p><strong>Created:</strong> ${escapeHtml(event.created_at)}</p>
+        <p class="full"><strong>Description:</strong><br>${escapeHtml(event.description)}</p>
+      </div>
+    </article>
+  `).join("");
+}
   });

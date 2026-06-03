@@ -85,34 +85,28 @@
       </section>
 
       <section id="section-events" class="hidden">
-        <div class="panel placeholder-panel">
-          <h2>Events</h2>
-          <p>Event editing will be added next.</p>
-        </div>
-      </section>
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <h2>Events</h2>
+        <p class="muted">Add and manage public event listings.</p>
+      </div>
+      <button class="btn small" id="loadEvents">Load Events</button>
+    </div>
 
-      <section id="section-menu" class="hidden">
-        <div class="panel placeholder-panel">
-          <h2>Menu</h2>
-          <p>Menu editing will be added after events.</p>
-        </div>
-      </section>
+    <form id="eventForm" class="note-form">
+      <input type="text" name="title" placeholder="Event title" required>
+      <input type="date" name="event_date">
+      <input type="text" name="location" placeholder="Location">
+      <textarea name="description" rows="4" placeholder="Event description"></textarea>
+      <button class="btn small" type="submit">Add Event</button>
+    </form>
 
-      <section id="section-gallery" class="hidden">
-        <div class="panel placeholder-panel">
-          <h2>Gallery</h2>
-          <p>Gallery editing will be added later.</p>
-        </div>
-      </section>
-
-      <section id="section-about" class="hidden">
-        <div class="panel placeholder-panel">
-          <h2>About</h2>
-          <p>About section editing will be added later.</p>
-        </div>
-      </section>
-    </main>
-  </section>
+    <div class="quotes-grid" id="eventsList">
+      <div class="placeholder-panel">Load events to begin.</div>
+    </div>
+  </div>
+</section>
 
   <div id="notesModal" class="modal hidden">
     <div class="modal-card">
