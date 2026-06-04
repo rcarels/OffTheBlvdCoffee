@@ -19,6 +19,10 @@ const loadGalleryButtonEl = document.getElementById("loadGallery");
 const galleryFormEl = document.getElementById("galleryForm");
 const galleryListEl = document.getElementById("galleryList");
 
+const loadReviewsButtonEl = document.getElementById("loadReviews");
+const reviewFormEl = document.getElementById("reviewForm");
+const reviewsListEl = document.getElementById("reviewsList");
+
 const loadAboutButtonEl = document.getElementById("loadAbout");
 const aboutFormEl = document.getElementById("aboutForm");
 const aboutStatusEl = document.getElementById("aboutStatus");
@@ -26,6 +30,8 @@ const aboutStatusEl = document.getElementById("aboutStatus");
 const noteFormEl = document.getElementById("noteForm");
 const notesListEl = document.getElementById("notesList");
 
+let editingReviewId = null;
+let currentReviews = [];
 let activeQuoteId = null;
 let editingEventId = null;
 let editingMenuItemId = null;
@@ -80,7 +86,7 @@ document.querySelectorAll(".nav button").forEach((button) => {
 
     const selected = button.dataset.section;
 
-    ["quotes", "events", "menu", "gallery", "about"].forEach((name) => {
+    ["quotes", "events", "menu", "gallery", "reviews", "about"].forEach((name) => {
       const section = document.getElementById(`section-${name}`);
 
       if (section) {

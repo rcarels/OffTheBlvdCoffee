@@ -39,13 +39,14 @@
         </div>
       </div>
 
-      <nav class="nav">
-        <button class="active" data-section="quotes">Quote Requests</button>
-        <button data-section="events">Events</button>
-        <button data-section="menu">Menu</button>
-        <button data-section="gallery">Gallery</button>
-        <button data-section="about">About</button>
-      </nav>
+      <<nav class="nav">
+  <button class="active" data-section="quotes">Quote Requests</button>
+  <button data-section="events">Events</button>
+  <button data-section="menu">Menu</button>
+  <button data-section="gallery">Gallery</button>
+  <button data-section="reviews">Reviews</button>
+  <button data-section="about">About</button>
+</nav>
 
       <div class="sidebar-note">
         <strong>Website Manager</strong>
@@ -172,10 +173,18 @@
           </div>
 
           <form id="galleryForm" class="note-form">
-            <label>Photo Link</label>
-            <input type="text" name="image_url" placeholder="Temporary: paste a web image link here" required>
-            <p class="field-help">Temporary field. Soon this will become “Choose Photo From Computer” and photos will be stored in Cloudflare.</p>
+            <label>Paste Image Address</label>
 
+<input
+  type="text"
+  name="image_url"
+  placeholder="Example: https://example.com/photo.jpg"
+  required
+>
+
+<p class="field-help">
+  Temporary step. Paste the address of an image that already exists online. Photos stored on your computer will not work here yet. A future update will allow “Choose Photo From Computer”.
+</p>
             <label>Photo Description</label>
             <input type="text" name="alt_text" placeholder="Example: Iced latte served from the mobile coffee cart">
             <p class="field-help">Describe the photo for accessibility and search engines.</p>
@@ -202,6 +211,49 @@
         </div>
       </section>
 
+      <section id="section-reviews" class="hidden">
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <h2>Reviews</h2>
+        <p class="muted">Add customer testimonials that can appear on the website.</p>
+      </div>
+      <button class="btn small" id="loadReviews">Load Reviews</button>
+    </div>
+
+    <form id="reviewForm" class="note-form">
+      <label>Customer Name</label>
+      <input type="text" name="customer_name" placeholder="Example: Sarah M." required>
+      <p class="field-help">This is the name customers will see with the review.</p>
+
+      <label>Review</label>
+      <textarea name="review_text" rows="5" placeholder="Paste or type the customer review here." required></textarea>
+      <p class="field-help">This is the testimonial that can appear on the public website.</p>
+
+      <label>Star Rating</label>
+      <input type="number" name="rating" value="5" min="1" max="5">
+      <p class="field-help">Use 5 for a five-star review.</p>
+
+      <label>Type of Event</label>
+      <input type="text" name="event_type" placeholder="Example: Wedding, Market, Corporate Event">
+
+      <label>Display Position</label>
+      <input type="number" name="sort_order" value="0">
+      <p class="field-help">Lower numbers appear first. Use 0 if you are not sure.</p>
+
+      <label class="checkbox-row">
+        <input type="checkbox" name="is_featured" value="1" checked>
+        Feature this review
+      </label>
+
+      <button class="btn small" type="submit">Add Review</button>
+    </form>
+
+    <div class="quotes-grid" id="reviewsList">
+      <div class="placeholder-panel">Load reviews to begin.</div>
+    </div>
+  </div>
+</section>
       <section id="section-about" class="hidden">
         <div class="panel">
           <div class="section-head">
@@ -258,6 +310,6 @@
     </div>
   </div>
 
-  <script src="/admin/admin.js?v=10"></script>
+  <script src="/admin/admin.js?v=11"></script>
 </body>
 </html>
