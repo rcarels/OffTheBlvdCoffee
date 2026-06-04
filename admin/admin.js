@@ -666,4 +666,60 @@ async function adminDeleteMenuItem(id) {
   }
 
   await adminLoadMenu();
+
+  /* About */
+
+const loadAboutButtonEl = document.getElementById("loadAbout");
+const aboutFormEl = document.getElementById("aboutForm");
+const aboutStatusEl = document.getElementById("aboutStatus");
+
+if (loadAboutButtonEl) {
+  loadAboutButtonEl.addEventListener("click", adminLoadAbout);
+}
+
+if (aboutFormEl) {
+  aboutFormEl.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const response = await fetch("/api/admin-about", {
+      method: "POST",
+      body: new FormData(aboutFormEl),
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      aboutStatusEl.textContent = result.error || "Could not save About content.";
+      return;
+    }
+
+    aboutStatusEl.textContent = "About content saved successfully.";
+  });
+}
+
+async function adminLoadAbout() {
+  if (!aboutFormEl || !aboutStatusEl) return;
+
+  aboutStatusEl.textContent = "Loading About content...";
+
+  const response = await fetch("/api/admin-about");
+  const result = await response.json();
+
+  if (!result.ok) {
+    aboutStatusEl.textContent = result.error || "Could not load About content.";
+    return;
+  }
+
+  if (!result.about) {
+    aboutStatusEl.textContent = "No About content found.";
+    return;
+  }
+
+  aboutFormEl.heading.value = result.about.heading || "";
+  aboutFormEl.main_paragraph.value = result.about.main_paragraph || "";
+  aboutFormEl.story_paragraph.value = result.about.story_paragraph || "";
+  aboutFormEl.service_area_text.value = result.about.service_area_text || "";
+
+  aboutStatusEl.textContent = "About content loaded.";
+}
 }

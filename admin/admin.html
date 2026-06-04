@@ -141,13 +141,26 @@
       </section>
 
       <section id="section-about" class="hidden">
-        <div class="panel placeholder-panel">
-          <h2>About</h2>
-          <p>About section editing will be added later.</p>
-        </div>
-      </section>
-    </main>
-  </section>
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <h2>About</h2>
+        <p class="muted">Edit the public About story and service area text.</p>
+      </div>
+      <button class="btn small" id="loadAbout">Load About</button>
+    </div>
+
+    <form id="aboutForm" class="note-form">
+      <input type="text" name="heading" placeholder="Heading" required>
+      <textarea name="main_paragraph" rows="6" placeholder="Main paragraph"></textarea>
+      <textarea name="story_paragraph" rows="6" placeholder="Story paragraph"></textarea>
+      <textarea name="service_area_text" rows="3" placeholder="Service area text"></textarea>
+      <button class="btn small" type="submit">Save About</button>
+    </form>
+
+    <div id="aboutStatus" class="placeholder-panel">Load About content to begin.</div>
+  </div>
+</section>
 
   <div id="notesModal" class="modal hidden">
     <div class="modal-card">
@@ -166,6 +179,6 @@
     </div>
   </div>
 
-  <script src="/admin/admin.js?v=6"></script>
+  <script src="/admin/admin.js?v=7"></script>
 </body>
 </html>
