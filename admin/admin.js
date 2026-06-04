@@ -15,6 +15,10 @@ const loadMenuButtonEl = document.getElementById("loadMenu");
 const menuFormEl = document.getElementById("menuForm");
 const menuListEl = document.getElementById("menuList");
 
+const loadGalleryButtonEl = document.getElementById("loadGallery");
+const galleryFormEl = document.getElementById("galleryForm");
+const galleryListEl = document.getElementById("galleryList");
+
 const loadAboutButtonEl = document.getElementById("loadAbout");
 const aboutFormEl = document.getElementById("aboutForm");
 const aboutStatusEl = document.getElementById("aboutStatus");
@@ -25,8 +29,10 @@ const notesListEl = document.getElementById("notesList");
 let activeQuoteId = null;
 let editingEventId = null;
 let editingMenuItemId = null;
+let editingGalleryImageId = null;
 let currentEvents = [];
 let currentMenuItems = [];
+let currentGalleryImages = [];
 
 function escapeHtml(value) {
   return String(value || "")
@@ -670,6 +676,214 @@ async function adminDeleteMenuItem(id) {
   }
 
   await adminLoadMenu();
+}
+
+/* Gallery */
+
+if (loadGalleryButtonEl) {
+  loadGalleryButtonEl.addEventListener("click", adminLoadGallery);
+}
+
+if (galleryFormEl) {
+  galleryFormEl.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(galleryFormEl);
+    let method = "POST";
+
+    if (editingGalleryImageId) {
+      method = "PUT";
+      formData.append("id", editingGalleryImageId);
+
+      if (!formData.get("is_active")) {
+        formData.append("is_active", "1");
+      }
+    }
+
+    if (!formData.get("is_featured")) {
+      formData.append("is_featured", "0");
+    }
+
+    const response = await fetch("/api/admin-gallery", {
+      method,
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      alert(result.error || "Could not save gallery image.");
+      return;
+    }
+
+    editingGalleryImageId = null;
+    galleryFormEl.reset();
+
+    const activeInput = galleryFormEl.querySelector('[name="is_active"]');
+    if (activeInput) activeInput.remove();
+
+    const submitButton = galleryFormEl.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.textContent = "Add Image";
+
+    await adminLoadGallery();
+  });
+}
+
+async function adminLoadGallery() {
+  if (!galleryListEl) return;
+
+  galleryListEl.innerHTML =
+    '<div class="placeholder-panel">Loading gallery images...</div>';
+
+  const response = await fetch("/api/admin-gallery");
+  const result = await response.json();
+
+  if (!result.ok) {
+    galleryListEl.innerHTML = `<div class="placeholder-panel">${escapeHtml(
+      result.error || "Could not load gallery."
+    )}</div>`;
+    return;
+  }
+
+  currentGalleryImages = result.images || [];
+
+  if (currentGalleryImages.length === 0) {
+    galleryListEl.innerHTML =
+      '<div class="placeholder-panel">No gallery images yet.</div>';
+    return;
+  }
+
+  galleryListEl.innerHTML = currentGalleryImages
+    .map(
+      (image) => `
+      <article class="quote-card">
+        <div class="quote-card-top">
+          <div>
+            <h3>${escapeHtml(image.caption || "Gallery Image")}</h3>
+            <p class="muted">${escapeHtml(image.alt_text || "No alt text")}</p>
+          </div>
+
+          <span class="badge">${image.is_active ? "Active" : "Hidden"}</span>
+        </div>
+
+        <div class="quote-details">
+          <p><strong>Image URL:</strong> ${escapeHtml(image.image_url)}</p>
+          <p><strong>Sort Order:</strong> ${escapeHtml(image.sort_order)}</p>
+          <p><strong>Featured:</strong> ${image.is_featured ? "Yes" : "No"}</p>
+          <p><strong>Created:</strong> ${escapeHtml(image.created_at)}</p>
+        </div>
+
+        <div style="margin:16px 0;">
+          <img
+            src="${escapeHtml(image.image_url)}"
+            alt="${escapeHtml(image.alt_text)}"
+            style="max-width:260px;border-radius:16px;border:1px solid var(--line);"
+          >
+        </div>
+
+        <div class="actions">
+          <button class="btn small" onclick="adminStartEditGalleryImage(${image.id})">
+            Edit
+          </button>
+
+          <button class="btn secondary small" onclick="adminToggleGalleryImage(${image.id})">
+            ${image.is_active ? "Hide" : "Show"}
+          </button>
+
+          <button class="btn secondary small" onclick="adminDeleteGalleryImage(${image.id})">
+            Delete
+          </button>
+        </div>
+      </article>
+    `
+    )
+    .join("");
+}
+
+function adminGetGalleryImageById(id) {
+  return currentGalleryImages.find((image) => Number(image.id) === Number(id));
+}
+
+function adminStartEditGalleryImage(id) {
+  const image = adminGetGalleryImageById(id);
+  if (!image || !galleryFormEl) return;
+
+  editingGalleryImageId = image.id;
+
+  galleryFormEl.image_url.value = image.image_url || "";
+  galleryFormEl.alt_text.value = image.alt_text || "";
+  galleryFormEl.caption.value = image.caption || "";
+  galleryFormEl.sort_order.value = image.sort_order || 0;
+
+  const featuredInput = galleryFormEl.querySelector('[name="is_featured"]');
+  if (featuredInput) {
+    featuredInput.checked = !!image.is_featured;
+  }
+
+  let activeInput = galleryFormEl.querySelector('[name="is_active"]');
+
+  if (!activeInput) {
+    activeInput = document.createElement("input");
+    activeInput.type = "hidden";
+    activeInput.name = "is_active";
+    galleryFormEl.appendChild(activeInput);
+  }
+
+  activeInput.value = image.is_active ? "1" : "0";
+
+  const submitButton = galleryFormEl.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.textContent = "Update Image";
+
+  galleryFormEl.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function adminToggleGalleryImage(id) {
+  const image = adminGetGalleryImageById(id);
+  if (!image) return;
+
+  const formData = new FormData();
+  formData.append("id", image.id);
+  formData.append("image_url", image.image_url || "");
+  formData.append("alt_text", image.alt_text || "");
+  formData.append("caption", image.caption || "");
+  formData.append("sort_order", image.sort_order || 0);
+  formData.append("is_featured", image.is_featured ? "1" : "0");
+  formData.append("is_active", image.is_active ? "0" : "1");
+
+  const response = await fetch("/api/admin-gallery", {
+    method: "PUT",
+    body: formData,
+  });
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    alert(result.error || "Could not update gallery image.");
+    return;
+  }
+
+  await adminLoadGallery();
+}
+
+async function adminDeleteGalleryImage(id) {
+  if (!confirm("Delete this gallery image? This cannot be undone.")) return;
+
+  const formData = new FormData();
+  formData.append("id", id);
+
+  const response = await fetch("/api/admin-gallery", {
+    method: "DELETE",
+    body: formData,
+  });
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    alert(result.error || "Could not delete gallery image.");
+    return;
+  }
+
+  await adminLoadGallery();
 }
 
 /* About */

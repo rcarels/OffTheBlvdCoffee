@@ -134,11 +134,59 @@
       </section>
 
       <section id="section-gallery" class="hidden">
-        <div class="panel placeholder-panel">
-          <h2>Gallery</h2>
-          <p>Gallery editing will be added later.</p>
-        </div>
-      </section>
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <h2>Gallery</h2>
+        <p class="muted">Manage gallery images displayed on the website.</p>
+      </div>
+      <button class="btn small" id="loadGallery">Load Gallery</button>
+    </div>
+
+    <form id="galleryForm" class="note-form">
+      <input
+        type="text"
+        name="image_url"
+        placeholder="Image URL"
+        required
+      >
+
+      <input
+        type="text"
+        name="alt_text"
+        placeholder="Alt text"
+      >
+
+      <textarea
+        name="caption"
+        rows="3"
+        placeholder="Caption"
+      ></textarea>
+
+      <input
+        type="number"
+        name="sort_order"
+        value="0"
+        placeholder="Sort order"
+      >
+
+      <label>
+        <input type="checkbox" name="is_featured" value="1">
+        Featured Image
+      </label>
+
+      <button class="btn small" type="submit">
+        Add Image
+      </button>
+    </form>
+
+    <div id="galleryList" class="quotes-grid">
+      <div class="placeholder-panel">
+        Load gallery images to begin.
+      </div>
+    </div>
+  </div>
+</section>
 
       <section id="section-about" class="hidden">
   <div class="panel">
@@ -179,6 +227,6 @@
     </div>
   </div>
 
-  <script src="/admin/admin.js?v=8"></script>
+  <script src="/admin/admin.js?v=9"></script>
 </body>
 </html>
