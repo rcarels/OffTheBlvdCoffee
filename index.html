@@ -349,10 +349,45 @@ function renderMenu(data){
 function renderGallery(data){
   const galleryGrid = document.getElementById('galleryGrid');
   if(!galleryGrid) return;
-  if(!data || !Array.isArray(data.images)){
+
+  const images = data && Array.isArray(data.images) ? data.images : [];
+
+  if(images.length === 0){
     galleryGrid.innerHTML = hardcodedFallback.galleryHtml ?? galleryGrid.innerHTML;
     return;
   }
+
+  galleryGrid.innerHTML = '';
+
+  images.slice(0, 5).forEach((image, index) => {
+    const imageUrl = safeText(image.image_url);
+    const altText = safeText(image.alt_text) || 'Off The Blvd Coffee gallery photo';
+
+    if(!imageUrl) return;
+
+    const img = document.createElement('img');
+
+    if(index === 0){
+      img.className = 'big';
+    }
+
+    img.src = imageUrl;
+    img.alt = altText;
+
+    galleryGrid.appendChild(img);
+  });
+
+  while(galleryGrid.children.length < 5){
+    const placeholder = document.createElement('div');
+    placeholder.className = 'placeholder';
+    placeholder.innerHTML = '<div><b>Photo Placeholder</b>More photos coming soon</div>';
+    galleryGrid.appendChild(placeholder);
+  }
+
+  if(galleryGrid.children.length === 0){
+    galleryGrid.innerHTML = hardcodedFallback.galleryHtml ?? galleryGrid.innerHTML;
+  }
+}
 
   const images = data.images.filter(Boolean);
 
@@ -457,7 +492,7 @@ async function initFromCMS(){
 
   // Gallery
   try{
-    const galleryData = await fetchJSON('content/gallery.json');
+    const galleryData = await fetchJSON('/api/gallery');
     if(galleryData){
       renderGallery(galleryData);
       loadedAny = true;
