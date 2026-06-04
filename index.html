@@ -411,11 +411,18 @@ async function initFromCMS(){
 
   // Events (required for search/filter)
   try{
-    const eventsData = await fetchJSON('content/events.json');
-    if(eventsData && Array.isArray(eventsData.events)){
-      events = eventsData.events;
-      loadedAny = true;
-    }
+    const eventsData = await fetchJSON('/api/events');
+   if(eventsData && Array.isArray(eventsData.events)){
+  events = eventsData.events.map(event => ({
+    title: event.title || '',
+    date: event.event_date || '',
+    time: 'TBD',
+    area: event.location || '',
+    type: 'Public Event',
+    details: event.description || ''
+  }));
+  loadedAny = true;
+}
   }catch(e){
     // keep fallback
   }
