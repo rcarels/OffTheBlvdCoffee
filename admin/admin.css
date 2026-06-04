@@ -392,4 +392,25 @@ select:focus{
   .main{
     padding:22px;
   }
+  .field-help{
+  margin:6px 0 14px;
+  font-size:.9rem;
+  color:var(--muted);
+  line-height:1.45;
+}
+
+.note-form label{
+  font-weight:900;
+  color:var(--ink);
+}
+
+.checkbox-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.checkbox-row input{
+  width:auto;
+}
 }

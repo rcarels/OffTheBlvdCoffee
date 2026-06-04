@@ -17,10 +17,11 @@
     <div class="login-card">
       <img src="/assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee">
       <h1>Admin Login</h1>
-      <p class="muted">Manage quote requests and site content for Off The Blvd Coffee.</p>
+      <p class="muted">Manage quote requests, events, menu items, photos, and website content.</p>
 
       <form id="loginForm">
-        <input type="password" name="password" placeholder="Admin password" required>
+        <label>Admin Password</label>
+        <input type="password" name="password" placeholder="Enter the admin password" required>
         <button class="btn" type="submit">Login</button>
       </form>
 
@@ -47,8 +48,8 @@
       </nav>
 
       <div class="sidebar-note">
-        <strong>Off The Blvd Admin</strong>
-        <p>Manage event inquiries, site content, and quote requests.</p>
+        <strong>Website Manager</strong>
+        <p>Use this dashboard to keep the website updated without editing code.</p>
       </div>
     </aside>
 
@@ -58,7 +59,7 @@
           <p class="eyebrow">Dashboard</p>
           <h1>Welcome Back</h1>
         </div>
-        <button class="btn secondary small" id="refreshQuotes">Refresh</button>
+        <button class="btn secondary small" id="refreshQuotes">Refresh Quotes</button>
       </div>
 
       <section id="section-quotes">
@@ -89,16 +90,41 @@
           <div class="section-head">
             <div>
               <h2>Events</h2>
-              <p class="muted">Add and manage public event listings.</p>
+              <p class="muted">Add public events where customers can find Off The Blvd Coffee.</p>
             </div>
             <button class="btn small" id="loadEvents">Load Events</button>
           </div>
 
           <form id="eventForm" class="note-form">
-            <input type="text" name="title" placeholder="Event title" required>
+            <label>Event Name</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Example: Holiday Market, Fall Festival"
+              required
+            >
+            <p class="field-help">What is the event called?</p>
+
+            <label>Event Date</label>
             <input type="date" name="event_date">
-            <input type="text" name="location" placeholder="Location">
-            <textarea name="description" rows="4" placeholder="Event description"></textarea>
+            <p class="field-help">When will this event take place?</p>
+
+            <label>Event Location</label>
+            <input
+              type="text"
+              name="location"
+              placeholder="Example: Downtown Whittier, LA Convention Center"
+            >
+            <p class="field-help">Where will customers find you?</p>
+
+            <label>What Should Customers Know?</label>
+            <textarea
+              name="description"
+              rows="4"
+              placeholder="Describe the event, drinks available, parking, special promotions, or anything customers should know."
+            ></textarea>
+            <p class="field-help">This text can appear on the public website.</p>
+
             <button class="btn small" type="submit">Add Event</button>
           </form>
 
@@ -107,32 +133,7 @@
           </div>
         </div>
       </section>
-
-      <section id="section-menu" class="hidden">
-        <div class="panel">
-          <div class="section-head">
-            <div>
-              <h2>Menu</h2>
-              <p class="muted">Add and manage public menu items.</p>
-            </div>
-            <button class="btn small" id="loadMenu">Load Menu</button>
-          </div>
-
-          <form id="menuForm" class="note-form">
-            <input type="text" name="category" placeholder="Category, e.g. Coffee, Cold Drinks, Catering" required>
-            <input type="text" name="item_name" placeholder="Item name" required>
-            <textarea name="description" rows="3" placeholder="Description"></textarea>
-            <input type="text" name="price" placeholder="Price, e.g. $5 or Starting at $150">
-            <input type="number" name="sort_order" placeholder="Sort order" value="0">
-            <button class="btn small" type="submit">Add Menu Item</button>
-          </form>
-
-          <div class="quotes-grid" id="menuList">
-            <div class="placeholder-panel">Load menu items to begin.</div>
-          </div>
-        </div>
-      </section>
-
+      
       <section id="section-gallery" class="hidden">
   <div class="panel">
     <div class="section-head">
