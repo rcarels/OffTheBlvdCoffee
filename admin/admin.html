@@ -97,12 +97,7 @@
 
           <form id="eventForm" class="note-form">
             <label>Event Name</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Example: Holiday Market, Fall Festival"
-              required
-            >
+            <input type="text" name="title" placeholder="Example: Holiday Market, Fall Festival" required>
             <p class="field-help">What is the event called?</p>
 
             <label>Event Date</label>
@@ -110,19 +105,11 @@
             <p class="field-help">When will this event take place?</p>
 
             <label>Event Location</label>
-            <input
-              type="text"
-              name="location"
-              placeholder="Example: Downtown Whittier, LA Convention Center"
-            >
+            <input type="text" name="location" placeholder="Example: Downtown Whittier, LA Convention Center">
             <p class="field-help">Where will customers find you?</p>
 
             <label>What Should Customers Know?</label>
-            <textarea
-              name="description"
-              rows="4"
-              placeholder="Describe the event, drinks available, parking, special promotions, or anything customers should know."
-            ></textarea>
+            <textarea name="description" rows="4" placeholder="Describe the event, drinks available, parking, special promotions, or anything customers should know."></textarea>
             <p class="field-help">This text can appear on the public website.</p>
 
             <button class="btn small" type="submit">Add Event</button>
@@ -133,83 +120,123 @@
           </div>
         </div>
       </section>
-      
+
+      <section id="section-menu" class="hidden">
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Menu</h2>
+              <p class="muted">Add drinks, catering packages, and menu items customers will see on the website.</p>
+            </div>
+            <button class="btn small" id="loadMenu">Load Menu</button>
+          </div>
+
+          <form id="menuForm" class="note-form">
+            <label>Menu Section</label>
+            <input type="text" name="category" placeholder="Example: Hot Coffee, Cold Drinks, Catering Packages" required>
+            <p class="field-help">Group this item under the section where customers should see it.</p>
+
+            <label>Drink or Item Name</label>
+            <input type="text" name="item_name" placeholder="Example: Vanilla Latte, Cold Brew, Espresso Cart Package" required>
+            <p class="field-help">This is the name customers will see.</p>
+
+            <label>Description Customers Will See</label>
+            <textarea name="description" rows="3" placeholder="Describe the drink, flavor, package, or what is included."></textarea>
+            <p class="field-help">Keep it short, clear, and customer-friendly.</p>
+
+            <label>Price Displayed on Website</label>
+            <input type="text" name="price" placeholder="Example: $6, Market Price, Starting at $150">
+            <p class="field-help">This can be a price, a range, or left blank.</p>
+
+            <label>Display Position</label>
+            <input type="number" name="sort_order" value="0" placeholder="Display position">
+            <p class="field-help">Lower numbers appear first. Use 0 if you are not sure.</p>
+
+            <button class="btn small" type="submit">Add Menu Item</button>
+          </form>
+
+          <div class="quotes-grid" id="menuList">
+            <div class="placeholder-panel">Load menu items to begin.</div>
+          </div>
+        </div>
+      </section>
+
       <section id="section-gallery" class="hidden">
-  <div class="panel">
-    <div class="section-head">
-      <div>
-        <h2>Gallery</h2>
-        <p class="muted">Manage gallery images displayed on the website.</p>
-      </div>
-      <button class="btn small" id="loadGallery">Load Gallery</button>
-    </div>
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h2>Gallery</h2>
+              <p class="muted">Manage photos shown on the website. Photo upload will be added next.</p>
+            </div>
+            <button class="btn small" id="loadGallery">Load Gallery</button>
+          </div>
 
-    <form id="galleryForm" class="note-form">
-      <input
-        type="text"
-        name="image_url"
-        placeholder="Image URL"
-        required
-      >
+          <form id="galleryForm" class="note-form">
+            <label>Photo Link</label>
+            <input type="text" name="image_url" placeholder="Temporary: paste a web image link here" required>
+            <p class="field-help">Temporary field. Soon this will become “Choose Photo From Computer” and photos will be stored in Cloudflare.</p>
 
-      <input
-        type="text"
-        name="alt_text"
-        placeholder="Alt text"
-      >
+            <label>Photo Description</label>
+            <input type="text" name="alt_text" placeholder="Example: Iced latte served from the mobile coffee cart">
+            <p class="field-help">Describe the photo for accessibility and search engines.</p>
 
-      <textarea
-        name="caption"
-        rows="3"
-        placeholder="Caption"
-      ></textarea>
+            <label>Caption</label>
+            <textarea name="caption" rows="3" placeholder="Optional caption customers may see with the photo."></textarea>
 
-      <input
-        type="number"
-        name="sort_order"
-        value="0"
-        placeholder="Sort order"
-      >
+            <label>Display Position</label>
+            <input type="number" name="sort_order" value="0" placeholder="Display position">
+            <p class="field-help">Lower numbers appear first. Use 0 if you are not sure.</p>
 
-      <label>
-        <input type="checkbox" name="is_featured" value="1">
-        Featured Image
-      </label>
+            <label class="checkbox-row">
+              <input type="checkbox" name="is_featured" value="1">
+              Feature this photo
+            </label>
+            <p class="field-help">Featured photos can be highlighted more prominently on the website.</p>
 
-      <button class="btn small" type="submit">
-        Add Image
-      </button>
-    </form>
+            <button class="btn small" type="submit">Add Photo</button>
+          </form>
 
-    <div id="galleryList" class="quotes-grid">
-      <div class="placeholder-panel">
-        Load gallery images to begin.
-      </div>
-    </div>
-  </div>
-</section>
+          <div id="galleryList" class="quotes-grid">
+            <div class="placeholder-panel">Load gallery images to begin.</div>
+          </div>
+        </div>
+      </section>
 
       <section id="section-about" class="hidden">
-  <div class="panel">
-    <div class="section-head">
-      <div>
-        <h2>About</h2>
-        <p class="muted">Edit the public About story and service area text.</p>
-      </div>
-      <button class="btn small" id="loadAbout">Load About</button>
-    </div>
+        <div class="panel">
+          <div class="section-head">
+            <div>
+              <h2>About</h2>
+              <p class="muted">Edit the story and service area customers see on the website.</p>
+            </div>
+            <button class="btn small" id="loadAbout">Load About</button>
+          </div>
 
-    <form id="aboutForm" class="note-form">
-      <input type="text" name="heading" placeholder="Heading" required>
-      <textarea name="main_paragraph" rows="6" placeholder="Main paragraph"></textarea>
-      <textarea name="story_paragraph" rows="6" placeholder="Story paragraph"></textarea>
-      <textarea name="service_area_text" rows="3" placeholder="Service area text"></textarea>
-      <button class="btn small" type="submit">Save About</button>
-    </form>
+          <form id="aboutForm" class="note-form">
+            <label>Main Headline</label>
+            <input type="text" name="heading" placeholder="Example: More Than Coffee. A Connection." required>
+            <p class="field-help">This is the large headline customers see in the About section.</p>
 
-    <div id="aboutStatus" class="placeholder-panel">Load About content to begin.</div>
-  </div>
-</section>
+            <label>Short Introduction</label>
+            <textarea name="main_paragraph" rows="6" placeholder="Briefly introduce Off The Blvd Coffee."></textarea>
+            <p class="field-help">Use this for the first About paragraph.</p>
+
+            <label>Your Story</label>
+            <textarea name="story_paragraph" rows="6" placeholder="Tell customers how Off The Blvd Coffee started and what makes it special."></textarea>
+            <p class="field-help">This is the personal story behind the business.</p>
+
+            <label>Areas You Serve</label>
+            <textarea name="service_area_text" rows="3" placeholder="Example: Proudly serving the Greater Los Angeles Area and Inland Empire."></textarea>
+            <p class="field-help">Tell customers where the coffee cart is available.</p>
+
+            <button class="btn small" type="submit">Save About</button>
+          </form>
+
+          <div id="aboutStatus" class="placeholder-panel">Load About content to begin.</div>
+        </div>
+      </section>
+    </main>
+  </section>
 
   <div id="notesModal" class="modal hidden">
     <div class="modal-card">
@@ -220,7 +247,10 @@
 
       <form id="noteForm" class="note-form">
         <input type="hidden" id="noteQuoteId" name="quote_id">
-        <textarea name="note" rows="4" placeholder="Add an internal note..." required></textarea>
+
+        <label>Internal Note</label>
+        <textarea name="note" rows="4" placeholder="Example: Called customer, sent quote, waiting for confirmation." required></textarea>
+
         <button class="btn small" type="submit">Save Note</button>
       </form>
 
@@ -228,6 +258,6 @@
     </div>
   </div>
 
-  <script src="/admin/admin.js?v=9"></script>
+  <script src="/admin/admin.js?v=10"></script>
 </body>
 </html>
