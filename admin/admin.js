@@ -892,6 +892,216 @@ async function adminDeleteGalleryImage(id) {
   await adminLoadGallery();
 }
 
+/* Reviews */
+
+if (loadReviewsButtonEl) {
+  loadReviewsButtonEl.addEventListener("click", adminLoadReviews);
+}
+
+if (reviewFormEl) {
+  reviewFormEl.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(reviewFormEl);
+    let method = "POST";
+
+    if (editingReviewId) {
+      method = "PUT";
+      formData.append("id", editingReviewId);
+
+      if (!formData.get("is_active")) {
+        formData.append("is_active", "1");
+      }
+    }
+
+    if (!formData.get("is_featured")) {
+      formData.append("is_featured", "0");
+    }
+
+    const response = await fetch("/api/admin-reviews", {
+      method,
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      alert(result.error || "Could not save review.");
+      return;
+    }
+
+    editingReviewId = null;
+    reviewFormEl.reset();
+
+    const activeInput = reviewFormEl.querySelector('[name="is_active"]');
+    if (activeInput) activeInput.remove();
+
+    const submitButton = reviewFormEl.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.textContent = "Add Review";
+
+    await adminLoadReviews();
+  });
+}
+
+async function adminLoadReviews() {
+  if (!reviewsListEl) return;
+
+  reviewsListEl.innerHTML =
+    '<div class="placeholder-panel">Loading reviews...</div>';
+
+  const response = await fetch("/api/admin-reviews");
+  const result = await response.json();
+
+  if (!result.ok) {
+    reviewsListEl.innerHTML = `<div class="placeholder-panel">${escapeHtml(
+      result.error || "Could not load reviews."
+    )}</div>`;
+    return;
+  }
+
+  currentReviews = result.reviews || [];
+
+  if (currentReviews.length === 0) {
+    reviewsListEl.innerHTML =
+      '<div class="placeholder-panel">No reviews yet.</div>';
+    return;
+  }
+
+  reviewsListEl.innerHTML = currentReviews
+    .map(
+      (review) => `
+      <article class="quote-card">
+        <div class="quote-card-top">
+          <div>
+            <h3>${escapeHtml(review.customer_name)}</h3>
+            <p class="muted">
+              ${escapeHtml(review.event_type || "Review")}
+              ${review.rating ? " • " + "★".repeat(Number(review.rating)) : ""}
+            </p>
+          </div>
+
+          <span class="badge">${review.is_active ? "Active" : "Hidden"}</span>
+        </div>
+
+        <div class="quote-details">
+          <p><strong>Rating:</strong> ${escapeHtml(review.rating)}</p>
+          <p><strong>Event Type:</strong> ${escapeHtml(review.event_type)}</p>
+          <p><strong>Display Position:</strong> ${escapeHtml(review.sort_order)}</p>
+          <p><strong>Featured:</strong> ${review.is_featured ? "Yes" : "No"}</p>
+
+          <p class="full">
+            <strong>Review:</strong><br>
+            ${escapeHtml(review.review_text)}
+          </p>
+        </div>
+
+        <div class="actions">
+          <button class="btn small" onclick="adminStartEditReview(${review.id})">
+            Edit
+          </button>
+
+          <button class="btn secondary small" onclick="adminToggleReview(${review.id})">
+            ${review.is_active ? "Hide" : "Show"}
+          </button>
+
+          <button class="btn secondary small" onclick="adminDeleteReview(${review.id})">
+            Delete
+          </button>
+        </div>
+      </article>
+    `
+    )
+    .join("");
+}
+
+function adminGetReviewById(id) {
+  return currentReviews.find((review) => Number(review.id) === Number(id));
+}
+
+function adminStartEditReview(id) {
+  const review = adminGetReviewById(id);
+  if (!review || !reviewFormEl) return;
+
+  editingReviewId = review.id;
+
+  reviewFormEl.customer_name.value = review.customer_name || "";
+  reviewFormEl.review_text.value = review.review_text || "";
+  reviewFormEl.rating.value = review.rating || 5;
+  reviewFormEl.event_type.value = review.event_type || "";
+  reviewFormEl.sort_order.value = review.sort_order || 0;
+
+  const featuredInput = reviewFormEl.querySelector('[name="is_featured"]');
+  if (featuredInput) {
+    featuredInput.checked = !!review.is_featured;
+  }
+
+  let activeInput = reviewFormEl.querySelector('[name="is_active"]');
+
+  if (!activeInput) {
+    activeInput = document.createElement("input");
+    activeInput.type = "hidden";
+    activeInput.name = "is_active";
+    reviewFormEl.appendChild(activeInput);
+  }
+
+  activeInput.value = review.is_active ? "1" : "0";
+
+  const submitButton = reviewFormEl.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.textContent = "Update Review";
+
+  reviewFormEl.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function adminToggleReview(id) {
+  const review = adminGetReviewById(id);
+  if (!review) return;
+
+  const formData = new FormData();
+  formData.append("id", review.id);
+  formData.append("customer_name", review.customer_name || "");
+  formData.append("review_text", review.review_text || "");
+  formData.append("rating", review.rating || 5);
+  formData.append("event_type", review.event_type || "");
+  formData.append("sort_order", review.sort_order || 0);
+  formData.append("is_featured", review.is_featured ? "1" : "0");
+  formData.append("is_active", review.is_active ? "0" : "1");
+
+  const response = await fetch("/api/admin-reviews", {
+    method: "PUT",
+    body: formData,
+  });
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    alert(result.error || "Could not update review.");
+    return;
+  }
+
+  await adminLoadReviews();
+}
+
+async function adminDeleteReview(id) {
+  if (!confirm("Delete this review? This cannot be undone.")) return;
+
+  const formData = new FormData();
+  formData.append("id", id);
+
+  const response = await fetch("/api/admin-reviews", {
+    method: "DELETE",
+    body: formData,
+  });
+
+  const result = await response.json();
+
+  if (!result.ok) {
+    alert(result.error || "Could not delete review.");
+    return;
+  }
+
+  await adminLoadReviews();
+}
+
 /* About */
 
 if (loadAboutButtonEl) {
