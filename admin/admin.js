@@ -15,6 +15,10 @@ const loadMenuButtonEl = document.getElementById("loadMenu");
 const menuFormEl = document.getElementById("menuForm");
 const menuListEl = document.getElementById("menuList");
 
+const loadAboutButtonEl = document.getElementById("loadAbout");
+const aboutFormEl = document.getElementById("aboutForm");
+const aboutStatusEl = document.getElementById("aboutStatus");
+
 const noteFormEl = document.getElementById("noteForm");
 const notesListEl = document.getElementById("notesList");
 
@@ -666,12 +670,9 @@ async function adminDeleteMenuItem(id) {
   }
 
   await adminLoadMenu();
+}
 
-  /* About */
-
-const loadAboutButtonEl = document.getElementById("loadAbout");
-const aboutFormEl = document.getElementById("aboutForm");
-const aboutStatusEl = document.getElementById("aboutStatus");
+/* About */
 
 if (loadAboutButtonEl) {
   loadAboutButtonEl.addEventListener("click", adminLoadAbout);
@@ -689,7 +690,8 @@ if (aboutFormEl) {
     const result = await response.json();
 
     if (!result.ok) {
-      aboutStatusEl.textContent = result.error || "Could not save About content.";
+      aboutStatusEl.textContent =
+        result.error || "Could not save About content.";
       return;
     }
 
@@ -706,7 +708,8 @@ async function adminLoadAbout() {
   const result = await response.json();
 
   if (!result.ok) {
-    aboutStatusEl.textContent = result.error || "Could not load About content.";
+    aboutStatusEl.textContent =
+      result.error || "Could not load About content.";
     return;
   }
 
@@ -718,8 +721,8 @@ async function adminLoadAbout() {
   aboutFormEl.heading.value = result.about.heading || "";
   aboutFormEl.main_paragraph.value = result.about.main_paragraph || "";
   aboutFormEl.story_paragraph.value = result.about.story_paragraph || "";
-  aboutFormEl.service_area_text.value = result.about.service_area_text || "";
+  aboutFormEl.service_area_text.value =
+    result.about.service_area_text || "";
 
   aboutStatusEl.textContent = "About content loaded.";
-}
 }
