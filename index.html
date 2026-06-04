@@ -244,23 +244,22 @@ function safeText(str){
 }
 
 function renderAbout(data){
-  if(!data || !document.getElementById('aboutText')) return;
   const aboutText = document.getElementById('aboutText');
+  if(!aboutText) return;
 
-  const heading = safeText(data.heading);
-  const mainParagraph = safeText(data.mainParagraph);
-  const storyParagraph = safeText(data.storyParagraph);
-  const serviceAreaText = safeText(data.serviceAreaText);
+  const about = data && data.about ? data.about : null;
 
-  // Preserve original "Book the Cart" link and eyebrow/title styles by rebuilding only the inner text blocks
-  const story = storyParagraph ? `<p class="section-copy">${storyParagraph}</p>` : '';
-  const serviceArea = serviceAreaText ? `<p class="section-copy">${serviceAreaText}</p>` : '';
+  if(!about){
+    aboutText.innerHTML = hardcodedFallback.aboutHtml ?? aboutText.innerHTML;
+    return;
+  }
 
-  // main paragraph is required by requirements; if missing, show fallback
-  const main = mainParagraph ? `<p class="section-copy">${mainParagraph}</p>` : '';
+  const heading = safeText(about.heading);
+  const mainParagraph = safeText(about.main_paragraph);
+  const storyParagraph = safeText(about.story_paragraph);
+  const serviceAreaText = safeText(about.service_area_text);
 
-  if(!heading || !main){
-    // if required pieces missing, keep fallback
+  if(!heading || !mainParagraph){
     aboutText.innerHTML = hardcodedFallback.aboutHtml ?? aboutText.innerHTML;
     return;
   }
@@ -268,9 +267,9 @@ function renderAbout(data){
   aboutText.innerHTML = `
     <div class="eyebrow">About</div>
     <h2 class="title">${heading}</h2>
-    ${main}
-    ${story}
-    ${serviceArea}
+    <p class="section-copy">${mainParagraph}</p>
+    ${storyParagraph ? `<p class="section-copy">${storyParagraph}</p>` : ''}
+    ${serviceAreaText ? `<p class="section-copy">${serviceAreaText}</p>` : ''}
     <a class="btn" href="#quote">Book the Cart →</a>
   `;
 }
@@ -278,55 +277,71 @@ function renderAbout(data){
 function renderMenu(data){
   const menuGrid = document.getElementById('menuGrid');
   if(!menuGrid) return;
-  if(!data || !Array.isArray(data.categories)){
+
+  const items = data && Array.isArray(data.menu_items) ? data.menu_items : [];
+
+  if(items.length === 0){
     menuGrid.innerHTML = hardcodedFallback.menuHtml ?? menuGrid.innerHTML;
     return;
   }
 
-  // required: category name, item name, price. description is optional.
-  menuGrid.innerHTML = '';
-  data.categories.forEach(cat=>{
-    if(!cat) return;
-    const categoryName = safeText(cat.category);
-    const items = Array.isArray(cat.items) ? cat.items : [];
-    if(!categoryName || items.length===0) return;
+  const grouped = {};
 
+  items.forEach(item => {
+    const category = safeText(item.category);
+    if(!category) return;
+
+    if(!grouped[category]){
+      grouped[category] = [];
+    }
+
+    grouped[category].push(item);
+  });
+
+  menuGrid.innerHTML = '';
+
+  Object.keys(grouped).forEach(category => {
     const card = document.createElement('div');
-    card.className='menu-card';
+    card.className = 'menu-card';
 
     const h3 = document.createElement('h3');
-    h3.textContent = categoryName;
+    h3.textContent = category;
     card.appendChild(h3);
 
-    items.forEach(item=>{
-      if(!item) return;
-      const itemName = safeText(item.name);
+    grouped[category].forEach(item => {
+      const itemName = safeText(item.item_name);
       const price = safeText(item.price);
-      if(!itemName || !price) return;
+      const description = safeText(item.description);
+
+      if(!itemName) return;
 
       const menuItem = document.createElement('div');
-      menuItem.className='menu-item';
+      menuItem.className = 'menu-item';
 
       const left = document.createElement('div');
-      left.innerHTML = safeText(itemName) + (item.description ? `<small>${safeText(item.description)}</small>` : '');
+      left.textContent = itemName;
+
+      if(description){
+        const small = document.createElement('small');
+        small.textContent = description;
+        left.appendChild(small);
+      }
 
       const span = document.createElement('span');
-      span.className='price';
-      span.textContent = price;
+      span.className = 'price';
+      span.textContent = price || '';
 
       menuItem.appendChild(left);
       menuItem.appendChild(span);
       card.appendChild(menuItem);
     });
 
-    // Only append if we actually added items
     if(card.querySelectorAll('.menu-item').length){
       menuGrid.appendChild(card);
     }
   });
 
-  // If nothing rendered, restore fallback
-  if(menuGrid.children.length===0){
+  if(menuGrid.children.length === 0){
     menuGrid.innerHTML = hardcodedFallback.menuHtml ?? menuGrid.innerHTML;
   }
 }
@@ -409,7 +424,7 @@ async function initFromCMS(){
 
   // About
   try{
-    const aboutData = await fetchJSON('content/about.json');
+    const aboutData = await fetchJSON('/api/about');
     if(aboutData){
       renderAbout(aboutData);
       loadedAny = true;
@@ -422,7 +437,7 @@ async function initFromCMS(){
 
   // Menu
   try{
-    const menuData = await fetchJSON('content/menu.json');
+    const menuData = await fetchJSON('/api/menu');
     if(menuData){
       renderMenu(menuData);
       loadedAny = true;
