@@ -574,7 +574,7 @@ async function adminLoadMenu() {
         <div class="quote-details">
           <p><strong>Category:</strong> ${escapeHtml(item.category)}</p>
           <p><strong>Price:</strong> ${escapeHtml(item.price)}</p>
-          <p><strong>Sort Order:</strong> ${escapeHtml(item.sort_order)}</p>
+          <p><strong>Display Position:</strong> ${escapeHtml(item.sort_order)}</p>
           <p><strong>Created:</strong> ${escapeHtml(item.created_at)}</p>
 
           <p class="full">
@@ -729,7 +729,7 @@ if (galleryFormEl) {
     if (activeInput) activeInput.remove();
 
     const submitButton = galleryFormEl.querySelector('button[type="submit"]');
-    if (submitButton) submitButton.textContent = "Add Image";
+    if (submitButton) submitButton.textContent = "Add Photo";
 
     await adminLoadGallery();
   });
@@ -765,7 +765,7 @@ async function adminLoadGallery() {
       <article class="quote-card">
         <div class="quote-card-top">
           <div>
-            <h3>${escapeHtml(image.caption || "Gallery Image")}</h3>
+            <h3>${escapeHtml(image.caption || "Gallery Photo")}</h3>
             <p class="muted">${escapeHtml(image.alt_text || "No alt text")}</p>
           </div>
 
@@ -773,17 +773,17 @@ async function adminLoadGallery() {
         </div>
 
         <div class="quote-details">
-          <p><strong>Image URL:</strong> ${escapeHtml(image.image_url)}</p>
-          <p><strong>Sort Order:</strong> ${escapeHtml(image.sort_order)}</p>
-          <p><strong>Featured:</strong> ${image.is_featured ? "Yes" : "No"}</p>
+          <p><strong>Photo Address:</strong> ${escapeHtml(image.image_url)}</p>
+          <p><strong>Display Position:</strong> ${escapeHtml(image.sort_order)}</p>
+          <p><strong>Highlighted:</strong> ${image.is_featured ? "Yes" : "No"}</p>
           <p><strong>Created:</strong> ${escapeHtml(image.created_at)}</p>
         </div>
 
-        <div style="margin:16px 0;">
+        <div class="gallery-preview">
           <img
             src="${escapeHtml(image.image_url)}"
             alt="${escapeHtml(image.alt_text)}"
-            style="max-width:260px;border-radius:16px;border:1px solid var(--line);"
+            
           >
         </div>
 
@@ -838,7 +838,7 @@ function adminStartEditGalleryImage(id) {
   activeInput.value = image.is_active ? "1" : "0";
 
   const submitButton = galleryFormEl.querySelector('button[type="submit"]');
-  if (submitButton) submitButton.textContent = "Update Image";
+  if (submitButton) submitButton.textContent = "Update Photo";
 
   galleryFormEl.scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -987,7 +987,7 @@ async function adminLoadReviews() {
           <p><strong>Rating:</strong> ${escapeHtml(review.rating)}</p>
           <p><strong>Event Type:</strong> ${escapeHtml(review.event_type)}</p>
           <p><strong>Display Position:</strong> ${escapeHtml(review.sort_order)}</p>
-          <p><strong>Featured:</strong> ${review.is_featured ? "Yes" : "No"}</p>
+          <p><strong>Highlighted:</strong> ${review.is_featured ? "Yes" : "No"}</p>
 
           <p class="full">
             <strong>Review:</strong><br>

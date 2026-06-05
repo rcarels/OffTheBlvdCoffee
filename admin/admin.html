@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/admin/admin.css?v=3">
+  <link rel="stylesheet" href="/admin/admin.css?v=4">
 </head>
 
 <body>
@@ -167,32 +167,39 @@
           <div class="section-head">
             <div>
               <h2>Gallery</h2>
-              <p class="muted">Manage photos shown on the website. Photo upload will be added later.</p>
+              <p class="muted">Choose which photos appear in the website gallery.</p>
             </div>
             <button class="btn small" id="loadGallery">Load Gallery</button>
           </div>
 
+          <div class="owner-note">
+            <strong>Temporary photo workflow:</strong>
+            Paste a public photo address for now. Photos saved only on your computer will not work yet.
+            The next media upgrade will replace this with “Choose Photo From Computer.”
+          </div>
+
           <form id="galleryForm" class="note-form">
-            <label>Paste Image Address</label>
+            <label>Photo Address</label>
             <input type="text" name="image_url" placeholder="Example: https://example.com/photo.jpg" required>
-            <p class="field-help">Temporary step. Paste the address of an image that already exists online. Photos stored on your computer will not work here yet. A future update will allow “Choose Photo From Computer”.</p>
+            <p class="field-help">Paste the address of a photo that already exists online. This is temporary until direct uploads are added.</p>
 
             <label>Photo Description</label>
             <input type="text" name="alt_text" placeholder="Example: Iced latte served from the mobile coffee cart">
-            <p class="field-help">Describe the photo for accessibility and search engines.</p>
+            <p class="field-help">Describe what is shown in the photo. This helps accessibility and search engines.</p>
 
             <label>Caption</label>
-            <textarea name="caption" rows="3" placeholder="Optional caption customers may see with the photo."></textarea>
+            <textarea name="caption" rows="3" placeholder="Optional: A short caption customers may see with the photo."></textarea>
+            <p class="field-help">Use this if you want to add a short note about the photo.</p>
 
             <label>Display Position</label>
-            <input type="number" name="sort_order" value="0" placeholder="Display position">
+            <input type="number" name="sort_order" value="0" placeholder="Example: 1">
             <p class="field-help">Lower numbers appear first. Use 0 if you are not sure.</p>
 
             <label class="checkbox-row">
               <input type="checkbox" name="is_featured" value="1">
-              Feature this photo
+              Highlight this photo
             </label>
-            <p class="field-help">Featured photos can be highlighted more prominently on the website.</p>
+            <p class="field-help">Use this for your strongest marketing photos. Featured photos can be highlighted later.</p>
 
             <button class="btn small" type="submit">Add Photo</button>
           </form>
@@ -303,6 +310,6 @@
     </div>
   </div>
 
-  <script src="/admin/admin.js?v=14"></script>
+  <script src="/admin/admin.js?v=15"></script>
 </body>
 </html>
