@@ -17,546 +17,176 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{--cream:#f4e7df;--soft:#fff8f3;--ink:#25140e;--muted:#74635d;--red:#c8103c;--red2:#9c092c;--line:#e2cfc5;--tan:#ead8cc;--shadow:0 18px 50px rgba(65,36,23,.13)}
-    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--soft);color:var(--ink);font-family:Inter,system-ui,sans-serif} a{color:inherit;text-decoration:none} img{max-width:100%;display:block}.wrap{width:min(1220px,92vw);margin:auto}
-    .header{position:sticky;top:0;z-index:20;background:rgba(244,231,223,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-    .nav{min-height:170px;display:grid;grid-template-columns:230px 1fr auto;gap:24px;align-items:center}.logo img{width:156px;height:auto}.links{display:flex;justify-content:center;gap:40px;font-weight:800;letter-spacing:.13em;font-size:14px;text-transform:uppercase}.links a{padding:12px 0;border-bottom:2px solid transparent}.links a:hover,.links a.active{border-color:var(--red);color:var(--red)}
-    .btn{border:0;border-radius:999px;background:var(--red);color:#fff;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:16px 30px;cursor:pointer;box-shadow:0 10px 26px rgba(200,16,60,.18);display:inline-flex;gap:10px;align-items:center;justify-content:center}.btn:hover{background:var(--red2)}.btn.outline{background:transparent;color:var(--red);border:1.5px solid var(--red);box-shadow:none}.btn.small{padding:11px 16px;font-size:12px}.hamb{display:none;background:transparent;border:0;font-size:28px;color:var(--red)}
-    .hero{position:relative;min-height:590px;background:linear-gradient(90deg,#fff8f3 0%,rgba(255,248,243,.93) 31%,rgba(255,248,243,.2) 57%,rgba(255,248,243,0) 100%),url('assets/iced-coffee-hero.png') center right/cover no-repeat;border-bottom:1px solid var(--line)}.hero .wrap{padding:78px 0 86px}.eyebrow{color:var(--red);font-weight:900;letter-spacing:.15em;text-transform:uppercase;font-size:13px}.hero h1{font-family:'Playfair Display',serif;font-size:clamp(54px,7vw,95px);line-height:.94;margin:22px 0 18px;letter-spacing:-.04em}.hero h1 span{color:var(--red);display:block}.lead{font-size:21px;line-height:1.65;max-width:580px}.lead b{color:var(--red);font-family:'Playfair Display',serif}.actions{display:flex;gap:18px;flex-wrap:wrap;margin:28px 0}.insta{display:flex;gap:15px;align-items:center;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.insta svg{width:30px;color:var(--red)}
-    section{padding:86px 0}.panel{background:rgba(255,248,243,.94);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}.events-panel{margin-top:-70px;position:relative;z-index:4;padding:34px}.section-head{display:flex;justify-content:space-between;gap:30px;align-items:end;margin-bottom:28px}.title{font-family:'Playfair Display',serif;font-size:clamp(34px,4vw,54px);line-height:1.03;margin:8px 0 0}.section-copy{color:var(--muted);line-height:1.7;max-width:520px}.event-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.event-controls input,.event-controls select,.form input,.form select,.form textarea{border:1px solid var(--line);border-radius:14px;background:#fff;padding:14px 15px;font:inherit;width:100%;outline:none}.event-controls input{width:230px}.event-controls select{width:200px}.events-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.event-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;display:grid;grid-template-columns:50px 1fr;gap:16px;min-height:178px}.icon{color:var(--red)}.event-card h3{margin:8px 0 8px;font-family:'Playfair Display',serif;font-size:25px}.meta{font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:900}.event-card p{color:var(--muted);margin:0 0 18px}.badge{display:inline-block;background:#f4ced6;color:var(--red);padding:8px 12px;border-radius:8px;text-transform:uppercase;font-weight:900;font-size:11px;letter-spacing:.06em}.badge.private{background:#eaded5;color:#4a332b}.empty{display:none;padding:30px;text-align:center;color:var(--muted);grid-column:1/-1}.center{text-align:center;margin-top:24px}.feature-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--cream)}.feature{padding:30px 34px;border-right:1px solid var(--line);display:flex;gap:18px}.feature:last-child{border-right:0}.feature strong{font-family:'Playfair Display',serif;font-size:26px;line-height:1}.feature p{margin:8px 0 0;color:var(--muted);font-size:14px}.round{width:52px;height:52px;border-radius:50%;background:#ead8cc;display:grid;place-items:center;flex:0 0 auto;color:var(--red)}
-    .about{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center}.photo-card{border-radius:26px;overflow:hidden;box-shadow:var(--shadow);background:var(--cream);border:1px solid var(--line)}.photo-card img{height:520px;width:100%;object-fit:cover}.placeholder{border:2px dashed #d6bfb2;border-radius:22px;min-height:260px;display:grid;place-items:center;text-align:center;color:var(--muted);background:#fff}.placeholder b{display:block;color:var(--red);margin-bottom:8px}.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.menu-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px}.menu-card h3{font-family:'Playfair Display',serif;font-size:30px;margin:0 0 18px}.menu-item{display:flex;justify-content:space-between;gap:15px;padding:14px 0;border-bottom:1px solid #f0ded5}.menu-item:last-child{border-bottom:0}.menu-item small{display:block;color:var(--muted);margin-top:5px}.price{font-weight:900;color:var(--red)}.gallery-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;grid-auto-rows:270px;gap:16px}.gallery-grid img,.gallery-grid .placeholder{height:100%;width:100%;object-fit:cover;border-radius:24px}.gallery-grid .big{grid-row:span 2}.form-panel{display:grid;grid-template-columns:.9fr 1.25fr;overflow:hidden;border-radius:28px}
-    .quote-side{background:radial-gradient(circle at top left,rgba(255,255,255,.12),transparent 34%),linear-gradient(145deg,var(--red),#76051d);color:white;padding:56px 48px;display:flex;flex-direction:column;justify-content:center;gap:20px}
-    .quote-side .title{color:white;font-size:clamp(38px,4vw,62px)}
-    .quote-side .section-copy{color:rgba(255,255,255,.82);font-size:18px}
-    .quote-points{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:10px 0 0;padding:0;list-style:none}
-    .quote-points li{border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:14px;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#ffe0a3}
-    .form{padding:44px;background:linear-gradient(180deg,#fff,#fff8f3)}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 22px}
-    .full{grid-column:1/-1}
-    .form label{font-weight:900;font-size:12px;letter-spacing:.09em;text-transform:uppercase;display:block;margin-bottom:9px;color:var(--ink)}
-    .form input,.form select,.form textarea{border:1.5px solid var(--line);border-radius:15px;background:#fff;padding:17px 18px;font:inherit;width:100%;outline:none;transition:border-color .2s,box-shadow .2s}
-    .form input:focus,.form select:focus,.form textarea:focus{border-color:var(--red);box-shadow:0 0 0 4px rgba(200,16,60,.08)}
-    .form textarea{resize:vertical;min-height:128px}
-    .form .btn{width:100%;margin-top:22px;font-size:15px;padding:19px 28px}
-    .form-note{margin-top:16px;text-align:center;color:var(--muted);font-size:13px}
-    .success{display:none;background:#eff8ef;border:1px solid #badcba;color:#1b5b25;border-radius:14px;padding:16px;margin-top:16px}.footer{background:#8d061f;color:white;padding:48px 0}.footer-inner{display:flex;justify-content:space-between;gap:30px;align-items:center}.footer img{width:140px;filter:brightness(0) invert(1)}.footer a{text-decoration:underline;text-underline-offset:4px}
-    @media(max-width:900px){.nav{height:auto;grid-template-columns:1fr auto;padding:16px 0}.logo img{width:132px}.hamb{display:block}.links{display:none;grid-column:1/-1;flex-direction:column;gap:4px;align-items:flex-start}.links.open{display:flex}.quote-top{display:none}.hero{min-height:auto;background:linear-gradient(180deg,rgba(255,248,243,.92),rgba(255,248,243,.65)),url('assets/iced-coffee-hero.png') center/cover no-repeat}.events-grid,.menu-grid,.about,.form-panel{grid-template-columns:1fr}.feature-strip{grid-template-columns:1fr 1fr}.feature{border-bottom:1px solid var(--line)}.gallery-grid{grid-template-columns:1fr;grid-auto-rows:250px}.gallery-grid .big{grid-row:span 1}.section-head{display:block}.event-controls input,.event-controls select{width:100%}.footer-inner{display:block}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}}
-    @media(max-width:560px){.feature-strip{grid-template-columns:1fr}.feature{border-right:0}.hero h1{font-size:52px}.events-panel{padding:20px}.event-card{grid-template-columns:1fr}.photo-card img{height:360px}}
-  </style>
+  <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
 <header class="header">
   <div class="wrap nav">
-    <a class="logo" href="#home" aria-label="Off The Blvd Coffee home"><img src="assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee logo"></a>
+    <a class="logo" href="#home" aria-label="Off The Blvd Coffee home">
+      <img src="assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee logo">
+    </a>
     <button class="hamb" id="hamb" aria-label="Open menu" aria-controls="links" aria-expanded="false">☰</button>
-    <nav class="links" id="links" aria-label="Primary"><a class="active" href="#home">Home</a><a href="#events">Events</a><a href="#about">About</a><a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#contact">Get in Touch</a></nav>
+    <nav class="links" id="links" aria-label="Primary">
+      <a class="active" href="#home">Home</a>
+      <a href="#events">Events</a>
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Get in Touch</a>
+    </nav>
     <a class="btn quote-top" href="#quote">Get a Quote →</a>
   </div>
 </header>
+
 <main id="home">
-<section class="hero">
-  <div class="wrap">
-    <h1>Craft Coffee.<span>Great Vibes.</span></h1>
-    <p class="lead">Bringing handcrafted coffee and good energy to pop-up events across <b>The Inland Empire</b> and <b>The Greater Los Angeles Area.</b></p>
-    <div class="actions"><a class="btn" href="#events">Find Us Next →</a><a class="btn outline" href="#quote">Get a Quote</a></div>
-    <a class="insta" href="https://www.instagram.com/offtheblvdcoffee/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg> Follow along @offtheblvdcoffee</a>
-  </div>
-</section>
-<section id="events" class="wrap events-panel panel">
-  <div class="section-head"><div><div class="eyebrow">Upcoming Events</div><h2 class="title">Catch Us Around<br>The Inland Empire &<br>The Greater Los Angeles Area</h2><p class="section-copy">You can find us at local markets, community events and private gatherings.</p></div><div class="event-controls"><input id="eventSearch" placeholder="Search events"><select id="eventFilter"><option value="all">All event types</option><option value="Public Event">Public events</option><option value="Private Booking">Private bookings</option></select></div></div>
-  <div class="events-grid" id="eventsGrid"></div><div class="empty" id="emptyEvents">No events match your search yet.</div><div class="center"><a class="btn outline" href="#quote">Request Availability →</a></div>
-</section>
-<section class="feature-strip"><div class="feature"><div class="round">☕</div><div><strong>Handcrafted Coffee</strong><p>High quality ingredients and drinks made with care.</p></div></div><div class="feature"><div class="round">📍</div><div><strong>Pop-Up Events</strong><p>Markets, community events, and private celebrations.</p></div></div><div class="feature"><div class="round">🚚</div><div><strong>Mobile Coffee Cart</strong><p>We bring the vibes and the coffee to you.</p></div></div><div class="feature"><div class="round">♡</div><div><strong>Good Coffee. Good Energy.</strong><p>Every event deserves great coffee and good vibes.</p></div></div></section>
-<section id="about" class="wrap"><div class="about"><div id="aboutText"><div class="eyebrow">About</div><h2 class="title">Coffee made for pop-ups, parties, markets & memorable mornings.</h2><p class="section-copy">Off The Blvd Coffee is a mobile specialty coffee experience serving handcrafted drinks with a warm, community-centered feel. We serve The Inland Empire and The Greater Los Angeles Area.</p><p class="section-copy"><b>Placeholder:</b> Add your personal story here, including how you started making coffee, what makes your drinks special, and what guests can expect when they visit your cart.</p><a class="btn" href="#quote">Book the Cart →</a></div><div class="photo-card"><img src="assets/iced-coffee-hero.png" alt="Iced specialty coffee from Off The Blvd Coffee"></div></div></section>
-<section id="menu" class="wrap"><div class="section-head"><div><div class="eyebrow">Menu</div><h2 class="title">Signature drinks and crowd favorites.</h2><p class="section-copy">Pricing and final menu can be adjusted before launch.</p></div></div><div class="menu-grid" id="menuGrid"><div class="menu-card"><h3>Espresso</h3><div class="menu-item"><div>Latte<small>Hot or iced</small></div><span class="price">$ TBD</span></div><div class="menu-item"><div>Cappuccino</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Americano</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Cortado</div><span class="price">$ TBD</span></div></div><div class="menu-card"><h3>Specialty</h3><div class="menu-item"><div>Blvd Latte<small>Signature house flavor</small></div><span class="price">$ TBD</span></div><div class="menu-item"><div>Iced Specialty Latte</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Seasonal Drink</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Cold Brew</div><span class="price">$ TBD</span></div></div><div class="menu-card"><h3>Non-Coffee</h3><div class="menu-item"><div>Matcha Latte</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Chai Latte</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Hot Chocolate</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Custom Event Menu</div><span class="price">Quote</span></div></div></div></section>
-<section id="gallery" class="wrap"><div class="section-head"><div><div class="eyebrow">Gallery</div><h2 class="title">A look at the vibe.</h2><p class="section-copy">Your uploaded images are included. Replace placeholders with cart photos, event photos, and more drink shots.</p></div></div><div class="gallery-grid" id="galleryGrid"><img class="big" src="assets/iced-coffee-hero.png" alt="Iced coffee drink"><div class="placeholder"><div><b>Photo Placeholder</b>Cart setup wide shot</div></div><div class="placeholder"><div><b>Photo Placeholder</b>Barista action shot</div></div><img src="assets/off-the-blvd-logo.png" alt="Off The Blvd logo"><div class="placeholder"><div><b>Photo Placeholder</b>Event crowd or menu board</div></div></div></section>
-<section id="quote" class="wrap">
-  <div class="panel form-panel">
-    <div class="quote-side">
-      <div class="eyebrow" style="color:#ffd4dc">Private Events</div>
-      <h2 class="title">Let's bring good coffee to your next event.</h2>
-      <p class="section-copy">Fill out the quote form and we’ll get back to you with availability, pricing, and next steps.</p>
-      <ul class="quote-points">
-        <li>Handcrafted Drinks</li>
-        <li>Memorable Events</li>
-        <li>We Come To You</li>
-        <li>Good Coffee. Good Energy.</li>
-      </ul>
-      <p><strong>Great for weddings, birthdays, corporate events, markets, showers, and private gatherings.</strong></p>
+  <section class="hero">
+    <div class="wrap">
+      <h1>Craft Coffee.<span>Great Vibes.</span></h1>
+      <p class="lead">Bringing handcrafted coffee and good energy to pop-up events across <b>The Inland Empire</b> and <b>The Greater Los Angeles Area.</b></p>
+      <div class="actions">
+        <a class="btn" href="#events">Find Us Next →</a>
+        <a class="btn outline" href="#quote">Get a Quote</a>
+      </div>
+      <a class="insta" href="https://www.instagram.com/offtheblvdcoffee/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+        Follow along @offtheblvdcoffee
+      </a>
     </div>
-  
-    <form class="form" id="quoteForm" name="quote-request" method="POST">
-      <input type="hidden" name="form-name" value="quote-request">
-      <p style="display:none">
-        <label>Don’t fill this out if you’re human: <input name="bot-field"></label>
-      </p>
+  </section>
 
-      <div class="form-grid">
-        <div>
-          <label>Name *</label>
-          <input name="name" required placeholder="Your name">
-        </div>
+  <section id="events" class="wrap events-panel panel">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Upcoming Events</div>
+        <h2 class="title">Catch Us Around<br>The Inland Empire &<br>The Greater Los Angeles Area</h2>
+        <p class="section-copy">You can find us at local markets, community events and private gatherings.</p>
+      </div>
+      <div class="event-controls">
+        <input id="eventSearch" placeholder="Search events">
+        <select id="eventFilter">
+          <option value="all">All event types</option>
+          <option value="Public Event">Public events</option>
+          <option value="Private Booking">Private bookings</option>
+        </select>
+      </div>
+    </div>
+    <div class="events-grid" id="eventsGrid"></div>
+    <div class="empty" id="emptyEvents">No events match your search yet.</div>
+    <div class="center"><a class="btn outline" href="#quote">Request Availability →</a></div>
+  </section>
 
-        <div>
-          <label>Email *</label>
-          <input name="email" type="email" required placeholder="you@email.com">
-        </div>
+  <section class="feature-strip">
+    <div class="feature"><div class="round">☕</div><div><strong>Handcrafted Coffee</strong><p>High quality ingredients and drinks made with care.</p></div></div>
+    <div class="feature"><div class="round">📍</div><div><strong>Pop-Up Events</strong><p>Markets, community events, and private celebrations.</p></div></div>
+    <div class="feature"><div class="round">🚚</div><div><strong>Mobile Coffee Cart</strong><p>We bring the vibes and the coffee to you.</p></div></div>
+    <div class="feature"><div class="round">♡</div><div><strong>Good Coffee. Good Energy.</strong><p>Every event deserves great coffee and good vibes.</p></div></div>
+  </section>
 
-        <div>
-          <label>Phone</label>
-          <input name="phone" placeholder="(555) 000-0000">
-        </div>
+  <section id="about" class="wrap">
+    <div class="about">
+      <div id="aboutText">
+        <div class="eyebrow">About</div>
+        <h2 class="title">Coffee made for pop-ups, parties, markets & memorable mornings.</h2>
+        <p class="section-copy">Off The Blvd Coffee is a mobile specialty coffee experience serving handcrafted drinks with a warm, community-centered feel. We serve The Inland Empire and The Greater Los Angeles Area.</p>
+        <p class="section-copy"><b>Placeholder:</b> Add your personal story here, including how you started making coffee, what makes your drinks special, and what guests can expect when they visit your cart.</p>
+        <a class="btn" href="#quote">Book the Cart →</a>
+      </div>
+      <div class="photo-card"><img src="assets/iced-coffee-hero.png" alt="Iced specialty coffee from Off The Blvd Coffee"></div>
+    </div>
+  </section>
 
-        <div>
-          <label>Event Date</label>
-          <input name="date" type="date">
-        </div>
+  <section id="menu" class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Menu</div>
+        <h2 class="title">Signature drinks and crowd favorites.</h2>
+        <p class="section-copy">Pricing and final menu can be adjusted before launch.</p>
+      </div>
+    </div>
+    <div class="menu-grid" id="menuGrid">
+      <div class="menu-card"><h3>Espresso</h3><div class="menu-item"><div>Latte<small>Hot or iced</small></div><span class="price">$ TBD</span></div><div class="menu-item"><div>Cappuccino</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Americano</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Cortado</div><span class="price">$ TBD</span></div></div>
+      <div class="menu-card"><h3>Specialty</h3><div class="menu-item"><div>Blvd Latte<small>Signature house flavor</small></div><span class="price">$ TBD</span></div><div class="menu-item"><div>Iced Specialty Latte</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Seasonal Drink</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Cold Brew</div><span class="price">$ TBD</span></div></div>
+      <div class="menu-card"><h3>Non-Coffee</h3><div class="menu-item"><div>Matcha Latte</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Chai Latte</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Hot Chocolate</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Custom Event Menu</div><span class="price">Quote</span></div></div>
+    </div>
+  </section>
 
-        <div>
-          <label>Event Type</label>
-          <select name="type">
-            <option>Private Event</option>
-            <option>Wedding</option>
-            <option>Corporate Event</option>
-            <option>Market / Pop-Up</option>
-            <option>Other</option>
-          </select>
-        </div> 
+  <section id="gallery" class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Gallery</div>
+        <h2 class="title">A look at the vibe.</h2>
+        <p class="section-copy">Photos from the cart, drinks, and events.</p>
+      </div>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"><img class="big" src="assets/iced-coffee-hero.png" alt="Iced coffee drink"><div class="placeholder"><div><b>Photo Placeholder</b>Cart setup wide shot</div></div><div class="placeholder"><div><b>Photo Placeholder</b>Barista action shot</div></div><img src="assets/off-the-blvd-logo.png" alt="Off The Blvd logo"><div class="placeholder"><div><b>Photo Placeholder</b>Event crowd or menu board</div></div></div>
+  </section>
 
-        <div>
-          <label>Guest Count</label>
-          <select name="guests">
-            <option>1-50</option>
-            <option>51-100</option>
-            <option>101-200</option>
-            <option>200+</option>
-            <option>Not sure yet</option>
-          </select>
-        </div>
+  <section id="reviews" class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Reviews</div>
+        <h2 class="title">Kind words from coffee cart guests.</h2>
+        <p class="section-copy">Real feedback from customers, events, markets, and private bookings.</p>
+      </div>
+    </div>
+    <div class="reviews-grid" id="reviewsGrid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>Great coffee, great energy, and such a fun addition to the event.</blockquote>
+        <p class="review-name">Happy Customer</p>
+        <p>Private Event</p>
+      </div>
+    </div>
+  </section>
 
-        <div class="full">
-          <label>Location</label>
-          <input name="location" placeholder="City / venue">
-        </div>
-
-        <div class="full">
-          <label>Details</label>
-          <textarea name="details" rows="5" placeholder="Tell us about your event, preferred drinks, hours, and anything special."></textarea>
-        </div>
+  <section id="quote" class="wrap">
+    <div class="panel form-panel">
+      <div class="quote-side">
+        <div class="eyebrow" style="color:#ffd4dc">Private Events</div>
+        <h2 class="title">Let's bring good coffee to your next event.</h2>
+        <p class="section-copy">Fill out the quote form and we’ll get back to you with availability, pricing, and next steps.</p>
+        <ul class="quote-points"><li>Handcrafted Drinks</li><li>Memorable Events</li><li>We Come To You</li><li>Good Coffee. Good Energy.</li></ul>
+        <p><strong>Great for weddings, birthdays, corporate events, markets, showers, and private gatherings.</strong></p>
       </div>
 
-      <button class="btn" type="submit">Submit Quote Request →</button>
-      <div class="form-note">🔒 Your information is only used to respond to your inquiry.</div>
-      <div class="success" id="quoteSuccess">Thank you! Your quote request was submitted.</div>
-    </form>
+      <form class="form" id="quoteForm" name="quote-request" method="POST">
+        <input type="hidden" name="form-name" value="quote-request">
+        <p style="display:none"><label>Don’t fill this out if you’re human: <input name="bot-field"></label></p>
+        <div class="form-grid">
+          <div><label>Name *</label><input name="name" required placeholder="Your name"></div>
+          <div><label>Email *</label><input name="email" type="email" required placeholder="you@email.com"></div>
+          <div><label>Phone</label><input name="phone" placeholder="(555) 000-0000"></div>
+          <div><label>Event Date</label><input name="date" type="date"></div>
+          <div><label>Event Type</label><select name="type"><option>Private Event</option><option>Wedding</option><option>Corporate Event</option><option>Market / Pop-Up</option><option>Other</option></select></div>
+          <div><label>Guest Count</label><select name="guests"><option>1-50</option><option>51-100</option><option>101-200</option><option>200+</option><option>Not sure yet</option></select></div>
+          <div class="full"><label>Location</label><input name="location" placeholder="City / venue"></div>
+          <div class="full"><label>Details</label><textarea name="details" rows="5" placeholder="Tell us about your event, preferred drinks, hours, and anything special."></textarea></div>
+        </div>
+        <button class="btn" type="submit">Submit Quote Request →</button>
+        <div class="form-note">🔒 Your information is only used to respond to your inquiry.</div>
+        <div class="success" id="quoteSuccess">Thank you! Your quote request was submitted.</div>
+      </form>
+    </div>
+  </section>
+
+  <section id="contact" class="wrap">
+    <div class="panel contact-panel">
+      <div class="eyebrow">Get In Touch</div>
+      <h2 class="title">Follow, book, or ask a question.</h2>
+      <p class="section-copy contact-copy">Instagram is the best place to see new pop-ups and updates.</p>
+      <div class="actions contact-actions"><a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/offtheblvdcoffee/">Instagram</a><a class="btn outline" href="mailto:hello@offtheblvdcoffee.com">Email Placeholder</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div><img src="assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee"><p>Serving The Inland Empire and The Greater Los Angeles Area.</p></div>
+    <div><a href="https://www.instagram.com/offtheblvdcoffee/" target="_blank" rel="noopener">@offtheblvdcoffee</a><p>© <span id="year"></span> Off The Blvd Coffee</p></div>
   </div>
-</section>
-<section id="contact" class="wrap"><div class="panel" style="padding:40px;text-align:center"><div class="eyebrow">Get In Touch</div><h2 class="title">Follow, book, or ask a question.</h2><p class="section-copy" style="margin:auto auto 24px">Instagram is the best place to see new pop-ups and updates.</p><div class="actions" style="justify-content:center"><a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/offtheblvdcoffee/">Instagram</a><a class="btn outline" href="mailto:hello@offtheblvdcoffee.com">Email Placeholder</a></div></div></section>
-</main><footer class="footer"><div class="wrap footer-inner"><div><img src="assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee"><p>Serving The Inland Empire and The Greater Los Angeles Area.</p></div><div><a href="https://www.instagram.com/offtheblvdcoffee/" target="_blank" rel="noopener">@offtheblvdcoffee</a><p>© <span id="year"></span> Off The Blvd Coffee</p></div></div></footer>
-<script>
-const businessEmail='hello@offtheblvdcoffee.com';
-
-// --- Keep existing hardcoded fallback content if JSON fetch fails ---
-const hardcodedFallback = {
-  events: [
-    {title:'Local Farmers Market',date:'2025-05-24',time:'9AM - 2PM',area:'The Inland Empire',type:'Public Event',details:'Exact location placeholder'},
-    {title:'Community Market',date:'2025-06-07',time:'8AM - 12PM',area:'The Greater Los Angeles Area',type:'Public Event',details:'Exact location placeholder'},
-    {title:'Private Event',date:'2025-06-14',time:'10AM - 2PM',area:'The Greater Los Angeles Area',type:'Private Booking',details:'Private booking'},
-    {title:'Add Your Next Event',date:'2025-06-28',time:'TBD',area:'The Inland Empire',type:'Public Event',details:'Placeholder event'}
-  ],
-  aboutHtml: document.getElementById('aboutText') ? document.getElementById('aboutText').innerHTML : null,
-  menuHtml: document.getElementById('menuGrid') ? document.getElementById('menuGrid').innerHTML : null,
-  galleryHtml: document.getElementById('galleryGrid') ? document.getElementById('galleryGrid').innerHTML : null
-};
-
-let events = hardcodedFallback.events;
-
-const fmt=new Intl.DateTimeFormat('en-US',{month:'long',day:'numeric',year:'numeric'});
-function svgIcon(){return '<svg class="icon" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/></svg>'}
-
-function makeSvgNode(){
-  const wrapper=document.createElement('div');
-  wrapper.innerHTML=svgIcon();
-  return wrapper.firstElementChild;
-}
-
-function renderEvents(){
-  const q=document.getElementById('eventSearch').value.toLowerCase();
-  const f=document.getElementById('eventFilter').value;
-  const grid=document.getElementById('eventsGrid');
-  grid.innerHTML='';
-  let shown=0;
-
-  events
-    .filter(e=>(f==='all'||e.type===f)&&JSON.stringify(e).toLowerCase().includes(q))
-    .forEach(e=>{
-      shown++;
-      const card=document.createElement('article');
-      card.className='event-card';
-
-      const svg=makeSvgNode();
-      card.appendChild(svg);
-
-      const content=document.createElement('div');
-
-      const meta=document.createElement('div');
-      meta.className='meta';
-      meta.textContent=`${fmt.format(new Date(e.date+'T12:00:00'))} · ${e.time}`;
-
-      const h3=document.createElement('h3');
-      h3.textContent=e.title;
-
-      const p=document.createElement('p');
-      p.textContent=e.area;
-
-      const badge=document.createElement('span');
-      badge.className=`badge ${e.type.includes('Private')?'private':''}`;
-      badge.textContent=e.type;
-
-      content.appendChild(meta);
-      content.appendChild(h3);
-      content.appendChild(p);
-      content.appendChild(badge);
-
-      card.appendChild(content);
-      grid.appendChild(card);
-    });
-
-  document.getElementById('emptyEvents').style.display=shown?'none':'block';
-}
-
-document.getElementById('eventSearch').addEventListener('input',renderEvents);
-document.getElementById('eventFilter').addEventListener('change',renderEvents);
-
-function cacheBusted(url){
-  return url + (url.includes('?')?'&':'?') + 'v=' + encodeURIComponent(String(Date.now()));
-}
-
-async function fetchJSON(url){
-  const res = await fetch(cacheBusted(url), {cache:'no-store'});
-  if(!res.ok) throw new Error('HTTP ' + res.status);
-  return res.json();
-}
-
-function safeText(str){
-  return (str===undefined || str===null) ? '' : String(str);
-}
-
-function renderAbout(data){
-  const aboutText = document.getElementById('aboutText');
-  if(!aboutText) return;
-
-  const about = data && data.about ? data.about : null;
-
-  if(!about){
-    aboutText.innerHTML = hardcodedFallback.aboutHtml ?? aboutText.innerHTML;
-    return;
-  }
-
-  const heading = safeText(about.heading);
-  const mainParagraph = safeText(about.main_paragraph);
-  const storyParagraph = safeText(about.story_paragraph);
-  const serviceAreaText = safeText(about.service_area_text);
-
-  if(!heading || !mainParagraph){
-    aboutText.innerHTML = hardcodedFallback.aboutHtml ?? aboutText.innerHTML;
-    return;
-  }
-
-  aboutText.innerHTML = `
-    <div class="eyebrow">About</div>
-    <h2 class="title">${heading}</h2>
-    <p class="section-copy">${mainParagraph}</p>
-    ${storyParagraph ? `<p class="section-copy">${storyParagraph}</p>` : ''}
-    ${serviceAreaText ? `<p class="section-copy">${serviceAreaText}</p>` : ''}
-    <a class="btn" href="#quote">Book the Cart →</a>
-  `;
-}
-
-function renderMenu(data){
-  const menuGrid = document.getElementById('menuGrid');
-  if(!menuGrid) return;
-
-  const items = data && Array.isArray(data.menu_items) ? data.menu_items : [];
-
-  if(items.length === 0){
-    menuGrid.innerHTML = hardcodedFallback.menuHtml ?? menuGrid.innerHTML;
-    return;
-  }
-
-  const grouped = {};
-
-  items.forEach(item => {
-    const category = safeText(item.category);
-    if(!category) return;
-
-    if(!grouped[category]){
-      grouped[category] = [];
-    }
-
-    grouped[category].push(item);
-  });
-
-  menuGrid.innerHTML = '';
-
-  Object.keys(grouped).forEach(category => {
-    const card = document.createElement('div');
-    card.className = 'menu-card';
-
-    const h3 = document.createElement('h3');
-    h3.textContent = category;
-    card.appendChild(h3);
-
-    grouped[category].forEach(item => {
-      const itemName = safeText(item.item_name);
-      const price = safeText(item.price);
-      const description = safeText(item.description);
-
-      if(!itemName) return;
-
-      const menuItem = document.createElement('div');
-      menuItem.className = 'menu-item';
-
-      const left = document.createElement('div');
-      left.textContent = itemName;
-
-      if(description){
-        const small = document.createElement('small');
-        small.textContent = description;
-        left.appendChild(small);
-      }
-
-      const span = document.createElement('span');
-      span.className = 'price';
-      span.textContent = price || '';
-
-      menuItem.appendChild(left);
-      menuItem.appendChild(span);
-      card.appendChild(menuItem);
-    });
-
-    if(card.querySelectorAll('.menu-item').length){
-      menuGrid.appendChild(card);
-    }
-  });
-
-  if(menuGrid.children.length === 0){
-    menuGrid.innerHTML = hardcodedFallback.menuHtml ?? menuGrid.innerHTML;
-  }
-}
-
-function renderGallery(data){
-  const galleryGrid = document.getElementById('galleryGrid');
-  if(!galleryGrid) return;
-
-  const images = data && Array.isArray(data.images) ? data.images : [];
-
-  if(images.length === 0){
-    galleryGrid.innerHTML = hardcodedFallback.galleryHtml ?? galleryGrid.innerHTML;
-    return;
-  }
-
-  galleryGrid.innerHTML = '';
-
-  images.slice(0, 5).forEach((image, index) => {
-    const imageUrl = safeText(image.image_url);
-    const altText = safeText(image.alt_text) || 'Off The Blvd Coffee gallery photo';
-
-    if(!imageUrl) return;
-
-    const img = document.createElement('img');
-
-    if(index === 0){
-      img.className = 'big';
-    }
-
-    img.src = imageUrl;
-    img.alt = altText;
-
-    galleryGrid.appendChild(img);
-  });
-
-  while(galleryGrid.children.length < 5){
-    const placeholder = document.createElement('div');
-    placeholder.className = 'placeholder';
-    placeholder.innerHTML = '<div><b>Photo Placeholder</b>More photos coming soon</div>';
-    galleryGrid.appendChild(placeholder);
-  }
-
-  if(galleryGrid.children.length === 0){
-    galleryGrid.innerHTML = hardcodedFallback.galleryHtml ?? galleryGrid.innerHTML;
-  }
-}
-
-  const images = data.images.filter(Boolean);
-
-  galleryGrid.innerHTML='';
-
-  // Preserve existing grid layout: 5 items with first being .big (matches current design)
-  // If fewer images, fill remaining with placeholders; if more, render first 5.
-  const maxSlots = 5;
-
-  for(let i=0;i<Math.min(images.length,maxSlots);i++){
-    const imgData = images[i];
-    const src = safeText(imgData.src);
-    const alt = safeText(imgData.alt) || '';
-    const caption = safeText(imgData.caption);
-
-    if(!src) continue;
-
-    if(i===0){
-      const img=document.createElement('img');
-      img.className='big';
-      img.src='assets/' + src.replace(/^assets\//,'');
-      img.alt=alt || 'Gallery image';
-      galleryGrid.appendChild(img);
-    }else{
-      const img=document.createElement('img');
-      img.src='assets/' + src.replace(/^assets\//,'');
-      img.alt=alt || 'Gallery image';
-      galleryGrid.appendChild(img);
-    }
-
-    // For i>0, if caption exists, keep a placeholder-like caption block instead of overlay.
-    // Current design uses <div class="placeholder"> elements. To preserve that look, replace every
-    // even slot (1,3) with placeholder and odd slot with image when possible.
-    // With the current gallery CSS, placeholders occupy height/width; we therefore also render a
-    // placeholder for missing images. (If caption exists, it goes inside placeholder.)
-    if(caption && i!==0){
-      // no-op: caption currently not shown on the design; to preserve design, use placeholders only for non-image slots below
-    }
-  }
-
-  // Fill remaining slots with placeholders to preserve the original 5-cell layout when CMS has fewer images.
-  while(galleryGrid.children.length < maxSlots){
-    const placeholder=document.createElement('div');
-    placeholder.className='placeholder';
-    placeholder.innerHTML=`<div><b>Photo Placeholder</b>${safeText('')}</div>`;
-    galleryGrid.appendChild(placeholder);
-  }
-
-  if(galleryGrid.children.length===0){
-    galleryGrid.innerHTML = hardcodedFallback.galleryHtml ?? galleryGrid.innerHTML;
-  }
-}
-
-async function initFromCMS(){
-  let loadedAny = false;
-
-  // Events (required for search/filter)
-  try{
-    const eventsData = await fetchJSON('/api/events');
-   if(eventsData && Array.isArray(eventsData.events)){
-  events = eventsData.events.map(event => ({
-    title: event.title || '',
-    date: event.event_date || '',
-    time: 'TBD',
-    area: event.location || '',
-    type: 'Public Event',
-    details: event.description || ''
-  }));
-  loadedAny = true;
-}
-  }catch(e){
-    // keep fallback
-  }
-
-  renderEvents();
-
-  // About
-  try{
-    const aboutData = await fetchJSON('/api/about');
-    if(aboutData){
-      renderAbout(aboutData);
-      loadedAny = true;
-    }
-  }catch(e){
-    if(hardcodedFallback.aboutHtml!==null){
-      document.getElementById('aboutText').innerHTML = hardcodedFallback.aboutHtml;
-    }
-  }
-
-  // Menu
-  try{
-    const menuData = await fetchJSON('/api/menu');
-    if(menuData){
-      renderMenu(menuData);
-      loadedAny = true;
-    }
-  }catch(e){
-    if(hardcodedFallback.menuHtml!==null){
-      document.getElementById('menuGrid').innerHTML = hardcodedFallback.menuHtml;
-    }
-  }
-
-  // Gallery
-  try{
-    const galleryData = await fetchJSON('/api/gallery');
-    if(galleryData){
-      renderGallery(galleryData);
-      loadedAny = true;
-    }
-  }catch(e){
-    if(hardcodedFallback.galleryHtml!==null){
-      document.getElementById('galleryGrid').innerHTML = hardcodedFallback.galleryHtml;
-    }
-  }
-
-  // If none loaded, keep fallback (already present)
-}
-
-// Initial render with fallback immediately for quick display
-renderEvents();
-initFromCMS();
-
-document.getElementById('hamb').addEventListener('click',()=>{
-  const links=document.getElementById('links');
-  const isOpen=links.classList.toggle('open');
-  document.getElementById('hamb').setAttribute('aria-expanded',String(isOpen));
-});
-document.getElementById('year').textContent=new Date().getFullYear();
-
-// Cloudflare Pages Functions quote submission (replaces Netlify Forms)
-(function(){
-  const form = document.getElementById('quoteForm');
-  if(!form) return;
-
-  const successEl = document.getElementById('quoteSuccess');
-  let lockedUntil = 0;
-
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-
-    const now = Date.now();
-    if(now < lockedUntil) return;
-
-    lockedUntil = now + 8000; // basic client-side spam throttle
-
-    const formData = new FormData(form);
-    const actionUrl = '/api/quote';
-
-    try{
-      const res = await fetch(actionUrl, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if(!res.ok){
-        throw new Error('Request failed: ' + res.status);
-      }
-
-      // keep the same success page experience
-      window.location.href = '/thank-you.html';
-    }catch(err){
-      if(successEl){
-        successEl.style.display='block';
-        successEl.textContent='Sorry—something went wrong submitting your request. Please try again.';
-      }
-      lockedUntil = Date.now(); // unlock quickly to allow retry
-    }
-  });
-})();
-</script>
-</body></html>  
+</footer>
+
+<script src="/assets/site.js?v=1"></script>
+</body>
+</html>
