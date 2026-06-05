@@ -295,13 +295,17 @@ select:focus{
   margin:0;
 }
 
-.badge{
-  background:#f4ced6;
-  color:var(--red);
-  border-radius:999px;
-  padding:7px 12px;
-  font-size:12px;
-  font-weight:900;
+.badge {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  font-weight: 800;
 }
 
 .quote-details{
