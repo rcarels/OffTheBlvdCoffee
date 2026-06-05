@@ -217,6 +217,33 @@ function renderReviews(data){
   if(!reviewsGrid) return;
 
   const reviews = data && Array.isArray(data.reviews) ? data.reviews : [];
+
+  if(reviews.length === 0) return;
+
+  reviewsGrid.innerHTML = '';
+
+  reviews.slice(0, 6).forEach(review => {
+    const rating = Math.max(1, Math.min(5, Number(review.rating || 5)));
+
+    const card = document.createElement('div');
+    card.className = 'review-card';
+
+    card.innerHTML = `
+      <div class="stars">${'★'.repeat(rating)}</div>
+      <blockquote>${safeText(review.review_text)}</blockquote>
+      <p class="review-name">${safeText(review.customer_name)}</p>
+      ${review.event_type ? `<p>${safeText(review.event_type)}</p>` : ''}
+    `;
+
+    reviewsGrid.appendChild(card);
+  });
+}
+
+function renderReviews(data){
+  const reviewsGrid = document.getElementById('reviewsGrid');
+  if(!reviewsGrid) return;
+
+  const reviews = data && Array.isArray(data.reviews) ? data.reviews : [];
   if(reviews.length === 0){
     reviewsGrid.innerHTML = hardcodedFallback.reviewsHtml ?? reviewsGrid.innerHTML;
     return;
@@ -277,6 +304,17 @@ async function initFromCMS(){
     if(galleryData) renderGallery(galleryData);
   }catch(e){
     if(hardcodedFallback.galleryHtml !== null) document.getElementById('galleryGrid').innerHTML = hardcodedFallback.galleryHtml;
+  }
+
+  // Reviews
+  try{
+    const reviewsData = await fetchJSON('/api/reviews');
+    if(reviewsData){
+    renderReviews(reviewsData);
+    loadedAny = true;
+  }
+  }catch(e){
+  // keep fallback review
   }
 
   try{
