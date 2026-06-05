@@ -3,6 +3,12 @@ const loginMessageEl = document.getElementById("loginMessage");
 const loginEl = document.getElementById("login");
 const dashboardEl = document.getElementById("dashboard");
 
+const adminSectionEyebrowEl = document.getElementById("adminSectionEyebrow");
+const adminSectionTitleEl = document.getElementById("adminSectionTitle");
+
+const adminSectionEyebrowEl = document.getElementById("adminSectionEyebrow");
+const adminSectionTitleEl = document.getElementById("adminSectionTitle");
+
 const quotesDivEl = document.getElementById("quotes");
 const loadQuotesButtonEl = document.getElementById("loadQuotes");
 const refreshQuotesButtonEl = document.getElementById("refreshQuotes");
@@ -85,6 +91,24 @@ document.querySelectorAll(".nav button").forEach((button) => {
     button.classList.add("active");
 
     const selected = button.dataset.section;
+
+    const sectionTitles = {
+      quotes: "Manage Quote Requests",
+      events: "Manage Events",
+      menu: "Manage Menu",
+      gallery: "Manage Gallery Photos",
+      reviews: "Manage Customer Reviews",
+      about: "Manage About Page",
+    };
+
+    if (adminSectionEyebrowEl) {
+      adminSectionEyebrowEl.textContent = "Website Manager";
+    }
+
+    if (adminSectionTitleEl) {
+      adminSectionTitleEl.textContent =
+        sectionTitles[selected] || "Website Manager";
+    }
 
     ["quotes", "events", "menu", "gallery", "reviews", "about"].forEach((name) => {
       const section = document.getElementById(`section-${name}`);
