@@ -6,9 +6,6 @@ const dashboardEl = document.getElementById("dashboard");
 const adminSectionEyebrowEl = document.getElementById("adminSectionEyebrow");
 const adminSectionTitleEl = document.getElementById("adminSectionTitle");
 
-const adminSectionEyebrowEl = document.getElementById("adminSectionEyebrow");
-const adminSectionTitleEl = document.getElementById("adminSectionTitle");
-
 const quotesDivEl = document.getElementById("quotes");
 const loadQuotesButtonEl = document.getElementById("loadQuotes");
 const refreshQuotesButtonEl = document.getElementById("refreshQuotes");
