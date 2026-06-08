@@ -1,0 +1,7 @@
+name = "off-the-blvd-coffee"
+compatibility_date = "2026-06-08"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "off-the-blvd-coffee-db"
+database_id = "local-placeholder"
