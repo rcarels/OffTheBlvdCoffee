@@ -178,8 +178,15 @@
           <form id="galleryForm" class="note-form">
             <label>Choose Photo</label>
             <input type="file" name="photo_file" accept="image/jpeg,image/png,image/webp,image/gif">
-            <input type="hidden" name="image_url">
-            <p class="field-help">Choose a photo from your computer. JPG, PNG, WEBP, and GIF files under 8 MB are allowed.</p>
+            <p class="field-help">Choose a photo from your computer once Cloudflare R2 uploads are enabled.</p>
+
+            <label>Image URL (temporary)</label>
+            <input
+             type="text"
+             name="image_url"
+             placeholder="Paste photo address until uploads are enabled"
+            required>
+          <p class="field-help">Direct uploads are being configured. Until then, paste a public photo URL.</p>
             
             <label>Photo Description</label>
             <input type="text" name="alt_text" placeholder="Example: Iced latte served from the mobile coffee cart">
