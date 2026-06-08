@@ -56,11 +56,13 @@ function renderEvents(){
     .filter(e => (f === 'all' || e.type === f) && JSON.stringify(e).toLowerCase().includes(q))
     .forEach(e => {
       shown++;
+
       const card = document.createElement('article');
       card.className = 'event-card';
       card.appendChild(makeSvgNode());
 
       const content = document.createElement('div');
+
       const meta = document.createElement('div');
       meta.className = 'meta';
       meta.textContent = `${fmt.format(new Date(e.date + 'T12:00:00'))} · ${e.time}`;
@@ -91,6 +93,7 @@ function renderAbout(data){
   if(!aboutText) return;
 
   const about = data && data.about ? data.about : null;
+
   if(!about){
     aboutText.innerHTML = hardcodedFallback.aboutHtml ?? aboutText.innerHTML;
     return;
@@ -106,14 +109,44 @@ function renderAbout(data){
     return;
   }
 
-  aboutText.innerHTML = `
-    <div class="eyebrow">About</div>
-    <h2 class="title">${heading}</h2>
-    <p class="section-copy">${mainParagraph}</p>
-    ${storyParagraph ? `<p class="section-copy">${storyParagraph}</p>` : ''}
-    ${serviceAreaText ? `<p class="section-copy">${serviceAreaText}</p>` : ''}
-    <a class="btn" href="#quote">Book the Cart →</a>
-  `;
+  aboutText.replaceChildren();
+
+  const eyebrow = document.createElement('div');
+  eyebrow.className = 'eyebrow';
+  eyebrow.textContent = 'About';
+
+  const title = document.createElement('h2');
+  title.className = 'title';
+  title.textContent = heading;
+
+  const mainP = document.createElement('p');
+  mainP.className = 'section-copy';
+  mainP.textContent = mainParagraph;
+
+  aboutText.appendChild(eyebrow);
+  aboutText.appendChild(title);
+  aboutText.appendChild(mainP);
+
+  if(storyParagraph){
+    const storyP = document.createElement('p');
+    storyP.className = 'section-copy';
+    storyP.textContent = storyParagraph;
+    aboutText.appendChild(storyP);
+  }
+
+  if(serviceAreaText){
+    const areaP = document.createElement('p');
+    areaP.className = 'section-copy';
+    areaP.textContent = serviceAreaText;
+    aboutText.appendChild(areaP);
+  }
+
+  const btn = document.createElement('a');
+  btn.className = 'btn';
+  btn.href = '#quote';
+  btn.textContent = 'Book the Cart →';
+
+  aboutText.appendChild(btn);
 }
 
 function renderMenu(data){
@@ -121,12 +154,14 @@ function renderMenu(data){
   if(!menuGrid) return;
 
   const items = data && Array.isArray(data.menu_items) ? data.menu_items : [];
+
   if(items.length === 0){
     menuGrid.innerHTML = hardcodedFallback.menuHtml ?? menuGrid.innerHTML;
     return;
   }
 
   const grouped = {};
+
   items.forEach(item => {
     const category = safeText(item.category);
     if(!category) return;
@@ -135,6 +170,7 @@ function renderMenu(data){
   });
 
   menuGrid.innerHTML = '';
+
   Object.keys(grouped).forEach(category => {
     const card = document.createElement('div');
     card.className = 'menu-card';
@@ -154,6 +190,7 @@ function renderMenu(data){
 
       const left = document.createElement('div');
       left.textContent = itemName;
+
       if(description){
         const small = document.createElement('small');
         small.textContent = description;
@@ -169,7 +206,9 @@ function renderMenu(data){
       card.appendChild(menuItem);
     });
 
-    if(card.querySelectorAll('.menu-item').length) menuGrid.appendChild(card);
+    if(card.querySelectorAll('.menu-item').length) {
+      menuGrid.appendChild(card);
+    }
   });
 
   if(menuGrid.children.length === 0){
@@ -182,12 +221,14 @@ function renderGallery(data){
   if(!galleryGrid) return;
 
   const images = data && Array.isArray(data.images) ? data.images : [];
+
   if(images.length === 0){
     galleryGrid.innerHTML = hardcodedFallback.galleryHtml ?? galleryGrid.innerHTML;
     return;
   }
 
   galleryGrid.innerHTML = '';
+
   images.slice(0, 5).forEach((image, index) => {
     const imageUrl = safeText(image.image_url);
     const altText = safeText(image.alt_text) || 'Off The Blvd Coffee gallery photo';
@@ -203,7 +244,17 @@ function renderGallery(data){
   while(galleryGrid.children.length < 5){
     const placeholder = document.createElement('div');
     placeholder.className = 'placeholder';
-    placeholder.innerHTML = '<div><b>Photo Placeholder</b>More photos coming soon</div>';
+
+    const inner = document.createElement('div');
+
+    const bold = document.createElement('b');
+    bold.textContent = 'Photo Placeholder';
+
+    const text = document.createTextNode('More photos coming soon');
+
+    inner.appendChild(bold);
+    inner.appendChild(text);
+    placeholder.appendChild(inner);
     galleryGrid.appendChild(placeholder);
   }
 
@@ -217,23 +268,40 @@ function renderReviews(data){
   if(!reviewsGrid) return;
 
   const reviews = data && Array.isArray(data.reviews) ? data.reviews : [];
+
   if(reviews.length === 0){
     reviewsGrid.innerHTML = hardcodedFallback.reviewsHtml ?? reviewsGrid.innerHTML;
     return;
   }
 
   reviewsGrid.innerHTML = '';
+
   reviews.slice(0, 6).forEach(review => {
     const rating = Math.max(1, Math.min(5, Number(review.rating || 5)));
+
     const card = document.createElement('div');
     card.className = 'review-card';
 
-    card.innerHTML = `
-      <div class="stars">${'★'.repeat(rating)}</div>
-      <blockquote>${safeText(review.review_text)}</blockquote>
-      <p class="review-name">${safeText(review.customer_name)}</p>
-      ${review.event_type ? `<p>${safeText(review.event_type)}</p>` : ''}
-    `;
+    const stars = document.createElement('div');
+    stars.className = 'stars';
+    stars.textContent = '★'.repeat(rating);
+
+    const quote = document.createElement('blockquote');
+    quote.textContent = safeText(review.review_text);
+
+    const name = document.createElement('p');
+    name.className = 'review-name';
+    name.textContent = safeText(review.customer_name);
+
+    card.appendChild(stars);
+    card.appendChild(quote);
+    card.appendChild(name);
+
+    if(review.event_type){
+      const eventType = document.createElement('p');
+      eventType.textContent = safeText(review.event_type);
+      card.appendChild(eventType);
+    }
 
     reviewsGrid.appendChild(card);
   });
@@ -242,6 +310,7 @@ function renderReviews(data){
 async function initFromCMS(){
   try{
     const eventsData = await fetchJSON('/api/events');
+
     if(eventsData && Array.isArray(eventsData.events)){
       events = eventsData.events.map(event => ({
         title: event.title || '',
@@ -262,30 +331,36 @@ async function initFromCMS(){
     const aboutData = await fetchJSON('/api/about');
     if(aboutData) renderAbout(aboutData);
   }catch(e){
-    if(hardcodedFallback.aboutHtml !== null) document.getElementById('aboutText').innerHTML = hardcodedFallback.aboutHtml;
+    if(hardcodedFallback.aboutHtml !== null) {
+      document.getElementById('aboutText').innerHTML = hardcodedFallback.aboutHtml;
+    }
   }
 
   try{
     const menuData = await fetchJSON('/api/menu');
     if(menuData) renderMenu(menuData);
   }catch(e){
-    if(hardcodedFallback.menuHtml !== null) document.getElementById('menuGrid').innerHTML = hardcodedFallback.menuHtml;
+    if(hardcodedFallback.menuHtml !== null) {
+      document.getElementById('menuGrid').innerHTML = hardcodedFallback.menuHtml;
+    }
   }
 
   try{
     const galleryData = await fetchJSON('/api/gallery');
     if(galleryData) renderGallery(galleryData);
   }catch(e){
-    if(hardcodedFallback.galleryHtml !== null) document.getElementById('galleryGrid').innerHTML = hardcodedFallback.galleryHtml;
+    if(hardcodedFallback.galleryHtml !== null) {
+      document.getElementById('galleryGrid').innerHTML = hardcodedFallback.galleryHtml;
+    }
   }
-
-  // Reviews
 
   try{
     const reviewsData = await fetchJSON('/api/reviews');
     if(reviewsData) renderReviews(reviewsData);
   }catch(e){
-    if(hardcodedFallback.reviewsHtml !== null) document.getElementById('reviewsGrid').innerHTML = hardcodedFallback.reviewsHtml;
+    if(hardcodedFallback.reviewsHtml !== null) {
+      document.getElementById('reviewsGrid').innerHTML = hardcodedFallback.reviewsHtml;
+    }
   }
 }
 
@@ -333,12 +408,14 @@ function initQuoteForm(){
       });
 
       if(!res.ok) throw new Error('Request failed: ' + res.status);
+
       window.location.href = '/thank-you.html';
     }catch(err){
       if(successEl){
         successEl.style.display = 'block';
         successEl.textContent = 'Sorry—something went wrong submitting your request. Please try again.';
       }
+
       lockedUntil = Date.now();
     }
   });
