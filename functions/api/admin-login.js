@@ -1,12 +1,4 @@
-function json(data, status = 200, headers = {}) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      "Content-Type": "application/json",
-      ...headers,
-    },
-  });
-}
+import { createAdminSession, json } from "../_shared/auth.js";
 
 export async function onRequestPost({ request, env }) {
   try {
@@ -17,16 +9,21 @@ export async function onRequestPost({ request, env }) {
       return json({ ok: false, error: "ADMIN_PASSWORD secret missing" }, 500);
     }
 
+    if (!env.DB) {
+      return json({ ok: false, error: "D1 binding DB missing" }, 500);
+    }
+
     if (password !== env.ADMIN_PASSWORD) {
       return json({ ok: false, error: "Invalid password" }, 401);
     }
+
+    const session = await createAdminSession(env);
 
     return json(
       { ok: true },
       200,
       {
-        "Set-Cookie":
-          "admin_auth=ok; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=86400",
+        "Set-Cookie": session.cookie,
       }
     );
   } catch (err) {
