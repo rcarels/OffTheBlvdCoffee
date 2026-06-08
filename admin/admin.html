@@ -175,17 +175,12 @@
             <button class="btn small" id="loadGallery">Load Gallery</button>
           </div>
 
-          <div class="owner-note">
-            <strong>Temporary photo workflow:</strong>
-            Paste a public photo address for now. Photos saved only on your computer will not work yet.
-            The next media upgrade will replace this with “Choose Photo From Computer.”
-          </div>
-
           <form id="galleryForm" class="note-form">
-            <label>Photo Address</label>
-            <input type="text" name="image_url" placeholder="Example: https://example.com/photo.jpg" required>
-            <p class="field-help">Paste the address of a photo that already exists online. This is temporary until direct uploads are added.</p>
-
+            <label>Choose Photo</label>
+            <input type="file" name="photo_file" accept="image/jpeg,image/png,image/webp,image/gif">
+            <input type="hidden" name="image_url">
+            <p class="field-help">Choose a photo from your computer. JPG, PNG, WEBP, and GIF files under 8 MB are allowed.</p>
+            
             <label>Photo Description</label>
             <input type="text" name="alt_text" placeholder="Example: Iced latte served from the mobile coffee cart">
             <p class="field-help">Describe what is shown in the photo. This helps accessibility and search engines.</p>
@@ -313,6 +308,6 @@
     </div>
   </div>
 
-  <script src="/admin/admin.js?v=18"></script>
+  <script src="/admin/admin.js?v=19"></script>
 </body>
 </html>

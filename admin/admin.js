@@ -765,7 +765,29 @@ if (galleryFormEl) {
     event.preventDefault();
 
     const formData = new FormData(galleryFormEl);
-    let method = "POST";
+const photoFile = formData.get("photo_file");
+let method = "POST";
+
+if (photoFile && photoFile.size > 0) {
+  const uploadData = new FormData();
+  uploadData.append("file", photoFile);
+
+  const uploadResponse = await fetch("/api/upload-media", {
+    method: "POST",
+    body: uploadData,
+  });
+
+  const uploadResult = await uploadResponse.json();
+
+  if (!uploadResult.ok) {
+    alert(uploadResult.error || "Could not upload photo.");
+    return;
+  }
+
+  formData.set("image_url", uploadResult.image_url);
+}
+
+formData.delete("photo_file");
 
     if (editingGalleryImageId) {
       method = "PUT";
