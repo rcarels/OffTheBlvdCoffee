@@ -5,3 +5,6 @@ compatibility_date = "2026-06-08"
 binding = "DB"
 database_name = "offtheblvdcoffee_quotes"
 database_id = "ebb15185-3adb-4e88-bb14-be38e00ff47a"
+[[r2_buckets]]
+binding = "MEDIA_BUCKET"
+bucket_name = "offtheblvdcoffee-media"
