@@ -9,6 +9,7 @@ const adminSectionTitleEl = document.getElementById("adminSectionTitle");
 const quotesDivEl = document.getElementById("quotes");
 const loadQuotesButtonEl = document.getElementById("loadQuotes");
 const refreshQuotesButtonEl = document.getElementById("refreshQuotes");
+const adminLogoutButtonEl = document.getElementById("adminLogout");
 
 const loadEventsButtonEl = document.getElementById("loadEvents");
 const eventFormEl = document.getElementById("eventForm");
@@ -52,6 +53,49 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+
+function adminShowLogin(message = "") {
+  if (dashboardEl) dashboardEl.style.display = "none";
+  if (loginEl) loginEl.style.display = "flex";
+  if (loginMessageEl) loginMessageEl.textContent = message;
+}
+
+function adminShowDashboard() {
+  if (loginEl) loginEl.style.display = "none";
+  if (dashboardEl) dashboardEl.style.display = "grid";
+}
+
+async function adminCheckSession() {
+  try {
+    const response = await fetch("/api/admin-session", {
+      method: "GET",
+      cache: "no-store",
+    });
+
+    const result = await response.json();
+
+    if (result.ok && result.authenticated) {
+      adminShowDashboard();
+      await adminLoadQuotes();
+      return;
+    }
+  } catch (err) {
+    console.warn("Could not check admin session", err);
+  }
+
+  adminShowLogin();
+}
+
+async function adminLogout() {
+  try {
+    await fetch("/api/admin-logout", { method: "POST" });
+  } catch (err) {
+    console.warn("Could not sign out cleanly", err);
+  }
+
+  adminShowLogin("Signed out.");
+}
+
 /* Login */
 
 if (loginFormEl) {
@@ -70,12 +114,17 @@ if (loginFormEl) {
       return;
     }
 
-    loginEl.style.display = "none";
-    dashboardEl.style.display = "grid";
+    adminShowDashboard();
 
     adminLoadQuotes();
   });
 }
+
+if (adminLogoutButtonEl) {
+  adminLogoutButtonEl.addEventListener("click", adminLogout);
+}
+
+adminCheckSession();
 
 /* Navigation */
 

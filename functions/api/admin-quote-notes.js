@@ -1,19 +1,8 @@
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  });
-}
-
-function isAuthed(request) {
-  const cookie = request.headers.get("Cookie") || "";
-  return cookie.includes("admin_auth=ok");
-}
+import { json, requireAdmin } from "../_shared/auth.js";
 
 export async function onRequestGet({ request, env }) {
-  if (!isAuthed(request)) {
-    return json({ ok: false, error: "Unauthorized" }, 401);
-  }
+  const authError = await requireAdmin(request, env);
+  if (authError) return authError;
 
   const url = new URL(request.url);
   const quoteId = Number(url.searchParams.get("quote_id"));
@@ -30,9 +19,8 @@ export async function onRequestGet({ request, env }) {
 }
 
 export async function onRequestPost({ request, env }) {
-  if (!isAuthed(request)) {
-    return json({ ok: false, error: "Unauthorized" }, 401);
-  }
+  const authError = await requireAdmin(request, env);
+  if (authError) return authError;
 
   const formData = await request.formData();
   const quoteId = Number(formData.get("quote_id"));

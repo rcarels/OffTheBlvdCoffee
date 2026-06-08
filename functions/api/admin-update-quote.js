@@ -1,21 +1,10 @@
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  });
-}
-
-function isAuthed(request) {
-  const cookie = request.headers.get("Cookie") || "";
-  return cookie.includes("admin_auth=ok");
-}
+import { json, requireAdmin } from "../_shared/auth.js";
 
 const allowedStatuses = ["New", "Contacted", "Booked", "Completed", "Archived"];
 
 export async function onRequestPost({ request, env }) {
-  if (!isAuthed(request)) {
-    return json({ ok: false, error: "Unauthorized" }, 401);
-  }
+  const authError = await requireAdmin(request, env);
+  if (authError) return authError;
 
   if (!env.DB) {
     return json({ ok: false, error: "D1 binding DB missing" }, 500);

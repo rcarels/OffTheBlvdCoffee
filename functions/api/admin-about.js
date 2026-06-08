@@ -1,29 +1,7 @@
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  });
-}
-
-function isAuthed(request) {
-  const cookie = request.headers.get("Cookie") || "";
-  return cookie.includes("admin_auth=ok");
-}
+import { json, requireAdmin } from "../_shared/auth.js";
 
 function clean(value) {
   return String(value || "").trim();
-}
-
-async function requireAdmin(request, env) {
-  if (!isAuthed(request)) {
-    return json({ ok: false, error: "Unauthorized" }, 401);
-  }
-
-  if (!env.DB) {
-    return json({ ok: false, error: "D1 binding DB missing" }, 500);
-  }
-
-  return null;
 }
 
 export async function onRequestGet({ request, env }) {
