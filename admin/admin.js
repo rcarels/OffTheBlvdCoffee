@@ -139,13 +139,14 @@ document.querySelectorAll(".nav button").forEach((button) => {
     const selected = button.dataset.section;
 
     const sectionTitles = {
-      quotes: "Manage Quote Requests",
-      events: "Manage Events",
-      menu: "Manage Menu",
-      gallery: "Manage Gallery Photos",
-      reviews: "Manage Customer Reviews",
-      about: "Manage About Page",
-    };
+  "dashboard-home": "Dashboard",
+  quotes: "Manage Quote Requests",
+  events: "Manage Events",
+  menu: "Manage Menu",
+  gallery: "Manage Gallery Photos",
+  reviews: "Manage Customer Reviews",
+  about: "Manage About Page",
+};
 
     if (adminSectionEyebrowEl) {
       adminSectionEyebrowEl.textContent = "Website Manager";
@@ -156,7 +157,7 @@ document.querySelectorAll(".nav button").forEach((button) => {
         sectionTitles[selected] || "Website Manager";
     }
 
-    ["quotes", "events", "menu", "gallery", "reviews", "about"].forEach((name) => {
+    ["dashboard-home", "quotes", "events", "menu", "gallery", "reviews", "about"].forEach((name) => {
       const section = document.getElementById(`section-${name}`);
 
       if (section) {
@@ -268,6 +269,10 @@ async function adminLoadQuotes() {
     .join("");
 }
 
+async function adminLoadDashboard() {
+  await adminLoadQuotes();
+}
+
 async function adminUpdateStatus(id, status) {
   const formData = new FormData();
   formData.append("id", id);
@@ -285,7 +290,7 @@ async function adminUpdateStatus(id, status) {
     return;
   }
 
-  adminLoadQuotes();
+  adminLoadDashboard();
 }
 
 /* Notes */

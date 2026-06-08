@@ -40,13 +40,14 @@
       </div>
 
       <nav class="nav">
-        <button class="active" data-section="quotes">Quote Requests</button>
-        <button data-section="events">Events</button>
-        <button data-section="menu">Menu</button>
-        <button data-section="gallery">Gallery</button>
-        <button data-section="reviews">Reviews</button>
-        <button data-section="about">About</button>
-      </nav>
+  <button class="active" data-section="dashboard-home">Dashboard</button>
+  <button data-section="quotes">Quote Requests</button>
+  <button data-section="events">Events</button>
+  <button data-section="menu">Menu</button>
+  <button data-section="gallery">Gallery</button>
+  <button data-section="reviews">Reviews</button>
+  <button data-section="about">About</button>
+</nav>
 
       <div class="sidebar-note">
         <strong>Website Manager</strong>
@@ -66,6 +67,46 @@
     </div>
   </div>
 
+  <section id="section-dashboard-home">
+  <div class="stats">
+    <div class="stat">
+      <span>Open Quotes</span>
+      <strong id="dashboardOpenQuotes">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>Events</span>
+      <strong id="dashboardEventCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>Reviews</span>
+      <strong id="dashboardReviewCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <span>Gallery Photos</span>
+      <strong id="dashboardGalleryCount">0</strong>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <h2>Business Overview</h2>
+        <p class="muted">
+          Quick snapshot of website activity and content.
+        </p>
+      </div>
+    </div>
+
+    <div id="dashboardRecentActivity" class="quotes-grid">
+      <div class="placeholder-panel">
+        Dashboard statistics will appear here.
+      </div>
+    </div>
+  </div>
+</section>
       <section id="section-quotes">
         <div class="stats">
           <div class="stat"><span>New</span><strong id="statNew">0</strong></div>
@@ -182,11 +223,11 @@
 
             <label>Image URL (temporary)</label>
             <input
-             type="text"
-             name="image_url"
-             placeholder="Paste photo address until uploads are enabled"
-            required>
-          <p class="field-help">Direct uploads are being configured. Until then, paste a public photo URL.</p>
+              type="text"
+              name="image_url"
+              placeholder="Paste photo address until uploads are enabled"
+              required>
+            <p class="field-help">Direct uploads are being configured. Until then, paste a public photo URL.</p>
             
             <label>Photo Description</label>
             <input type="text" name="alt_text" placeholder="Example: Iced latte served from the mobile coffee cart">
