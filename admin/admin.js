@@ -463,6 +463,10 @@ if (eventFormEl) {
     const formData = new FormData(eventFormEl);
     let method = "POST";
 
+    if (!formData.has("show_on_website")) {
+      formData.append("show_on_website", "0");
+    }
+
     if (editingEventId) {
       method = "PUT";
       formData.append("id", editingEventId);
@@ -486,6 +490,9 @@ if (eventFormEl) {
 
     editingEventId = null;
     eventFormEl.reset();
+
+    const websiteCheckbox = eventFormEl.querySelector('[name="show_on_website"]');
+    if (websiteCheckbox) websiteCheckbox.checked = true;
 
     const activeInput = eventFormEl.querySelector('[name="is_active"]');
     if (activeInput) activeInput.remove();
