@@ -1,0 +1,42 @@
+.perfect-for{
+  padding:90px 0;
+  background:#fff;
+}
+
+.section-intro{
+  max-width:760px;
+  margin:0 auto 40px;
+  text-align:center;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.perfect-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:24px;
+}
+
+.perfect-card{
+  background:var(--soft);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:28px;
+  transition:.25s ease;
+}
+
+.perfect-card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow);
+}
+
+.perfect-card h3{
+  margin:0 0 12px;
+  color:var(--red);
+}
+
+.perfect-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.7;
+}
