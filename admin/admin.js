@@ -57,16 +57,14 @@ function escapeHtml(value) {
 
 function adminShowLogin(message = "") {
   if (dashboardEl) dashboardEl.style.display = "none";
-  if (loginEl) loginEl.style.display = "flex";
+  if (loginEl) loginEl.style.display = "min-height:100vh;display:flex;align-items:center;justify-content:center;";
   if (loginMessageEl) loginMessageEl.textContent = message;
-  loginEl?.classList.add("login-mode");
 }
 
 function adminShowDashboard() {
   if (loginEl) loginEl.style.display = "none";
   if (dashboardEl) dashboardEl.style.display = "grid";
   if (loginMessageEl) loginMessageEl.textContent = "";
-  loginEl?.classList.remove("login-mode");
 }
 
 async function adminCheckSession() {
