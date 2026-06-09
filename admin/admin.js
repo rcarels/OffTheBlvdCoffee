@@ -59,14 +59,14 @@ function adminShowLogin(message = "") {
   if (dashboardEl) dashboardEl.style.display = "none";
   if (loginEl) loginEl.style.display = "flex";
   if (loginMessageEl) loginMessageEl.textContent = message;
-  document.body.classList.add("login-mode");
+  loginEl?.classList.add("login-mode");
 }
 
 function adminShowDashboard() {
   if (loginEl) loginEl.style.display = "none";
   if (dashboardEl) dashboardEl.style.display = "grid";
   if (loginMessageEl) loginMessageEl.textContent = "";
-  document.body.classList.remove("login-mode");
+  loginEl?.classList.remove("login-mode");
 }
 
 async function adminCheckSession() {
