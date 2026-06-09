@@ -577,6 +577,13 @@ function adminStartEditEvent(id) {
   eventFormEl.event_date.value = event.event_date || "";
   eventFormEl.location.value = event.location || "";
   eventFormEl.description.value = event.description || "";
+  const websiteCheckbox = eventFormEl.querySelector(
+  '[name="show_on_website"]'
+);
+
+if (websiteCheckbox) {
+  websiteCheckbox.checked = !!event.show_on_website;
+}
 
   let activeInput = eventFormEl.querySelector('[name="is_active"]');
 
@@ -606,6 +613,10 @@ async function adminToggleEvent(id) {
   formData.append("location", event.location || "");
   formData.append("description", event.description || "");
   formData.append("is_active", event.is_active ? "0" : "1");
+  formData.append(
+  "show_on_website",
+  event.show_on_website ? "1" : "0"
+);
 
   const response = await fetch("/api/admin-events", {
     method: "PUT",
