@@ -14,6 +14,7 @@ export async function onRequestGet({ env }) {
     `SELECT title, event_date, location, description
      FROM events
      WHERE is_active = 1
+       AND show_on_website = 1
      ORDER BY event_date ASC, created_at DESC`
   ).all();
 

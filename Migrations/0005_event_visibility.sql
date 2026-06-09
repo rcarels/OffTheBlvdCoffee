@@ -1,0 +1,2 @@
+ALTER TABLE events
+ADD COLUMN show_on_website INTEGER DEFAULT 1;
