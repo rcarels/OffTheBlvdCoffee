@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Off The Blvd Coffee | Mobile Coffee Cart</title>
-  <meta name="description" content="Off The Blvd Coffee brings handcrafted coffee and good energy to pop-up events, private parties, weddings, corporate gatherings, and markets across the Inland Empire and Greater Los Angeles Area." />
+  <meta name="description" content="Off The Blvd Coffee brings handcrafted coffee and good energy to pop-up events, private parties, weddings, corporate gatherings, and markets across the Greater Los Angeles Area and the Inland Empire." />
 
   <link rel="canonical" href="https://offtheblvdcoffee.com/" />
   <meta name="robots" content="index,follow" />
   <meta property="og:title" content="Off The Blvd Coffee | Mobile Coffee Cart" />
-  <meta property="og:description" content="Handcrafted coffee and good energy for pop-up events, private parties, weddings, corporate gatherings, and markets across the Inland Empire & Greater Los Angeles Area." />
+  <meta property="og:description" content="Handcrafted coffee and good energy for pop-up events, private parties, weddings, corporate gatherings, and markets across the Greater Los Angeles Area and the Inland Empire." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://offtheblvdcoffee.com/" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -19,13 +19,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/site.css">
 </head>
+
 <body>
 <header class="header">
   <div class="wrap nav">
     <a class="logo" href="#home" aria-label="Off The Blvd Coffee home">
-      <img src="assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee logo">
+      <img src="/assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee logo">
     </a>
+
     <button class="hamb" id="hamb" aria-label="Open menu" aria-controls="links" aria-expanded="false">☰</button>
+
     <nav class="links" id="links" aria-label="Primary">
       <a class="active" href="#home">Home</a>
       <a href="#events">Events</a>
@@ -35,6 +38,7 @@
       <a href="#reviews">Reviews</a>
       <a href="#contact">Get in Touch</a>
     </nav>
+
     <a class="btn quote-top" href="#quote">Get a Quote →</a>
   </div>
 </header>
@@ -43,13 +47,22 @@
   <section class="hero">
     <div class="wrap">
       <h1>Craft Coffee.<span>Great Vibes.</span></h1>
-      <p class="lead">Bringing handcrafted coffee and good energy to pop-up events across <b>The Inland Empire</b> and <b>The Greater Los Angeles Area.</b></p>
+      <p class="lead">
+        Bringing handcrafted coffee and good energy to pop-up events across
+        <b>The Greater Los Angeles Area</b> and <b>The Inland Empire.</b>
+      </p>
+
       <div class="actions">
         <a class="btn" href="#events">Find Us Next →</a>
         <a class="btn outline" href="#quote">Get a Quote</a>
       </div>
+
       <a class="insta" href="https://www.instagram.com/offtheblvdcoffee/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M17.5 6.5h.01"/>
+        </svg>
         Follow along @offtheblvdcoffee
       </a>
     </div>
@@ -59,9 +72,12 @@
     <div class="section-head">
       <div>
         <div class="eyebrow">Upcoming Events</div>
-        <h2 class="title">Catch Us Around<br>The Inland Empire &<br>The Greater Los Angeles Area</h2>
-        <p class="section-copy">You can find us at local markets, community events, pop-ups, and public gatherings.</p>
+        <h2 class="title">Catch Us Around<br>The Greater Los Angeles Area &<br>The Inland Empire</h2>
+        <p class="section-copy">
+          Find us at local markets, community events, pop-ups, and public gatherings.
+        </p>
       </div>
+
       <div class="event-controls">
         <input id="eventSearch" placeholder="Search events">
         <select id="eventFilter">
@@ -70,16 +86,44 @@
         </select>
       </div>
     </div>
+
     <div class="events-grid" id="eventsGrid"></div>
     <div class="empty" id="emptyEvents">No events match your search yet.</div>
     <div class="center"><a class="btn outline" href="#quote">Request Availability →</a></div>
   </section>
 
   <section class="feature-strip">
-    <div class="feature"><div class="round">☕</div><div><strong>Handcrafted Coffee</strong><p>High quality ingredients and drinks made with care.</p></div></div>
-    <div class="feature"><div class="round">📍</div><div><strong>Pop-Up Events</strong><p>Markets, community events, and private celebrations.</p></div></div>
-    <div class="feature"><div class="round">🚚</div><div><strong>Mobile Coffee Cart</strong><p>We bring the vibes and the coffee to you.</p></div></div>
-    <div class="feature"><div class="round">♡</div><div><strong>Good Coffee. Good Energy.</strong><p>Every event deserves great coffee and good vibes.</p></div></div>
+    <div class="feature">
+      <div class="round">☕</div>
+      <div>
+        <strong>Handcrafted Coffee</strong>
+        <p>High quality ingredients and drinks made with care.</p>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="round">📍</div>
+      <div>
+        <strong>Pop-Up Events</strong>
+        <p>Markets, community events, and private celebrations.</p>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="round">🚚</div>
+      <div>
+        <strong>Mobile Coffee Cart</strong>
+        <p>We bring the vibes and the coffee to you.</p>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="round">♡</div>
+      <div>
+        <strong>Good Coffee. Good Energy.</strong>
+        <p>Every event deserves great coffee and good vibes.</p>
+      </div>
+    </div>
   </section>
 
   <section id="about" class="wrap">
@@ -87,11 +131,20 @@
       <div id="aboutText">
         <div class="eyebrow">About</div>
         <h2 class="title">Coffee made for pop-ups, parties, markets & memorable mornings.</h2>
-        <p class="section-copy">Off The Blvd Coffee is a mobile specialty coffee experience serving handcrafted drinks with a warm, community-centered feel. We serve The Inland Empire and The Greater Los Angeles Area.</p>
-        <p class="section-copy"><b>Placeholder:</b> Add your personal story here, including how you started making coffee, what makes your drinks special, and what guests can expect when they visit your cart.</p>
+        <p class="section-copy">
+          Off The Blvd Coffee is a mobile specialty coffee experience serving handcrafted drinks with a warm, community-centered feel.
+          We serve The Greater Los Angeles Area and The Inland Empire.
+        </p>
+        <p class="section-copy">
+          <b>Placeholder:</b> Add your personal story here, including how you started making coffee, what makes your drinks special,
+          and what guests can expect when they visit your cart.
+        </p>
         <a class="btn" href="#quote">Book the Cart →</a>
       </div>
-      <div class="photo-card"><img src="assets/iced-coffee-hero.png" alt="Iced specialty coffee from Off The Blvd Coffee"></div>
+
+      <div class="photo-card">
+        <img src="/assets/iced-coffee-hero.png" alt="Iced specialty coffee from Off The Blvd Coffee">
+      </div>
     </div>
   </section>
 
@@ -103,10 +156,31 @@
         <p class="section-copy">Pricing and final menu can be adjusted before launch.</p>
       </div>
     </div>
+
     <div class="menu-grid" id="menuGrid">
-      <div class="menu-card"><h3>Espresso</h3><div class="menu-item"><div>Latte<small>Hot or iced</small></div><span class="price">$ TBD</span></div><div class="menu-item"><div>Cappuccino</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Americano</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Cortado</div><span class="price">$ TBD</span></div></div>
-      <div class="menu-card"><h3>Specialty</h3><div class="menu-item"><div>Blvd Latte<small>Signature house flavor</small></div><span class="price">$ TBD</span></div><div class="menu-item"><div>Iced Specialty Latte</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Seasonal Drink</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Cold Brew</div><span class="price">$ TBD</span></div></div>
-      <div class="menu-card"><h3>Non-Coffee</h3><div class="menu-item"><div>Matcha Latte</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Chai Latte</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Hot Chocolate</div><span class="price">$ TBD</span></div><div class="menu-item"><div>Custom Event Menu</div><span class="price">Quote</span></div></div>
+      <div class="menu-card">
+        <h3>Espresso</h3>
+        <div class="menu-item"><div>Latte<small>Hot or iced</small></div><span class="price">$ TBD</span></div>
+        <div class="menu-item"><div>Cappuccino</div><span class="price">$ TBD</span></div>
+        <div class="menu-item"><div>Americano</div><span class="price">$ TBD</span></div>
+        <div class="menu-item"><div>Cortado</div><span class="price">$ TBD</span></div>
+      </div>
+
+      <div class="menu-card">
+        <h3>Specialty</h3>
+        <div class="menu-item"><div>Blvd Latte<small>Signature house flavor</small></div><span class="price">$ TBD</span></div>
+        <div class="menu-item"><div>Iced Specialty Latte</div><span class="price">$ TBD</span></div>
+        <div class="menu-item"><div>Seasonal Drink</div><span class="price">$ TBD</span></div>
+        <div class="menu-item"><div>Cold Brew</div><span class="price">$ TBD</span></div>
+      </div>
+
+      <div class="menu-card">
+        <h3>Non-Coffee</h3>
+        <div class="menu-item"><div>Matcha Latte</div><span class="price">$ TBD</span></div>
+        <div class="menu-item"><div>Chai Latte</div><span class="price">$ TBD</span></div>
+        <div class="menu-item"><div>Hot Chocolate</div><span class="price">$ TBD</span></div>
+        <div class="menu-item"><div>Custom Event Menu</div><span class="price">Quote</span></div>
+      </div>
     </div>
   </section>
 
@@ -118,7 +192,14 @@
         <p class="section-copy">Photos from the cart, drinks, and events.</p>
       </div>
     </div>
-    <div class="gallery-grid" id="galleryGrid"><img class="big" src="assets/iced-coffee-hero.png" alt="Iced coffee drink"><div class="placeholder"><div><b>Photo Placeholder</b>Cart setup wide shot</div></div><div class="placeholder"><div><b>Photo Placeholder</b>Barista action shot</div></div><img src="assets/off-the-blvd-logo.png" alt="Off The Blvd logo"><div class="placeholder"><div><b>Photo Placeholder</b>Event crowd or menu board</div></div></div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <img class="big" src="/assets/iced-coffee-hero.png" alt="Iced coffee drink">
+      <div class="placeholder"><div><b>Photo Placeholder</b>Cart setup wide shot</div></div>
+      <div class="placeholder"><div><b>Photo Placeholder</b>Barista action shot</div></div>
+      <img src="/assets/off-the-blvd-logo.png" alt="Off The Blvd logo">
+      <div class="placeholder"><div><b>Photo Placeholder</b>Event crowd or menu board</div></div>
+    </div>
   </section>
 
   <section id="reviews" class="wrap">
@@ -129,6 +210,7 @@
         <p class="section-copy">Real feedback from customers, events, markets, and private bookings.</p>
       </div>
     </div>
+
     <div class="reviews-grid" id="reviewsGrid">
       <div class="review-card">
         <div class="stars">★★★★★</div>
@@ -145,23 +227,53 @@
         <div class="eyebrow" style="color:#ffd4dc">Private Events</div>
         <h2 class="title">Let's bring good coffee to your next event.</h2>
         <p class="section-copy">Fill out the quote form and we’ll get back to you with availability, pricing, and next steps.</p>
-        <ul class="quote-points"><li>Handcrafted Drinks</li><li>Memorable Events</li><li>We Come To You</li><li>Good Coffee. Good Energy.</li></ul>
+        <ul class="quote-points">
+          <li>Handcrafted Drinks</li>
+          <li>Memorable Events</li>
+          <li>We Come To You</li>
+          <li>Good Coffee. Good Energy.</li>
+        </ul>
         <p><strong>Great for weddings, birthdays, corporate events, markets, showers, and private gatherings.</strong></p>
       </div>
 
       <form class="form" id="quoteForm" name="quote-request" method="POST">
         <input type="hidden" name="form-name" value="quote-request">
-        <p style="display:none"><label>Don’t fill this out if you’re human: <input name="bot-field"></label></p>
+        <p style="display:none">
+          <label>Don’t fill this out if you’re human: <input name="bot-field"></label>
+        </p>
+
         <div class="form-grid">
           <div><label>Name *</label><input name="name" required placeholder="Your name"></div>
           <div><label>Email *</label><input name="email" type="email" required placeholder="you@email.com"></div>
           <div><label>Phone</label><input name="phone" placeholder="(555) 000-0000"></div>
           <div><label>Event Date</label><input name="date" type="date"></div>
-          <div><label>Event Type</label><select name="type"><option>Private Event</option><option>Wedding</option><option>Corporate Event</option><option>Market / Pop-Up</option><option>Other</option></select></div>
-          <div><label>Guest Count</label><select name="guests"><option>1-50</option><option>51-100</option><option>101-200</option><option>200+</option><option>Not sure yet</option></select></div>
+
+          <div>
+            <label>Event Type</label>
+            <select name="type">
+              <option>Private Event</option>
+              <option>Wedding</option>
+              <option>Corporate Event</option>
+              <option>Market / Pop-Up</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Guest Count</label>
+            <select name="guests">
+              <option>1-50</option>
+              <option>51-100</option>
+              <option>101-200</option>
+              <option>200+</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+
           <div class="full"><label>Location</label><input name="location" placeholder="City / venue"></div>
           <div class="full"><label>Details</label><textarea name="details" rows="5" placeholder="Tell us about your event, preferred drinks, hours, and anything special."></textarea></div>
         </div>
+
         <button class="btn" type="submit">Submit Quote Request →</button>
         <div class="form-note">🔒 Your information is only used to respond to your inquiry.</div>
         <div class="success" id="quoteSuccess">Thank you! Your quote request was submitted.</div>
@@ -174,7 +286,10 @@
       <div class="eyebrow">Get In Touch</div>
       <h2 class="title">Follow, book, or ask a question.</h2>
       <p class="section-copy contact-copy">Instagram is the best place to see new pop-ups and updates.</p>
-      <div class="actions contact-actions"><a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/offtheblvdcoffee/">Instagram</a><a class="btn outline" href="mailto:hello@offtheblvdcoffee.com">Email Placeholder</a></div>
+      <div class="actions contact-actions">
+        <a class="btn" target="_blank" rel="noopener" href="https://www.instagram.com/offtheblvdcoffee/">Instagram</a>
+        <a class="btn outline" href="mailto:hello@offtheblvdcoffee.com">Email Placeholder</a>
+      </div>
     </div>
   </section>
 </main>
@@ -182,7 +297,7 @@
 <footer class="footer">
   <div class="wrap footer-inner">
     <div>
-      <img src="/assets/off-the-blvd-logo.png" alt="Off The Blvd Coffee">
+      <strong>Off The Blvd Coffee</strong>
       <p>Serving The Greater Los Angeles Area and The Inland Empire.</p>
     </div>
 
@@ -192,3 +307,7 @@
     </div>
   </div>
 </footer>
+
+<script src="/assets/site.js?v=2"></script>
+</body>
+</html>
