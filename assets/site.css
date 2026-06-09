@@ -16,28 +16,3 @@ section{padding:86px 0}.panel{background:rgba(255,248,243,.94);border:1px solid 
 .stars{color:var(--red);font-size:20px;letter-spacing:.08em;margin-bottom:14px}
 .review-card blockquote{margin:0;color:var(--ink);font-family:'Playfair Display',serif;font-size:25px;line-height:1.25}
 .review-card p{color:var(--muted);line-height:1.6}
-.review-name{margin-top:20px;font-weight:900}
-.event-types-band{
-  padding:60px 0;
-  text-align:center;
-}
-
-.center-text{
-  text-align:center;
-}
-
-.event-pill-grid{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:12px;
-  margin:32px 0;
-}
-
-.event-pill-grid span{
-  padding:12px 18px;
-  border-radius:999px;
-  background:#fff;
-  border:1px solid var(--line);
-  font-weight:700;
-}
