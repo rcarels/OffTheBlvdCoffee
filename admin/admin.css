@@ -150,3 +150,8 @@ input:focus,textarea:focus,select:focus{
   .main{padding:22px}
   .section-head{display:block}
 }
+body.login-mode {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}

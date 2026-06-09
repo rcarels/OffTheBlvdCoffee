@@ -2,6 +2,7 @@ const loginFormEl = document.getElementById("loginForm");
 const loginMessageEl = document.getElementById("loginMessage");
 const loginEl = document.getElementById("login");
 const dashboardEl = document.getElementById("dashboard");
+document.body.classList.add("login-mode");
 
 const adminSectionEyebrowEl = document.getElementById("adminSectionEyebrow");
 const adminSectionTitleEl = document.getElementById("adminSectionTitle");
@@ -58,11 +59,14 @@ function adminShowLogin(message = "") {
   if (dashboardEl) dashboardEl.style.display = "none";
   if (loginEl) loginEl.style.display = "flex";
   if (loginMessageEl) loginMessageEl.textContent = message;
+  document.body.classList.add("login-mode");
 }
 
 function adminShowDashboard() {
   if (loginEl) loginEl.style.display = "none";
   if (dashboardEl) dashboardEl.style.display = "grid";
+  if (loginMessageEl) loginMessageEl.textContent = "";
+  document.body.classList.remove("login-mode");
 }
 
 async function adminCheckSession() {
