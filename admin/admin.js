@@ -577,12 +577,10 @@ function adminStartEditEvent(id) {
   eventFormEl.event_date.value = event.event_date || "";
   eventFormEl.location.value = event.location || "";
   eventFormEl.description.value = event.description || "";
-  const websiteCheckbox = eventFormEl.querySelector(
-  '[name="show_on_website"]'
-);
+  const websiteCheckbox = eventFormEl.querySelector('[name="show_on_website"]');
 
 if (websiteCheckbox) {
-  websiteCheckbox.checked = !!event.show_on_website;
+  websiteCheckbox.checked = Number(event.show_on_website ?? 1) === 1;
 }
 
   let activeInput = eventFormEl.querySelector('[name="is_active"]');
