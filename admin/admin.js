@@ -2,7 +2,6 @@ const loginFormEl = document.getElementById("loginForm");
 const loginMessageEl = document.getElementById("loginMessage");
 const loginEl = document.getElementById("login");
 const dashboardEl = document.getElementById("dashboard");
-document.body.classList.add("login-mode");
 
 const adminSectionEyebrowEl = document.getElementById("adminSectionEyebrow");
 const adminSectionTitleEl = document.getElementById("adminSectionTitle");
@@ -77,7 +76,7 @@ async function adminCheckSession() {
 
     if (result.ok && result.authenticated) {
       adminShowDashboard();
-      await adminLoadQuotes();
+      await adminLoadDashboard();
       return;
     }
   } catch (err) {
@@ -94,7 +93,7 @@ async function adminLogout() {
     console.warn("Could not sign out cleanly", err);
   }
 
-  adminShowLogin("Signed out.");
+  window.location.href = "/";
 }
 
 /* Login */
@@ -117,7 +116,7 @@ if (loginFormEl) {
 
     adminShowDashboard();
 
-    adminLoadQuotes();
+    await adminLoadDashboard();
   });
 }
 
@@ -140,14 +139,14 @@ document.querySelectorAll(".nav button").forEach((button) => {
     const selected = button.dataset.section;
 
     const sectionTitles = {
-  "dashboard-home": "Dashboard",
-  quotes: "Manage Quote Requests",
-  events: "Manage Events",
-  menu: "Manage Menu",
-  gallery: "Manage Gallery Photos",
-  reviews: "Manage Customer Reviews",
-  about: "Manage About Page",
-};
+      "dashboard-home": "Dashboard",
+      quotes: "Manage Quote Requests",
+      events: "Manage Events",
+      menu: "Manage Menu",
+      gallery: "Manage Gallery Photos",
+      reviews: "Manage Customer Reviews",
+      about: "Manage About Page",
+    };
 
     if (adminSectionEyebrowEl) {
       adminSectionEyebrowEl.textContent = "Website Manager";
@@ -165,6 +164,10 @@ document.querySelectorAll(".nav button").forEach((button) => {
         section.classList.toggle("hidden", name !== selected);
       }
     });
+
+    if (selected === "dashboard-home") {
+      adminLoadDashboard();
+    }
   });
 });
 
@@ -851,29 +854,29 @@ if (galleryFormEl) {
     event.preventDefault();
 
     const formData = new FormData(galleryFormEl);
-const photoFile = formData.get("photo_file");
-let method = "POST";
+    const photoFile = formData.get("photo_file");
+    let method = "POST";
 
-if (photoFile && photoFile.size > 0) {
-  const uploadData = new FormData();
-  uploadData.append("file", photoFile);
+    if (photoFile && photoFile.size > 0) {
+      const uploadData = new FormData();
+      uploadData.append("file", photoFile);
 
-  const uploadResponse = await fetch("/api/upload-media", {
-    method: "POST",
-    body: uploadData,
-  });
+      const uploadResponse = await fetch("/api/upload-media", {
+        method: "POST",
+        body: uploadData,
+      });
 
-  const uploadResult = await uploadResponse.json();
+      const uploadResult = await uploadResponse.json();
 
-  if (!uploadResult.ok) {
-    alert(uploadResult.error || "Could not upload photo.");
-    return;
-  }
+      if (!uploadResult.ok) {
+        alert(uploadResult.error || "Could not upload photo.");
+        return;
+      }
 
-  formData.set("image_url", uploadResult.image_url);
-}
+      formData.set("image_url", uploadResult.image_url);
+    }
 
-formData.delete("photo_file");
+    formData.delete("photo_file");
 
     if (editingGalleryImageId) {
       method = "PUT";
@@ -1329,7 +1332,7 @@ async function adminLoadAbout() {
   aboutFormEl.heading.value = result.about.heading || "";
   aboutFormEl.main_paragraph.value = result.about.main_paragraph || "";
   aboutFormEl.story_paragraph.value = result.about.story_paragraph || "";
-  aboutFormEl.service_area_text.value =
+  aboutFormEl.service_area_text =
     result.about.service_area_text || "";
 
   aboutStatusEl.textContent = "About content loaded.";
