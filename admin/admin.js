@@ -140,10 +140,10 @@ document.querySelectorAll(".nav button").forEach((button) => {
 
     const sectionTitles = {
       "dashboard-home": "Dashboard",
-      quotes: "Manage Quote Requests",
-      events: "Manage Events",
+      quotes: "Manage Booking Requests",
+      events: "Manage Public Events",
       menu: "Manage Menu",
-      gallery: "Manage Gallery Photos",
+      gallery: "Manage Photos",
       reviews: "Manage Customer Reviews",
       about: "Manage About Page",
     };
