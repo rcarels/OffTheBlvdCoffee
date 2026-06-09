@@ -270,7 +270,87 @@ async function adminLoadQuotes() {
 }
 
 async function adminLoadDashboard() {
-  await adminLoadQuotes();
+  const openQuotesEl = document.getElementById("dashboardOpenQuotes");
+  const eventCountEl = document.getElementById("dashboardEventCount");
+  const reviewCountEl = document.getElementById("dashboardReviewCount");
+  const galleryCountEl = document.getElementById("dashboardGalleryCount");
+  const activityEl = document.getElementById("dashboardRecentActivity");
+
+  if (activityEl) {
+    activityEl.innerHTML =
+      '<div class="placeholder-panel">Loading dashboard overview...</div>';
+  }
+
+  try {
+    const [quotesResponse, eventsResponse, reviewsResponse, galleryResponse] =
+      await Promise.all([
+        fetch("/api/admin-quotes"),
+        fetch("/api/admin-events"),
+        fetch("/api/admin-reviews"),
+        fetch("/api/admin-gallery"),
+      ]);
+
+    const [quotesResult, eventsResult, reviewsResult, galleryResult] =
+      await Promise.all([
+        quotesResponse.json(),
+        eventsResponse.json(),
+        reviewsResponse.json(),
+        galleryResponse.json(),
+      ]);
+
+    const quotes = quotesResult.quotes || [];
+    const events = eventsResult.events || [];
+    const reviews = reviewsResult.reviews || [];
+    const images = galleryResult.images || [];
+
+    const openQuotes = quotes.filter((quote) => {
+      const status = quote.status || "New";
+      return status !== "Archived" && status !== "Completed";
+    });
+
+    if (openQuotesEl) openQuotesEl.textContent = String(openQuotes.length);
+    if (eventCountEl) eventCountEl.textContent = String(events.length);
+    if (reviewCountEl) reviewCountEl.textContent = String(reviews.length);
+    if (galleryCountEl) galleryCountEl.textContent = String(images.length);
+
+    updateStats(quotes);
+
+    if (!activityEl) return;
+
+    if (quotes.length === 0) {
+      activityEl.innerHTML =
+        '<div class="placeholder-panel">No recent quote requests yet.</div>';
+      return;
+    }
+
+    activityEl.innerHTML = quotes
+      .slice(0, 4)
+      .map(
+        (quote) => `
+          <article class="quote-card">
+            <div class="quote-card-top">
+              <div>
+                <h3>${escapeHtml(quote.name)}</h3>
+                <p class="muted">Submitted ${escapeHtml(quote.created_at)}</p>
+              </div>
+              <span class="badge">${escapeHtml(quote.status || "New")}</span>
+            </div>
+
+            <div class="quote-details">
+              <p><strong>Email:</strong> ${escapeHtml(quote.email)}</p>
+              <p><strong>Event Type:</strong> ${escapeHtml(quote.event_type)}</p>
+              <p><strong>Date:</strong> ${escapeHtml(quote.event_date)}</p>
+            </div>
+          </article>
+        `
+      )
+      .join("");
+  } catch (err) {
+    if (activityEl) {
+      activityEl.innerHTML =
+        '<div class="placeholder-panel">Could not load dashboard overview.</div>';
+    }
+  }
 }
 
 async function adminUpdateStatus(id, status) {
