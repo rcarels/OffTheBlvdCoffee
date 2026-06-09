@@ -54,10 +54,9 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-
 function adminShowLogin(message = "") {
   if (dashboardEl) dashboardEl.style.display = "none";
-  if (loginEl) loginEl.style.display = "min-height:100vh;display:flex;align-items:center;justify-content:center;";
+  if (loginEl) loginEl.style.display = "flex";
   if (loginMessageEl) loginMessageEl.textContent = message;
 }
 
